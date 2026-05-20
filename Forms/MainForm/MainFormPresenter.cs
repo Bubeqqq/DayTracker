@@ -1,9 +1,8 @@
-﻿using DayTracker.Forms.TestForm;
+﻿// Plik: MainFormPresenter.cs
+using DayTracker.Forms.TestForm;
+using DayTracker.Navigation;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace DayTracker.Forms.MainForm
 {
@@ -11,31 +10,28 @@ namespace DayTracker.Forms.MainForm
     {
         private readonly IMainFormView _view;
         private readonly IMainFormModel _model;
-        public MainFormPresenter(IMainFormView view, IMainFormModel model)
-        {
-            _view = view;
-            _model = model;
+        private readonly INavigationService _navigationService;
 
-            _model.OnSceneChanged += scene =>
+        public MainFormPresenter(IMainFormView view, IMainFormModel model, INavigationService navigationService)
+        {
+            _view = view ?? throw new ArgumentNullException(nameof(view));
+            _model = model ?? throw new ArgumentNullException(nameof(model));
+            _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+
+            _model.NavigationService = _navigationService;
+
+            _navigationService.OnSceneChanged += scene =>
             {
                 _view.SetControl(scene);
             };
         }
 
-        public Form View => (Form)_view;
+        public IModel Model => _model;
+        public IView View => _view;
 
-        public void Initialize() //Load first form
+        public void Initialize()
         {
-            var sceneLoader = _model as ISceneLoader;
-            if (sceneLoader != null)
-            {
-                sceneLoader.LoadScene<TestPresenter>();
-            }
+            _navigationService.NavigateTo<TestPresenter>();
         }
-
-
-        //To fix
-        public IModel Model => throw new NotImplementedException();
-        IView IPresenter.View => throw new NotImplementedException();
     }
 }

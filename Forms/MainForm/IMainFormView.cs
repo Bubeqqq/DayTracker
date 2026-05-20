@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DayTracker.Forms.MainForm
 {
-    internal interface IMainFormView
+    internal interface IMainFormView : IView
     {
         void SetControl(UserControl form);
     }

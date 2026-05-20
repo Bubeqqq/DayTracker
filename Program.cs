@@ -1,6 +1,7 @@
 using DayTracker.Forms;
 using DayTracker.Forms.MainForm;
 using DayTracker.Forms.TestForm;
+using DayTracker.Navigation;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -16,6 +17,8 @@ namespace DayTracker
 
             var services = new ServiceCollection();
 
+            services.AddSingleton<INavigationService, NavigationService>();
+
             ConfigureService<IPresenter>(services);
             ConfigureService<IView>(services);
             ConfigureService<IModel>(services);
@@ -24,12 +27,19 @@ namespace DayTracker
             services.AddSingleton<IMainFormView, Form1>();
             services.AddSingleton<IMainFormModel, MainFormModel>();
 
-
             using var serviceProvider = services.BuildServiceProvider();
+
             var mainForm = serviceProvider.GetRequiredService<MainFormPresenter>();
             mainForm.Initialize();
 
-            Application.Run(mainForm.View);
+            if (mainForm.View is Form mainFormWindow)
+            {
+                Application.Run(mainFormWindow);
+            }
+            else
+            {
+                MessageBox.Show("G³ówny widok aplikacji nie jest oknem typu Form!");
+            }
         }
 
         private static void ConfigureService<T>(ServiceCollection services)
@@ -37,13 +47,16 @@ namespace DayTracker
             var assembly = Assembly.GetExecutingAssembly();
             var targetInterface = typeof(T);
 
-            var implementations = assembly.GetTypes().Where(t => targetInterface.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
+            var implementations = assembly.GetTypes()
+                .Where(t => targetInterface.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
+
             foreach (var type in implementations)
             {
                 services.AddTransient(type);
-                var implementedInterfaces = type.GetInterfaces();
+                var relevantInterfaces = type.GetInterfaces()
+                    .Where(iface => targetInterface.IsAssignableFrom(iface));
 
-                foreach (var iface in implementedInterfaces)
+                foreach (var iface in relevantInterfaces)
                 {
                     services.AddTransient(iface, type);
                 }

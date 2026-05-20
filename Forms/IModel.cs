@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DayTracker.Navigation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace DayTracker.Forms
 {
     internal interface IModel
     {
-        ISceneLoader SceneLoader { get; set; }
+        INavigationService NavigationService { get; set; }
     }
 }

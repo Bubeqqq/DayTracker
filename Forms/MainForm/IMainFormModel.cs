@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace DayTracker.Forms.MainForm
 {
-    internal interface IMainFormModel
+    internal interface IMainFormModel : IModel
     {
-        event Action<UserControl> OnSceneChanged;
+        
     }
 }

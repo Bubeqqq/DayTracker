@@ -8,5 +8,6 @@ namespace DayTracker.Forms
 {
     internal interface IView
     {
+
     }
 }

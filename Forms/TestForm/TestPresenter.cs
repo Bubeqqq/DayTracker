@@ -23,10 +23,5 @@ namespace DayTracker.Forms.TestForm
 
         public IModel Model => _model;
         public IView View => _view;
-
-        public UserControl? GetView()
-        {
-            return _view as UserControl;
-        }
     }
 }
