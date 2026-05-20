@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DayTracker.Forms.TestForm
 {
-    internal class TestPresenter : IPresenter
+    internal class TestPresenter : IPresenter<int>
     {
         private readonly ITestView _view;
         private readonly ITestModel _model;
@@ -23,5 +23,10 @@ namespace DayTracker.Forms.TestForm
 
         public IModel Model => _model;
         public IView View => _view;
+
+        public void LoadArgs(int args)
+        {
+            Console.WriteLine(args);
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace DayTracker.Forms.MainForm
 
         public void Initialize()
         {
-            _navigationService.NavigateTo<TestPresenter>();
+            _navigationService.NavigateTo<TestPresenter, int>(5);
         }
     }
 }

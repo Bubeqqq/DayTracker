@@ -6,9 +6,15 @@ using System.Threading.Tasks;
 
 namespace DayTracker.Forms
 {
+
     internal interface IPresenter
     {
         IModel Model { get; }
         IView View { get; }
+    }
+
+    internal interface IPresenter<TArgs> : IPresenter
+    {
+        void LoadArgs(TArgs args);
     }
 }

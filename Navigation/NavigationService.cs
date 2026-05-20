@@ -36,5 +36,66 @@ namespace DayTracker.Navigation
                 throw new InvalidOperationException($"Widok prezentera {typeof(TPresenter).Name} musi dziedziczyć po UserControl, aby mógł być wyświetlony jako scena.");
             }
         }
+
+        UserControl INavigationService.LoadUserControl<TPresenter>()
+        {
+            var presenter = _serviceProvider.GetRequiredService<TPresenter>();
+
+            if (presenter.View is UserControl view)
+            {
+                if (presenter.Model != null)
+                {
+                    presenter.Model.NavigationService = this;
+                }
+
+                return view;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Widok prezentera {typeof(TPresenter).Name} musi dziedziczyć po UserControl, aby mógł być wyświetlony jako scena.");
+            }
+        }
+
+        void INavigationService.NavigateTo<TPresenter, TArgs>(TArgs args)
+        {
+            var presenter = _serviceProvider.GetRequiredService<TPresenter>();
+
+            if (presenter.View is UserControl view)
+            {
+                if (presenter.Model != null)
+                {
+                    presenter.Model.NavigationService = this;
+                }
+
+                presenter.LoadArgs(args);
+
+                OnSceneChanged?.Invoke(view);
+            }
+            else
+            {
+                throw new InvalidOperationException($"Widok prezentera {typeof(TPresenter).Name} musi dziedziczyć po UserControl, aby mógł być wyświetlony jako scena.");
+            }
+        }
+
+        UserControl INavigationService.LoadUserControl<TPresenter, TArgs>(TArgs args)
+        {
+            var presenter = _serviceProvider.GetRequiredService<TPresenter>();
+
+            if (presenter.View is UserControl view)
+            {
+                if (presenter.Model != null)
+                {
+                    presenter.LoadArgs(args);
+
+                    presenter.Model.NavigationService = this;
+                }
+
+                return view;
+            }
+            else
+            {
+                throw new InvalidOperationException($"Widok prezentera {typeof(TPresenter).Name} musi dziedziczyć po UserControl, aby mógł być wyświetlony jako scena.");
+            }
+        }
     }
 }
