@@ -2,8 +2,12 @@ using DayTracker.Forms;
 using DayTracker.Forms.MainForm;
 using DayTracker.Forms.TestForm;
 using DayTracker.Navigation;
+using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using DayTracker.Database;
 
 namespace DayTracker
 {
@@ -17,6 +21,11 @@ namespace DayTracker
 
             var services = new ServiceCollection();
 
+            var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("Resources/appsettings.json", optional: false, reloadOnChange: true).Build();
+
+            services.AddDbContext<IDatabaseService, DatabaseService>(options => options.UseNpgsql(configuration.GetConnectionString("NeonDatabase")));
+
+            
             services.AddSingleton<INavigationService, NavigationService>();
 
             ConfigureService<IPresenter>(services);
@@ -28,6 +37,17 @@ namespace DayTracker
             services.AddSingleton<IMainFormModel, MainFormModel>();
 
             using var serviceProvider = services.BuildServiceProvider();
+
+            using (var scope = serviceProvider.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<IDatabaseService>() as DatabaseService;
+
+                if (db != null)
+                {
+                    Console.WriteLine("Sprawdzanie i tworzenie bazy danych...");
+                    db.Database.EnsureCreated();
+                }
+            }
 
             var mainForm = serviceProvider.GetRequiredService<MainFormPresenter>();
             mainForm.Initialize();

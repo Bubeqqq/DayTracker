@@ -8,6 +8,6 @@ namespace DayTracker.Forms.TestForm
 {
     internal interface ITestModel : IModel
     {
-        void Print();
+        Task PrintAsync();
     }
 }

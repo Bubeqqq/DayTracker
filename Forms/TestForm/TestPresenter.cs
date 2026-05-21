@@ -17,7 +17,7 @@ namespace DayTracker.Forms.TestForm
 
             _view.OnTestButtonClicked += () =>
                 {
-                    _model.Print();
+                    _model.PrintAsync();
                 };
         }
 
