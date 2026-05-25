@@ -13,6 +13,7 @@ namespace DayTracker.UserControls
             MainPanel.BackColor = Color.FromArgb(226, 239, 252);
 
             MainPanel.Resize += MainPanel_Resize;
+            MainPanel.Click += (s, e) => Focus();
         }
 
         public void SetTODOList(string todoList)
@@ -21,6 +22,8 @@ namespace DayTracker.UserControls
 
             MainPanel.Controls.Clear();
             MainPanel.SuspendLayout();
+
+            MainPanel.Controls.Add(CreateAddButton());
 
             foreach (var task in tasks)
             {
@@ -44,88 +47,65 @@ namespace DayTracker.UserControls
             AdjustControlsWidth();
         }
 
-        private void EditTask(object sender, EventArgs args)
+        public string GetTODOList()
         {
-            CheckBox? checkBox = sender as CheckBox;
-
-            if (checkBox == null)
+            string result = "";
+            foreach (Control control in MainPanel.Controls)
             {
-                return;
-            }
-
-            Panel? panel = null;
-            foreach (var c in MainPanel.Controls)
-            {
-                Panel? control = c as Panel;
-
-                if (control == null)
-                    continue;
-
-                if (control.Controls[0] == sender)
+                if (control is Panel panel && panel.Controls.Count > 0)
                 {
-                    panel = control;
-                    break;
+                    Control innerControl = panel.Controls[0];
+                    if (innerControl is CheckBox cb)
+                    {
+                        result += (cb.Checked ? "[x] " : "[] ") + cb.Text + Environment.NewLine;
+                    }
+                    else if (innerControl is Label lbl)
+                    {
+                        result += lbl.Text.Replace("--- ", "").Replace(" ---", "") + Environment.NewLine;
+                    }
                 }
             }
-
-            if (panel == null)
-            {
-                return;
-            }
-
-            TextBox textBox = new TextBox()
-            {
-                Text = checkBox.Text,
-                Font = new Font("Segoe UI", 10F, FontStyle.Regular),
-                ForeColor = Color.Black,
-                Dock = DockStyle.Fill,
-                Padding = new Padding(10, 0, 0, 0),
-                Cursor = Cursors.Hand,
-                AutoSize = false
-            };
-
-            textBox.LostFocus += ConfirmTask;
-            textBox.KeyDown += (o, e) => { if (e.KeyCode == Keys.Enter) ConfirmTask(o, e); };
-
-            panel.Controls.Clear();
-            panel.Controls.Add(textBox);
-
-            textBox.Focus();
+            return result.TrimEnd();
         }
 
-        private void ConfirmTask(object sender, EventArgs args)
+        private Panel? CreateAddButton()
         {
-            TextBox? textBox = sender as TextBox;
-
-            if (textBox == null)
+            Panel panel = new Panel
             {
-                return;
-            }
+                Height = 48,
+                Padding = new Padding(10, 5, 10, 5),
+                BackColor = Color.Transparent
+            };
 
-            Panel? panel = null;
-            foreach (var c in MainPanel.Controls)
+            Button btn = new Button
             {
-                Panel? control = c as Panel;
+                Text = "+ Add Task Section",
+                Font = new Font("Segoe UI", 10F, FontStyle.Bold),
+                ForeColor = Color.Black,
+                BackColor = Color.White,
+                Dock = DockStyle.Fill,
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand,
+                TextAlign = ContentAlignment.MiddleCenter
+            };
 
-                if (control == null)
-                    continue;
+            btn.FlatAppearance.BorderSize = 1;
+            btn.FlatAppearance.BorderColor = Color.FromArgb(200, 200, 200);
 
-                if (control.Controls[0] == sender)
-                {
-                    panel = control;
-                    break;
-                }
-            }
+            btn.FlatAppearance.MouseOverBackColor = Color.FromArgb(245, 250, 255);
+            
 
-            if (panel == null)
-            {
-                return;
-            }
 
-            CheckBox checkBox = CreateTaskPanel(textBox.Text, false).Controls[0] as CheckBox;
+            btn.Click += (e, o) => {
+                MainPanel.Controls.Add(CreateHeaderLabel("New Section"));
+                MainPanel.Controls.SetChildIndex(MainPanel.Controls[MainPanel.Controls.Count - 1], 1);
+                AdjustControlsWidth();
+                Focus();
+            };
 
-            panel.Controls.Clear();
-            panel.Controls.Add(checkBox);
+            panel.Controls.Add(btn);
+
+            return panel;
         }
 
         private Panel CreateTaskPanel(string text, bool isChecked)
@@ -147,7 +127,8 @@ namespace DayTracker.UserControls
                 Dock = DockStyle.Fill,
                 Padding = new Padding(10, 0, 0, 0),
                 Cursor = Cursors.Hand,
-                AutoSize = false
+                AutoSize = false,
+                AutoEllipsis = true
             };
 
             cb.CheckedChanged += (s, e) =>
@@ -156,24 +137,46 @@ namespace DayTracker.UserControls
                 cb.ForeColor = cb.Checked ? Color.DimGray : Color.Black;
             };
 
-            cb.MouseUp += (o, e) => { if(e.Button == MouseButtons.Right) EditTask(o, e); };
+            cb.MouseUp += (o, e) => {
+                Focus();
+                if(e.Button == MouseButtons.Right) EditTask(o, e);
+                else if (e.Button == MouseButtons.Middle) RemoveTask(o, e);
+            };
 
             panel.Controls.Add(cb);
             return panel;
         }
 
-        private Label CreateHeaderLabel(string text)
+        private Panel CreateHeaderLabel(string text)
         {
             string headerText = text.StartsWith("---") ? text : $"--- {text} ---";
 
-            return new Label
+            Panel panel = new Panel
+            {
+                Height = 38
+            };
+
+            Label l = new Label
             {
                 Text = headerText,
                 Font = new Font("Segoe UI", 11F, FontStyle.Bold),
                 ForeColor = Color.Black,
-                AutoSize = true,
-                Margin = new Padding(10, 15, 10, 5)
+                Dock = DockStyle.Fill,
+                TextAlign = ContentAlignment.MiddleLeft,
+                Margin = new Padding(10, 15, 10, 5),
+                AutoEllipsis = true
             };
+
+            l.MouseDoubleClick += AddTask;
+            l.MouseUp += (o, e) => {
+                MainPanel.Focus();
+                if (e.Button == MouseButtons.Right) EditSection(o, e); 
+                else if(e.Button == MouseButtons.Middle) RemoveTask(o, e); 
+            };
+
+            panel.Controls.Add(l);
+
+            return panel;
         }
 
         private void MainPanel_Resize(object sender, EventArgs e)

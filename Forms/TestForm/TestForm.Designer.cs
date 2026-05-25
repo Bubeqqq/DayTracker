@@ -35,8 +35,9 @@
             // button1
             // 
             button1.Location = new Point(0, 0);
+            button1.Margin = new Padding(3, 2, 3, 2);
             button1.Name = "button1";
-            button1.Size = new Size(364, 227);
+            button1.Size = new Size(318, 68);
             button1.TabIndex = 0;
             button1.Text = "button1";
             button1.UseVisualStyleBackColor = true;
@@ -44,20 +45,22 @@
             // 
             // toDoList
             // 
-            toDoList.Location = new Point(66, 257);
+            toDoList.Location = new Point(12, 107);
+            toDoList.Margin = new Padding(3, 2, 3, 2);
             toDoList.Name = "toDoList";
-            toDoList.Size = new Size(651, 303);
+            toDoList.Size = new Size(531, 311);
             toDoList.TabIndex = 1;
             // 
             // TestForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             Controls.Add(toDoList);
             Controls.Add(button1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "TestForm";
-            Size = new Size(801, 635);
+            Size = new Size(701, 476);
             ResumeLayout(false);
         }
 

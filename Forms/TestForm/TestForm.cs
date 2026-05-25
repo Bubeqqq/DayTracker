@@ -25,6 +25,8 @@ namespace DayTracker.Forms.TestForm
         private void button1_Click(object sender, EventArgs e)
         {
             OnTestButtonClicked?.Invoke();
+
+            Console.WriteLine(toDoList.GetTODOList());
         }
     }
 }
