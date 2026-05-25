@@ -22,7 +22,7 @@ namespace DayTracker.Forms.TestForm
         {
             Console.WriteLine("TestModel Print method called.");
 
-            string sql = "INSERT INTO \"CalendarEvents\" (\"StartTime\", \"Duration\", \"UserId\", \"ActionId\", \"IsHard\", \"IsOutdoor\", \"IsSport\") " +
+            /*string sql = "INSERT INTO \"CalendarEvents\" (\"StartTime\", \"Duration\", \"UserId\", \"ActionId\", \"IsHard\", \"IsOutdoor\", \"IsSport\") " +
                  "VALUES ('2026-05-21 16:55:08', '10:00:00', null, null, false, false, false);";
 
             try
@@ -32,7 +32,7 @@ namespace DayTracker.Forms.TestForm
             catch (Exception ex)
             {
                 Console.WriteLine($"Error executing SQL command: {ex.Message}");
-            }
+            }*/
         }
     }
 }

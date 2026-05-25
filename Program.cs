@@ -45,7 +45,7 @@ namespace DayTracker
                 if (db != null)
                 {
                     Console.WriteLine("Sprawdzanie i tworzenie bazy danych...");
-                    db.Database.EnsureCreated();
+                    //db.Database.EnsureCreated();
                 }
             }
 

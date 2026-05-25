@@ -1,6 +1,6 @@
-﻿namespace DayTracker.Forms.TestForm
+﻿namespace DayTracker.UserControls
 {
-    partial class TestForm
+    partial class ToDoList
     {
         /// <summary> 
         /// Wymagana zmienna projektanta.
@@ -28,42 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button1 = new Button();
-            toDoList = new DayTracker.UserControls.ToDoList();
+            MainPanel = new FlowLayoutPanel();
             SuspendLayout();
             // 
-            // button1
+            // MainPanel
             // 
-            button1.Location = new Point(0, 0);
-            button1.Name = "button1";
-            button1.Size = new Size(364, 227);
-            button1.TabIndex = 0;
-            button1.Text = "button1";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
+            MainPanel.AutoScroll = true;
+            MainPanel.BorderStyle = BorderStyle.FixedSingle;
+            MainPanel.Dock = DockStyle.Fill;
+            MainPanel.FlowDirection = FlowDirection.TopDown;
+            MainPanel.Location = new Point(0, 0);
+            MainPanel.Name = "MainPanel";
+            MainPanel.Size = new Size(630, 333);
+            MainPanel.TabIndex = 0;
+            MainPanel.WrapContents = false;
             // 
-            // toDoList
-            // 
-            toDoList.Location = new Point(66, 257);
-            toDoList.Name = "toDoList";
-            toDoList.Size = new Size(651, 303);
-            toDoList.TabIndex = 1;
-            // 
-            // TestForm
+            // ToDoList
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.ActiveCaption;
-            Controls.Add(toDoList);
-            Controls.Add(button1);
-            Name = "TestForm";
-            Size = new Size(801, 635);
+            Controls.Add(MainPanel);
+            Name = "ToDoList";
+            Size = new Size(630, 333);
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Button button1;
-        private UserControls.ToDoList toDoList;
+        private FlowLayoutPanel MainPanel;
     }
 }

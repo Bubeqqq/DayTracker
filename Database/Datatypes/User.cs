@@ -12,7 +12,6 @@ namespace DayTracker.Database.Datatypes
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
 
-        
-        public List<CalendarEvent> Events { get; set; } = new();
+        public string email { get; set; } = string.Empty;
     }
 }
