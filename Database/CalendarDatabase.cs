@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace DayTracker.Database
 {
-    internal class DatabaseService : DbContext, IDatabaseService
+    internal class CalendarDatabase : DbContext
     {
         DbSet<User> Users { get; set; }
         DbSet<TodoItem> TodoItems { get; set; }
         DbSet<CalendarEvent> CalendarEvents { get; set; }
 
-        public DatabaseService(DbContextOptions<DatabaseService> options) : base(options)
+        public CalendarDatabase(DbContextOptions<CalendarDatabase> options) : base(options)
         {
             
         }

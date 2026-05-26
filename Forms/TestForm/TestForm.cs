@@ -20,13 +20,25 @@ namespace DayTracker.Forms.TestForm
             toDoList.SetTODOList(test);
         }
 
+        public string password => hasloI.Text;
+
+        public string name => ImieI.Text;
+
+        public string surname => nazwiskoI.Text;
+
+        public string email => emailI.Text;
+
         public event Action OnTestButtonClicked;
+        public event Action OnTestButton2Clicked;
 
         private void button1_Click(object sender, EventArgs e)
         {
             OnTestButtonClicked?.Invoke();
+        }
 
-            Console.WriteLine(toDoList.GetTODOList());
+        private void button2_Click(object sender, EventArgs e)
+        {
+            OnTestButton2Clicked?.Invoke();
         }
     }
 }

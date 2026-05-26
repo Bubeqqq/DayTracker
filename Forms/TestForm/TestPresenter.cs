@@ -17,7 +17,12 @@ namespace DayTracker.Forms.TestForm
 
             _view.OnTestButtonClicked += () =>
                 {
-                    _model.PrintAsync();
+                    _model.Login(_view.email, _view.password);
+                };
+
+            _view.OnTestButton2Clicked += () =>
+                {
+                    _model.Register(_view.email, _view.password, _view.name, _view.surname);
                 };
         }
 

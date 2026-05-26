@@ -8,6 +8,7 @@ using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using DayTracker.Database;
+using DayTracker.LoginServices;
 
 namespace DayTracker
 {
@@ -23,9 +24,9 @@ namespace DayTracker
 
             var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("Resources/appsettings.json", optional: false, reloadOnChange: true).Build();
 
-            services.AddDbContext<IDatabaseService, DatabaseService>(options => options.UseNpgsql(configuration.GetConnectionString("NeonDatabase")));
+            services.AddDbContext<IUsersDatabase, UsersDatabase>(options => options.UseNpgsql(configuration.GetConnectionString("NeonDatabase")));
+            services.AddSingleton<ILoginService, LoginService>();
 
-            
             services.AddSingleton<INavigationService, NavigationService>();
 
             ConfigureService<IPresenter>(services);
@@ -40,12 +41,12 @@ namespace DayTracker
 
             using (var scope = serviceProvider.CreateScope())
             {
-                var db = scope.ServiceProvider.GetRequiredService<IDatabaseService>() as DatabaseService;
+                var db = scope.ServiceProvider.GetRequiredService<IUsersDatabase>() as UsersDatabase;
 
                 if (db != null)
                 {
                     Console.WriteLine("Sprawdzanie i tworzenie bazy danych...");
-                    //db.Database.EnsureCreated();
+                    db.Database.EnsureCreated();
                 }
             }
 

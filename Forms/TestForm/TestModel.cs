@@ -1,38 +1,37 @@
 ﻿using DayTracker.Database;
+using DayTracker.LoginServices;
 using DayTracker.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace DayTracker.Forms.TestForm
 {
     internal class TestModel : ITestModel
     {
+        private readonly ILoginService _loginService;
+
+        public TestModel(ILoginService loginService)
+        {
+            _loginService = loginService;
+        }
+
         public INavigationService NavigationService { get; set; }
 
-        private readonly IDatabaseService _databaseService;
-
-        public TestModel(IDatabaseService databaseService) 
+        public void Login(string email, string password)
         {
-            _databaseService = databaseService ?? throw new ArgumentNullException(nameof(databaseService));
+            Console.WriteLine($"Login with email: {email} and password: {password}");
+            Console.WriteLine($"Login result: {_loginService.ConvertLoginResultToMessage(_loginService.Login(email, password))}");
         }
-        public async Task PrintAsync()
+
+        public void Register(string email, string password, string name, string surname)
         {
-            Console.WriteLine("TestModel Print method called.");
-
-            /*string sql = "INSERT INTO \"CalendarEvents\" (\"StartTime\", \"Duration\", \"UserId\", \"ActionId\", \"IsHard\", \"IsOutdoor\", \"IsSport\") " +
-                 "VALUES ('2026-05-21 16:55:08', '10:00:00', null, null, false, false, false);";
-
-            try
-            {
-                await _databaseService.ExecuteRawSqlCommandAsync(sql);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error executing SQL command: {ex.Message}");
-            }*/
+            Console.WriteLine($"Register with email: {email}, password: {password}, name: {name} and surname: {surname}");
+            Console.WriteLine($"Register result: {_loginService.ConvertLoginResultToMessage(_loginService.Register(email, password, name, surname))}");
         }
     }
 }
