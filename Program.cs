@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using DayTracker.Database;
 using DayTracker.LoginServices;
+using DayTracker.CalendarServices;
 
 namespace DayTracker
 {
@@ -26,6 +27,8 @@ namespace DayTracker
 
             services.AddDbContext<IUsersDatabase, UsersDatabase>(options => options.UseNpgsql(configuration.GetConnectionString("NeonDatabase")));
             services.AddSingleton<ILoginService, LoginService>();
+
+            services.AddSingleton<ICalendarService, CalendarService>();
 
             services.AddSingleton<INavigationService, NavigationService>();
 

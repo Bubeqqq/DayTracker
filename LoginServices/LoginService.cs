@@ -22,7 +22,7 @@ namespace DayTracker.LoginServices
 
         public async Task<int> Login(string email, string password)
         {
-            List<User> users = await _databaseService.ExecuteRawSqlSelectAsync<User>($"SELECT * FROM \"Users\" WHERE \"email\" = '{email}'");
+            List<User> users = await _databaseService.GetUsersAsync(u => u.email == email);
 
             if (users.Count == 0)
             {
@@ -44,17 +44,23 @@ namespace DayTracker.LoginServices
             return SUCCESS;
         }
 
-        public async Task<int> Register(string name, string surname, string email, string password) //TODO: zwykła metoda hói, zmień na async
+        public async Task<int> Register(string name, string surname, string email, string password)
         {
-            List<User> users = await _databaseService.ExecuteRawSqlSelectAsync<User>($"SELECT * FROM \"Users\" WHERE \"email\" = '{email}'");
-            
+            List<User> users = await _databaseService.GetUsersAsync(u => u.email == email);
+
             if (users.Count > 0)
             {
                 return MULTIPLE_USERS;
             }
             
-            
-            await _databaseService.ExecuteRawSqlCommandAsync($"INSERT INTO \"Users\" (\"FirstName\", \"LastName\", \"email\", \"password\") VALUES ('{name}', '{surname}', '{email}', '{BCrypt.Net.BCrypt.HashPassword(password)}')");
+            User r = new User
+            {
+                FirstName = name,
+                LastName = surname,
+                email = email,
+                password = BCrypt.Net.BCrypt.HashPassword(password)
+            };
+            await _databaseService.AddUserAsync(r);
             return SUCCESS;
         }
 
