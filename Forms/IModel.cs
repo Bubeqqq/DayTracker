@@ -9,6 +9,5 @@ namespace DayTracker.Forms
 {
     internal interface IModel
     {
-        INavigationService NavigationService { get; set; }
     }
 }

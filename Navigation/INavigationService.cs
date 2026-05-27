@@ -9,12 +9,12 @@ namespace DayTracker.Navigation
 {
     internal interface INavigationService
     {
-        event Action<UserControl> OnSceneChanged;
+        event Action<IView> OnSceneChanged;
         void NavigateTo<TPresenter>() where TPresenter : class, IPresenter;
         void NavigateTo<TPresenter, TArgs>(TArgs args) where TPresenter : class, IPresenter<TArgs>;
 
-        UserControl LoadUserControl<TPresenter>() where TPresenter : class, IPresenter;
+        IView LoadUserControl<TPresenter>() where TPresenter : class, IPresenter;
 
-        UserControl LoadUserControl<TPresenter, TArgs>(TArgs args) where TPresenter : class, IPresenter<TArgs>;
+        IView LoadUserControl<TPresenter, TArgs>(TArgs args) where TPresenter : class, IPresenter<TArgs>;
     }
 }

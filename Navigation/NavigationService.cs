@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using DayTracker.Forms;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace DayTracker.Navigation
 {
     internal class NavigationService : INavigationService
     {
-        public event Action<UserControl> OnSceneChanged;
+        public event Action<IView> OnSceneChanged;
 
         private readonly IServiceProvider _serviceProvider;
 
@@ -22,13 +23,8 @@ namespace DayTracker.Navigation
         {
             var presenter = _serviceProvider.GetRequiredService<TPresenter>();
 
-            if (presenter.View is UserControl view)
+            if (presenter.View is IView view)
             {
-                if (presenter.Model != null)
-                {
-                    presenter.Model.NavigationService = this;
-                }
-
                 OnSceneChanged?.Invoke(view);
             }
             else
@@ -37,17 +33,12 @@ namespace DayTracker.Navigation
             }
         }
 
-        UserControl INavigationService.LoadUserControl<TPresenter>()
+        IView INavigationService.LoadUserControl<TPresenter>()
         {
             var presenter = _serviceProvider.GetRequiredService<TPresenter>();
 
-            if (presenter.View is UserControl view)
+            if (presenter.View is IView view)
             {
-                if (presenter.Model != null)
-                {
-                    presenter.Model.NavigationService = this;
-                }
-
                 return view;
             }
             else
@@ -60,13 +51,8 @@ namespace DayTracker.Navigation
         {
             var presenter = _serviceProvider.GetRequiredService<TPresenter>();
 
-            if (presenter.View is UserControl view)
+            if (presenter.View is IView view)
             {
-                if (presenter.Model != null)
-                {
-                    presenter.Model.NavigationService = this;
-                }
-
                 presenter.LoadArgs(args);
 
                 OnSceneChanged?.Invoke(view);
@@ -77,18 +63,13 @@ namespace DayTracker.Navigation
             }
         }
 
-        UserControl INavigationService.LoadUserControl<TPresenter, TArgs>(TArgs args)
+        IView INavigationService.LoadUserControl<TPresenter, TArgs>(TArgs args)
         {
             var presenter = _serviceProvider.GetRequiredService<TPresenter>();
 
-            if (presenter.View is UserControl view)
+            if (presenter.View is IView view)
             {
-                if (presenter.Model != null)
-                {
-                    presenter.LoadArgs(args);
-
-                    presenter.Model.NavigationService = this;
-                }
+                presenter.LoadArgs(args);
 
                 return view;
             }

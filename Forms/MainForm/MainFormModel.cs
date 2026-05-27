@@ -5,7 +5,6 @@ namespace DayTracker.Forms.MainForm
 {
     internal class MainFormModel : IMainFormModel
     {
-        public INavigationService NavigationService { get; set; }
         
     }
 }

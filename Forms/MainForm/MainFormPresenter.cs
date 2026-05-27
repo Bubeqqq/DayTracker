@@ -19,11 +19,9 @@ namespace DayTracker.Forms.MainForm
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
-            _model.NavigationService = _navigationService;
-
             _navigationService.OnSceneChanged += scene =>
             {
-                _view.SetControl(scene);
+                _view.SetControl(scene as UserControl);
             };
         }
 

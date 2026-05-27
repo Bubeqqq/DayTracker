@@ -20,18 +20,16 @@ namespace DayTracker.Forms.TestForm
             _loginService = loginService;
         }
 
-        public INavigationService NavigationService { get; set; }
-
-        public void Login(string email, string password)
+        public async void Login(string email, string password)
         {
             Console.WriteLine($"Login with email: {email} and password: {password}");
-            Console.WriteLine($"Login result: {_loginService.ConvertLoginResultToMessage(_loginService.Login(email, password))}");
+            Console.WriteLine($"Login result: {_loginService.ConvertLoginResultToMessage(await _loginService.Login(email, password))}");
         }
 
-        public void Register(string email, string password, string name, string surname)
+        public async void Register(string email, string password, string name, string surname)
         {
             Console.WriteLine($"Register with email: {email}, password: {password}, name: {name} and surname: {surname}");
-            Console.WriteLine($"Register result: {_loginService.ConvertLoginResultToMessage(_loginService.Register(email, password, name, surname))}");
+            Console.WriteLine($"Register result: {_loginService.ConvertLoginResultToMessage(await _loginService.Register(name, surname, email, password))}");
         }
     }
 }

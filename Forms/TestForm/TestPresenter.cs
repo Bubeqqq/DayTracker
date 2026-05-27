@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DayTracker.Navigation;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +12,7 @@ namespace DayTracker.Forms.TestForm
     {
         private readonly ITestView _view;
         private readonly ITestModel _model;
-        public TestPresenter(ITestView view, ITestModel model)
+        public TestPresenter(ITestView view, ITestModel model, INavigationService navigationService)
         {
             _view = view;
             _model = model;

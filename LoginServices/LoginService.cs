@@ -20,9 +20,9 @@ namespace DayTracker.LoginServices
             _databaseService = databaseService;
         }
 
-        public int Login(string email, string password)
+        public async Task<int> Login(string email, string password)
         {
-            List<User> users = _databaseService.ExecuteRawSqlSelectAsync<User>($"SELECT * FROM \"Users\" WHERE \"Email\" = '{email}'").Result;
+            List<User> users = await _databaseService.ExecuteRawSqlSelectAsync<User>($"SELECT * FROM \"Users\" WHERE \"email\" = '{email}'");
 
             if (users.Count == 0)
             {
@@ -34,7 +34,9 @@ namespace DayTracker.LoginServices
                 return MULTIPLE_USERS;
             }
 
-            if(!BCrypt.Net.BCrypt.Verify(users[0].password, password))
+            Console.WriteLine($"Password from database: {users[0].password}");
+
+            if (!BCrypt.Net.BCrypt.Verify(password, users[0].password))
             {
                 return INVALID_PASSWORD;
             }
@@ -42,25 +44,17 @@ namespace DayTracker.LoginServices
             return SUCCESS;
         }
 
-        public int Register(string name, string surname, string email, string password) //TODO: zwykła metoda hói, zmień na async
+        public async Task<int> Register(string name, string surname, string email, string password) //TODO: zwykła metoda hói, zmień na async
         {
-            Console.WriteLine($"Checking for existing user with email: {email}");
-            try
-            {
-                //List<User> users = _databaseService.ExecuteRawSqlSelectAsync<User>($"SELECT * FROM \"Users\" WHERE \"Email\" = '{email}'").Result;
-            }
-                        catch (Exception ex){
-                Console.WriteLine($"Error checking for existing user: {ex.Message}");
-                return USER_EXISTS; // Assuming that if we can't check, we should prevent registration
-            }
-            /*
+            List<User> users = await _databaseService.ExecuteRawSqlSelectAsync<User>($"SELECT * FROM \"Users\" WHERE \"email\" = '{email}'");
+            
             if (users.Count > 0)
             {
                 return MULTIPLE_USERS;
             }
-            */
-            Console.WriteLine($"Registering user: {name} {surname} with email: {email}");
-            _databaseService.ExecuteRawSqlCommandAsync($"INSERT INTO \"Users\" (\"FirstName\", \"LastName\", \"Email\", \"Password\") VALUES ('{name}', '{surname}', '{email}', '{BCrypt.Net.BCrypt.HashPassword(password)}')").Wait();
+            
+            
+            await _databaseService.ExecuteRawSqlCommandAsync($"INSERT INTO \"Users\" (\"FirstName\", \"LastName\", \"email\", \"password\") VALUES ('{name}', '{surname}', '{email}', '{BCrypt.Net.BCrypt.HashPassword(password)}')");
             return SUCCESS;
         }
 

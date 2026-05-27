@@ -44,9 +44,8 @@
             // Login
             // 
             Login.Location = new Point(0, 0);
-            Login.Margin = new Padding(3, 2, 3, 2);
             Login.Name = "Login";
-            Login.Size = new Size(193, 68);
+            Login.Size = new Size(221, 91);
             Login.TabIndex = 0;
             Login.Text = "Login";
             Login.UseVisualStyleBackColor = true;
@@ -54,17 +53,17 @@
             // 
             // toDoList
             // 
-            toDoList.Location = new Point(12, 297);
-            toDoList.Margin = new Padding(3, 2, 3, 2);
+            toDoList.Location = new Point(14, 255);
             toDoList.Name = "toDoList";
-            toDoList.Size = new Size(531, 121);
+            toDoList.Size = new Size(607, 361);
             toDoList.TabIndex = 1;
             // 
             // Register
             // 
-            Register.Location = new Point(3, 73);
+            Register.Location = new Point(3, 97);
+            Register.Margin = new Padding(3, 4, 3, 4);
             Register.Name = "Register";
-            Register.Size = new Size(190, 80);
+            Register.Size = new Size(217, 107);
             Register.TabIndex = 2;
             Register.Text = "Register";
             Register.UseVisualStyleBackColor = true;
@@ -72,71 +71,75 @@
             // 
             // ImieI
             // 
-            ImieI.Location = new Point(260, 29);
+            ImieI.Location = new Point(297, 39);
+            ImieI.Margin = new Padding(3, 4, 3, 4);
             ImieI.Name = "ImieI";
-            ImieI.Size = new Size(100, 23);
+            ImieI.Size = new Size(114, 27);
             ImieI.TabIndex = 3;
             // 
             // emailI
             // 
-            emailI.Location = new Point(260, 112);
+            emailI.Location = new Point(297, 149);
+            emailI.Margin = new Padding(3, 4, 3, 4);
             emailI.Name = "emailI";
-            emailI.Size = new Size(100, 23);
+            emailI.Size = new Size(114, 27);
             emailI.TabIndex = 4;
             // 
             // nazwiskoI
             // 
-            nazwiskoI.Location = new Point(260, 73);
+            nazwiskoI.Location = new Point(297, 97);
+            nazwiskoI.Margin = new Padding(3, 4, 3, 4);
             nazwiskoI.Name = "nazwiskoI";
-            nazwiskoI.Size = new Size(100, 23);
+            nazwiskoI.Size = new Size(114, 27);
             nazwiskoI.TabIndex = 5;
             // 
             // hasloI
             // 
-            hasloI.Location = new Point(260, 154);
+            hasloI.Location = new Point(297, 205);
+            hasloI.Margin = new Padding(3, 4, 3, 4);
             hasloI.Name = "hasloI";
-            hasloI.Size = new Size(100, 23);
+            hasloI.Size = new Size(114, 27);
             hasloI.TabIndex = 6;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(404, 31);
+            label1.Location = new Point(462, 41);
             label1.Name = "label1";
-            label1.Size = new Size(30, 15);
+            label1.Size = new Size(38, 20);
             label1.TabIndex = 7;
             label1.Text = "Imie";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(404, 73);
+            label2.Location = new Point(462, 97);
             label2.Name = "label2";
-            label2.Size = new Size(57, 15);
+            label2.Size = new Size(72, 20);
             label2.TabIndex = 8;
             label2.Text = "Nazwisko";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(404, 120);
+            label3.Location = new Point(462, 160);
             label3.Name = "label3";
-            label3.Size = new Size(36, 15);
+            label3.Size = new Size(46, 20);
             label3.TabIndex = 9;
             label3.Text = "Email";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(404, 162);
+            label4.Location = new Point(462, 216);
             label4.Name = "label4";
-            label4.Size = new Size(37, 15);
+            label4.Size = new Size(47, 20);
             label4.TabIndex = 10;
             label4.Text = "Hasło";
             // 
             // TestForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
             Controls.Add(label4);
@@ -150,9 +153,8 @@
             Controls.Add(Register);
             Controls.Add(toDoList);
             Controls.Add(Login);
-            Margin = new Padding(3, 2, 3, 2);
             Name = "TestForm";
-            Size = new Size(701, 476);
+            Size = new Size(801, 635);
             ResumeLayout(false);
             PerformLayout();
         }
