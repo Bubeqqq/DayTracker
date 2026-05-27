@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DayTracker.Database
 {
-    internal class CalendarDatabase : DbContext
+    internal class CalendarDatabase : DbContext, ICalendarDatabase
     {
         DbSet<User> Users { get; set; }
         DbSet<TodoItem> TodoItems { get; set; }
@@ -27,6 +27,36 @@ namespace DayTracker.Database
         public async Task<int> ExecuteRawSqlCommandAsync(string sqlCommand)
         {
             return await Database.ExecuteSqlRawAsync(sqlCommand);
+        }
+
+        public async Task AddAsync<T>(T record)
+        {
+            User? user = record as User;
+            if (user != null)
+            {
+                await Users.AddAsync(user);
+                await SaveChangesAsync();
+                return;
+            }
+            TodoItem? todoItem = record as TodoItem;
+            if (todoItem != null)
+            {
+                await TodoItems.AddAsync(todoItem);
+                await SaveChangesAsync();
+                return;
+            }
+            CalendarEvent? calendarEvent = record as CalendarEvent;
+            if (calendarEvent != null)
+            {
+                await CalendarEvents.AddAsync(calendarEvent);
+                await SaveChangesAsync();
+                return;
+            }
+        }
+
+        public async Task EnsureCreated()
+        {
+            await Database.EnsureCreatedAsync();
         }
     }
 }
