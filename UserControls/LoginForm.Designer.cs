@@ -62,7 +62,6 @@
             textBoxPass.Size = new Size(260, 30);
             textBoxPass.TabIndex = 25;
             textBoxPass.UseSystemPasswordChar = true;
-            textBoxPass.TextChanged += textBoxPass_TextChanged;
             // 
             // label4
             // 
@@ -76,7 +75,6 @@
             label4.TabIndex = 24;
             label4.Text = "Password";
             label4.TextAlign = ContentAlignment.BottomLeft;
-            label4.Click += this.label4_Click;
             // 
             // textBoxEmail
             // 
@@ -89,7 +87,6 @@
             textBoxEmail.Name = "textBoxEmail";
             textBoxEmail.Size = new Size(260, 30);
             textBoxEmail.TabIndex = 23;
-            textBoxEmail.TextChanged += this.textBoxEmail_TextChanged;
             // 
             // label3
             // 
@@ -103,7 +100,6 @@
             label3.TabIndex = 22;
             label3.Text = "Email";
             label3.TextAlign = ContentAlignment.BottomLeft;
-            label3.Click += this.label3_Click;
             // 
             // btnRegister
             // 

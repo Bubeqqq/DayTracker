@@ -16,10 +16,5 @@ namespace DayTracker.UserControls
         {
             InitializeComponent();
         }
-
-        private void textBoxPass_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
