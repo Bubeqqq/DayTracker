@@ -8,7 +8,7 @@ namespace DayTracker.UserControls
 {
     internal interface IRegisterView
     {
-        string Name { get; }
+        string FirstName { get; }
         string LastName { get; }
         string Email { get; }
         string Password { get; }
