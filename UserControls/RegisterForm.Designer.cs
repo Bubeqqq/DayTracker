@@ -31,9 +31,9 @@
             components = new System.ComponentModel.Container();
             panel1 = new Panel();
             label6 = new Label();
-            btnShowPass2 = new Button();
-            btnShowPass1 = new Button();
-            textBoxPass2 = new TextBox();
+            btnShowConfirmPass = new Button();
+            btnShowPass = new Button();
+            textBoxConfirmPass = new TextBox();
             label5 = new Label();
             textBoxPass = new TextBox();
             label4 = new Label();
@@ -53,9 +53,9 @@
             // panel1
             // 
             panel1.Controls.Add(label6);
-            panel1.Controls.Add(btnShowPass2);
-            panel1.Controls.Add(btnShowPass1);
-            panel1.Controls.Add(textBoxPass2);
+            panel1.Controls.Add(btnShowConfirmPass);
+            panel1.Controls.Add(btnShowPass);
+            panel1.Controls.Add(textBoxConfirmPass);
             panel1.Controls.Add(label5);
             panel1.Controls.Add(textBoxPass);
             panel1.Controls.Add(label4);
@@ -86,48 +86,48 @@
             label6.Text = "Create your own account";
             label6.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // btnShowPass2
+            // btnShowConfirmPass
             // 
-            btnShowPass2.Anchor = AnchorStyles.Top;
-            btnShowPass2.Cursor = Cursors.Hand;
-            btnShowPass2.FlatAppearance.BorderSize = 0;
-            btnShowPass2.FlatStyle = FlatStyle.Flat;
-            btnShowPass2.Font = new Font("Segoe UI Symbol", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnShowPass2.Location = new Point(333, 341);
-            btnShowPass2.Name = "btnShowPass2";
-            btnShowPass2.Size = new Size(30, 30);
-            btnShowPass2.TabIndex = 20;
-            btnShowPass2.Text = "";
-            btnShowPass2.UseVisualStyleBackColor = true;
+            btnShowConfirmPass.Anchor = AnchorStyles.Top;
+            btnShowConfirmPass.Cursor = Cursors.Hand;
+            btnShowConfirmPass.FlatAppearance.BorderSize = 0;
+            btnShowConfirmPass.FlatStyle = FlatStyle.Flat;
+            btnShowConfirmPass.Font = new Font("Segoe UI Symbol", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnShowConfirmPass.Location = new Point(333, 341);
+            btnShowConfirmPass.Name = "btnShowConfirmPass";
+            btnShowConfirmPass.Size = new Size(30, 30);
+            btnShowConfirmPass.TabIndex = 20;
+            btnShowConfirmPass.Text = "";
+            btnShowConfirmPass.UseVisualStyleBackColor = true;
             // 
-            // btnShowPass1
+            // btnShowPass
             // 
-            btnShowPass1.Anchor = AnchorStyles.Top;
-            btnShowPass1.Cursor = Cursors.Hand;
-            btnShowPass1.FlatAppearance.BorderSize = 0;
-            btnShowPass1.FlatStyle = FlatStyle.Flat;
-            btnShowPass1.Font = new Font("Segoe UI Symbol", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnShowPass1.Location = new Point(333, 281);
-            btnShowPass1.Name = "btnShowPass1";
-            btnShowPass1.Size = new Size(30, 30);
-            btnShowPass1.TabIndex = 19;
-            btnShowPass1.Text = "";
-            btnShowPass1.UseVisualStyleBackColor = true;
+            btnShowPass.Anchor = AnchorStyles.Top;
+            btnShowPass.Cursor = Cursors.Hand;
+            btnShowPass.FlatAppearance.BorderSize = 0;
+            btnShowPass.FlatStyle = FlatStyle.Flat;
+            btnShowPass.Font = new Font("Segoe UI Symbol", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnShowPass.Location = new Point(333, 281);
+            btnShowPass.Name = "btnShowPass";
+            btnShowPass.Size = new Size(30, 30);
+            btnShowPass.TabIndex = 19;
+            btnShowPass.Text = "";
+            btnShowPass.UseVisualStyleBackColor = true;
             // 
-            // textBoxPass2
+            // textBoxConfirmPass
             // 
-            textBoxPass2.Anchor = AnchorStyles.Top;
-            textBoxPass2.BackColor = SystemColors.Window;
-            textBoxPass2.BorderStyle = BorderStyle.FixedSingle;
-            textBoxPass2.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            errorProvider.SetIconAlignment(textBoxPass2, ErrorIconAlignment.MiddleLeft);
-            errorProvider.SetIconPadding(textBoxPass2, 4);
-            textBoxPass2.Location = new Point(70, 341);
-            textBoxPass2.Margin = new Padding(0, 0, 0, 30);
-            textBoxPass2.Name = "textBoxPass2";
-            textBoxPass2.Size = new Size(260, 30);
-            textBoxPass2.TabIndex = 18;
-            textBoxPass2.UseSystemPasswordChar = true;
+            textBoxConfirmPass.Anchor = AnchorStyles.Top;
+            textBoxConfirmPass.BackColor = SystemColors.Window;
+            textBoxConfirmPass.BorderStyle = BorderStyle.FixedSingle;
+            textBoxConfirmPass.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 238);
+            errorProvider.SetIconAlignment(textBoxConfirmPass, ErrorIconAlignment.MiddleLeft);
+            errorProvider.SetIconPadding(textBoxConfirmPass, 4);
+            textBoxConfirmPass.Location = new Point(70, 341);
+            textBoxConfirmPass.Margin = new Padding(0, 0, 0, 30);
+            textBoxConfirmPass.Name = "textBoxConfirmPass";
+            textBoxConfirmPass.Size = new Size(260, 30);
+            textBoxConfirmPass.TabIndex = 18;
+            textBoxConfirmPass.UseSystemPasswordChar = true;
             // 
             // label5
             // 
@@ -310,10 +310,10 @@
         private Label label3;
         private TextBox textBoxLastName;
         private Label label2;
-        private TextBox textBoxPass2;
+        private TextBox textBoxConfirmPass;
         private Label label5;
-        private Button btnShowPass2;
-        private Button btnShowPass1;
+        private Button btnShowConfirmPass;
+        private Button btnShowPass;
         private Label label6;
         private ErrorProvider errorProvider;
         private Button button2;
