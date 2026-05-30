@@ -1,4 +1,6 @@
-﻿namespace DayTracker.UserControls
+﻿using DayTracker.Forms.LoginForm;
+
+namespace DayTracker.UserControls
 {
     public partial class LoginForm : UserControl, ILoginView
     {

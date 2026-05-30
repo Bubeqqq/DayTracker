@@ -1,6 +1,6 @@
 ﻿using DayTracker.Forms;
 
-namespace WinFormsApp1.TaskControl
+namespace DayTracker.Forms.TaskControl
 {
     internal interface ITaskModel : IModel
     {

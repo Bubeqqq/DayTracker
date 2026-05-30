@@ -4,19 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DayTracker.UserControls
+namespace DayTracker.Forms.LoginForm
 {
-    internal interface IRegisterView
+    internal interface ILoginView
     {
-        string FirstName { get; }
-        string LastName { get; }
         string Email { get; }
         string Password { get; }
-        string ConfirmPassword { get; }
         bool IsPasswordHidden { get; set; }
-        bool IsConfirmPasswordHidden { get; set; }
 
-        event Action BtnRegisterClicked;
         event Action BtnLoginClicked;
+        event Action BtnRegisterClicked;
     }
 }

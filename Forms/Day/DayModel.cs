@@ -4,10 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WinFormsApp1;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
-namespace WinFormsApp1.Day
+namespace DayTracker.Forms.Day
 {
     internal class DayModel:IDayModel
     {
@@ -60,7 +61,7 @@ namespace WinFormsApp1.Day
         }
         public int CalculateX(int leftMargin ,int columnIndex,int taskWidth)
         {
-            return leftMargin + (columnIndex * taskWidth);
+            return leftMargin + columnIndex * taskWidth;
         }
     }
 }

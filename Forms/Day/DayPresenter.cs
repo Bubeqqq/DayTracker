@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WinFormsApp1;
+using WinFormsApp1.Day;
 
-namespace WinFormsApp1.Day
+namespace DayTracker.Forms.Day
 {
     internal class DayPresenter : IPresenter<DateTime>// TODO to musi dostać dzień i na jego podstawie powinno liczyć gdzie dać taski
     {//TODO Dodać przycisk dodaj

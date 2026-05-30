@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinFormsApp1.TaskControl
+namespace DayTracker.Forms.TaskControl
 {
     internal class TaskModel:ITaskModel
     {
@@ -13,27 +13,27 @@ namespace WinFormsApp1.TaskControl
         public TaskModel() { }
         public bool ValidateMinute(string minuteStr)
         {
-            return (!int.TryParse(minuteStr, out int minute) || minute < 0 || minute >= 60);
+            return !int.TryParse(minuteStr, out int minute) || minute < 0 || minute >= 60;
         }
         public bool ValidateHour(string hourStr)
         {
-            return (!int.TryParse(hourStr, out int hour) || hour < 0 || hour >= 24);
+            return !int.TryParse(hourStr, out int hour) || hour < 0 || hour >= 24;
         }
         public bool ValidateDay(string dayStr)
         {
-            return(!int.TryParse(dayStr, out int day) || day < 1);
+            return!int.TryParse(dayStr, out int day) || day < 1;
         }
         public bool ValidateDurationDays(string daysStr)
         {
-            return (!int.TryParse(daysStr, out int day) || day < 0);
+            return !int.TryParse(daysStr, out int day) || day < 0;
         }
         public bool ValidateMonth(string monthStr)
         {
-            return (!int.TryParse(monthStr, out int month) || month < 1 || month > 12);
+            return !int.TryParse(monthStr, out int month) || month < 1 || month > 12;
         }
         public bool ValidateYear(string yearStr)
         {
-            return (!int.TryParse(yearStr, out int year) || year < 2000 || year > 2100);
+            return !int.TryParse(yearStr, out int year) || year < 2000 || year > 2100;
         }
         public bool TryCalculateDaysInMonth(string monthStr, string yearStr,out int daysInMonth)
         {

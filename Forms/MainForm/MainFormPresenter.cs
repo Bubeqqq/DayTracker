@@ -1,5 +1,6 @@
 ﻿// Plik: MainFormPresenter.cs
 using DayTracker.Database;
+using DayTracker.Forms.Calendar;
 using DayTracker.Forms.TestForm;
 using DayTracker.Navigation;
 using System;
@@ -30,7 +31,7 @@ namespace DayTracker.Forms.MainForm
 
         public void Initialize()
         {
-            _navigationService.NavigateTo<TestPresenter, int>(5);
+            _navigationService.NavigateTo<CalendarPresenter>();
         }
     }
 }

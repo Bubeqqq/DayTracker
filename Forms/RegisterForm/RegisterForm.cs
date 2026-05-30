@@ -1,4 +1,6 @@
-﻿namespace DayTracker.UserControls.ToDoControl
+﻿using DayTracker.Forms.RegisterForm;
+
+namespace DayTracker.UserControls.ToDoControl
 {
     public partial class RegisterForm : UserControl, IRegisterView
     {

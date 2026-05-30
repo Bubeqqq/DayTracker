@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinFormsApp1.TaskControl
+namespace DayTracker.Forms.TaskControl
 {
     internal interface ITaskView:IView
     {

@@ -5,9 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinFormsApp1;
 using WinFormsApp1.Day;
 
-namespace WinFormsApp1.Calendar
+namespace DayTracker.Forms.Calendar
 {
     internal class CalendarPresenter:IPresenter//TODO to musi jakos pobrać liste taskow dla danego miesiąca
     {

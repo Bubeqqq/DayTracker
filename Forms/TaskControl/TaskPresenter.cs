@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinFormsApp1;
 
-namespace WinFormsApp1.TaskControl
+namespace DayTracker.Forms.TaskControl
 {
     internal class TaskPresenter:IPresenter<TestTask>
     {
