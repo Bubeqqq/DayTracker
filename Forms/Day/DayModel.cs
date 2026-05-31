@@ -10,7 +10,10 @@ namespace DayTracker.Forms.Day
     internal class DayModel:IDayModel
     {
         public INavigationService NavigationService { get; set; }
-        public DayModel() { }
+        public DayModel(INavigationService navigationService)
+        {
+            NavigationService = navigationService;
+        }
         public List<List<TestTask>> CalculateColumns(List<TestTask> tasks)
         {
             var sortedTasks = tasks.OrderBy(t => t.Date).ThenBy(t => t.Date.Add(t.Duration)).ToList();

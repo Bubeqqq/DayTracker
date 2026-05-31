@@ -11,7 +11,10 @@ namespace DayTracker.Forms.Calendar
     internal class CalendarModel:ICalendarModel
     {
         public INavigationService NavigationService { get; set; }
-        public CalendarModel() { }
+        public CalendarModel(INavigationService navigationService) 
+        {
+            NavigationService = navigationService;
+        }
         public int CalculateOffset(DateTime date)
         {
             if(date == null)

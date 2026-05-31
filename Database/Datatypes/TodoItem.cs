@@ -9,9 +9,22 @@ namespace DayTracker.Database.Datatypes
     public class TodoItem
     {
         public int Id { get; set; }
-        public string Description { get; set; } = string.Empty;
+        public string Title { get; set; }
+        public DateTime Date { get; set; }
+        public string Description { get; set; }
+        public TimeSpan Duration { get; set; }
 
-        
-        public List<CalendarEvent> Events { get; set; } = new();
+        public TodoItem(int id, string title, DateTime date, string description, TimeSpan duration)
+        {
+            Id = id;
+            Title = title;
+            Date = date;
+            Description = description;
+            Duration = duration;
+        }
+        public override string ToString()
+        {
+            return Title;
+        }
     }
 }
