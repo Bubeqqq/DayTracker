@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 
 
-namespace WinFormsApp1
+namespace DayTracker.Forms.TaskControl
 {
     public partial class TaskUserControl : UserControl, ITaskView//TODO trzeba dodać coś wyświetlającego kategorie taska
     {

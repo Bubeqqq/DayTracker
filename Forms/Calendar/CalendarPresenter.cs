@@ -5,9 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WinFormsApp1;
-using WinFormsApp1.Day;
-
+using DayTracker.UserControls.TestTask_usunac;
+using DayTracker.Forms.Day;
 namespace DayTracker.Forms.Calendar
 {
     internal class CalendarPresenter:IPresenter//TODO to musi jakos pobrać liste taskow dla danego miesiąca
@@ -25,9 +24,24 @@ namespace DayTracker.Forms.Calendar
             _view.NextButtonClicked += NextButtonClicked;
             _view.PreviousButtonClicked += PreviousButtonClicked;
             TestTask task = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
+            TestTask task7 = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
+            TestTask task8 = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
+            TestTask task9 = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
+            TestTask task3 = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
+            TestTask task4 = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
+            TestTask task5 = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
+            TestTask task6 = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
             TestTask task2 = new TestTask(1, "test2", new DateTime(2026, 5, 30), "XD", new TimeSpan(2, 5, 0));
             List<TestTask> tasks = new List<TestTask>();
             tasks.Add(task);
+            tasks.Add(task7);
+            tasks.Add(task8);
+            tasks.Add(task9);
+            tasks.Add(task3);
+            tasks.Add(task4);
+            tasks.Add(task5);
+            tasks.Add(task6);
+
             tasks.Add(task2);
             GenerateMonth(tasks);
         }
@@ -64,7 +78,7 @@ namespace DayTracker.Forms.Calendar
         }
         private void OnDayClicked(object sender, DayClickedEventArgs e)
         {
-            //_model.NavigationService.NavigateTo<DayPresenter, DateTime>(e.Date);
+            _model.NavigationService.NavigateTo<DayPresenter, DateTime>(e.Date);//nie dziala
         }
         private void OnSelectedDateChanged(object sender, EventArgs e) {
             TestTask task = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(2, 5, 0));

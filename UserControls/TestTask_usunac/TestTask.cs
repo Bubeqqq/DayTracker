@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WinFormsApp1
+namespace DayTracker.UserControls.TestTask_usunac
 {
     public class TestTask
     {

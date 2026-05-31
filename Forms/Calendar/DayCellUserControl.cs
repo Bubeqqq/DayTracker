@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-namespace WinFormsApp1
+namespace DayTracker.Forms.Calendar
 {
     public partial class DayCellUserControl : UserControl
     {

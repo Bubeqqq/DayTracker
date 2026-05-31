@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WinFormsApp1;
+using DayTracker.UserControls.TestTask_usunac;
 
 namespace DayTracker.Forms.Calendar
 {
@@ -35,7 +35,6 @@ namespace DayTracker.Forms.Calendar
             }
             List<TestTask> dailyTasks = tasks
                         .Where(t => t.Date.Date == date.Date)
-                        .Take(3)
                         .ToList();
             List<string> tasksStr = dailyTasks.ConvertAll(t => $"- {t.ToString()}");
             return tasksStr;

@@ -4,10 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using WinFormsApp1;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
-
+using DayTracker.UserControls.TestTask_usunac;
 namespace DayTracker.Forms.Day
 {
     internal class DayModel:IDayModel

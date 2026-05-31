@@ -1,4 +1,4 @@
-﻿namespace WinFormsApp1
+﻿namespace DayTracker.Forms.Calendar
 {
     partial class DayCellUserControl
     {
@@ -41,7 +41,7 @@
             labelDayNumber.ImageAlign = ContentAlignment.TopRight;
             labelDayNumber.Location = new Point(0, 0);
             labelDayNumber.Name = "labelDayNumber";
-            labelDayNumber.Size = new Size(28, 23);
+            labelDayNumber.Size = new Size(22, 17);
             labelDayNumber.TabIndex = 0;
             labelDayNumber.Text = "00";
             labelDayNumber.Click += DayCell_Click;
@@ -52,25 +52,23 @@
             listBoxTasks.Dock = DockStyle.Fill;
             listBoxTasks.Font = new Font("Segoe UI", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 238);
             listBoxTasks.FormattingEnabled = true;
-            listBoxTasks.ItemHeight = 25;
-            listBoxTasks.Location = new Point(0, 23);
-            listBoxTasks.Margin = new Padding(3, 4, 3, 4);
+            listBoxTasks.ItemHeight = 20;
+            listBoxTasks.Location = new Point(0, 17);
             listBoxTasks.Name = "listBoxTasks";
             listBoxTasks.SelectionMode = SelectionMode.None;
-            listBoxTasks.Size = new Size(163, 140);
+            listBoxTasks.Size = new Size(143, 105);
             listBoxTasks.TabIndex = 1;
             listBoxTasks.Click += DayCell_Click;
             // 
             // DayCellUserControl
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoSize = true;
             Controls.Add(listBoxTasks);
             Controls.Add(labelDayNumber);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "DayCellUserControl";
-            Size = new Size(163, 163);
+            Size = new Size(143, 122);
             Click += DayCell_Click;
             ResumeLayout(false);
             PerformLayout();

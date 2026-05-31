@@ -1,5 +1,4 @@
-﻿namespace WinFormsApp1.Day
-{
+﻿namespace DayTracker.Forms.Day { 
     partial class DayUserControl
     {
         /// <summary> 

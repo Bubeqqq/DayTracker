@@ -1,6 +1,6 @@
 ﻿
 
-namespace WinFormsApp1
+namespace DayTracker.Forms.TaskControl
 {
     partial class TaskUserControl
     {
@@ -76,11 +76,10 @@ namespace WinFormsApp1
             textBoxTitle.Dock = DockStyle.Top;
             textBoxTitle.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point, 238);
             textBoxTitle.Location = new Point(0, 0);
-            textBoxTitle.Margin = new Padding(3, 4, 3, 4);
             textBoxTitle.Multiline = true;
             textBoxTitle.Name = "textBoxTitle";
             textBoxTitle.ReadOnly = true;
-            textBoxTitle.Size = new Size(714, 80);
+            textBoxTitle.Size = new Size(625, 60);
             textBoxTitle.TabIndex = 7;
             textBoxTitle.TabStop = false;
             textBoxTitle.Text = "Title";
@@ -95,13 +94,12 @@ namespace WinFormsApp1
             textBoxDescription.BorderStyle = BorderStyle.None;
             textBoxDescription.Dock = DockStyle.Top;
             textBoxDescription.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 238);
-            textBoxDescription.Location = new Point(0, 80);
-            textBoxDescription.Margin = new Padding(3, 4, 3, 4);
-            textBoxDescription.MinimumSize = new Size(571, 113);
+            textBoxDescription.Location = new Point(0, 60);
+            textBoxDescription.MinimumSize = new Size(500, 85);
             textBoxDescription.Multiline = true;
             textBoxDescription.Name = "textBoxDescription";
             textBoxDescription.ReadOnly = true;
-            textBoxDescription.Size = new Size(714, 113);
+            textBoxDescription.Size = new Size(625, 85);
             textBoxDescription.TabIndex = 8;
             textBoxDescription.TabStop = false;
             textBoxDescription.Text = "Description";
@@ -116,9 +114,9 @@ namespace WinFormsApp1
             labelStartDate.Dock = DockStyle.Left;
             labelStartDate.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             labelStartDate.Location = new Point(0, 0);
-            labelStartDate.MinimumSize = new Size(144, 59);
+            labelStartDate.MinimumSize = new Size(126, 44);
             labelStartDate.Name = "labelStartDate";
-            labelStartDate.Size = new Size(144, 59);
+            labelStartDate.Size = new Size(126, 44);
             labelStartDate.TabIndex = 15;
             labelStartDate.Text = "Start Date: ";
             // 
@@ -137,11 +135,10 @@ namespace WinFormsApp1
             panelStart.Controls.Add(textBoxStartHour);
             panelStart.Controls.Add(labelStartDate);
             panelStart.Dock = DockStyle.Top;
-            panelStart.Location = new Point(0, 193);
-            panelStart.Margin = new Padding(3, 4, 3, 4);
-            panelStart.MinimumSize = new Size(0, 59);
+            panelStart.Location = new Point(0, 145);
+            panelStart.MinimumSize = new Size(0, 44);
             panelStart.Name = "panelStart";
-            panelStart.Size = new Size(714, 59);
+            panelStart.Size = new Size(625, 44);
             panelStart.TabIndex = 18;
             // 
             // label1
@@ -149,10 +146,10 @@ namespace WinFormsApp1
             label1.BackColor = Color.PaleGreen;
             label1.Dock = DockStyle.Fill;
             label1.Font = new Font("Dubai", 15.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.Location = new Point(457, 0);
-            label1.MinimumSize = new Size(21, 0);
+            label1.Location = new Point(399, 0);
+            label1.MinimumSize = new Size(18, 0);
             label1.Name = "label1";
-            label1.Size = new Size(257, 59);
+            label1.Size = new Size(226, 44);
             label1.TabIndex = 25;
             label1.Text = "📅";
             label1.TextAlign = ContentAlignment.MiddleLeft;
@@ -163,12 +160,11 @@ namespace WinFormsApp1
             textBoxStartYear.BorderStyle = BorderStyle.None;
             textBoxStartYear.Dock = DockStyle.Left;
             textBoxStartYear.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxStartYear.Location = new Point(393, 0);
-            textBoxStartYear.Margin = new Padding(3, 4, 3, 4);
+            textBoxStartYear.Location = new Point(343, 0);
             textBoxStartYear.MaxLength = 4;
-            textBoxStartYear.MinimumSize = new Size(39, 44);
+            textBoxStartYear.MinimumSize = new Size(34, 44);
             textBoxStartYear.Name = "textBoxStartYear";
-            textBoxStartYear.Size = new Size(64, 51);
+            textBoxStartYear.Size = new Size(56, 44);
             textBoxStartYear.TabIndex = 24;
             textBoxStartYear.TabStop = false;
             textBoxStartYear.Text = "2000";
@@ -183,10 +179,10 @@ namespace WinFormsApp1
             labelStartSpace3.BackColor = Color.PaleGreen;
             labelStartSpace3.Dock = DockStyle.Left;
             labelStartSpace3.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelStartSpace3.Location = new Point(372, 0);
-            labelStartSpace3.MinimumSize = new Size(21, 0);
+            labelStartSpace3.Location = new Point(325, 0);
+            labelStartSpace3.MinimumSize = new Size(18, 0);
             labelStartSpace3.Name = "labelStartSpace3";
-            labelStartSpace3.Size = new Size(21, 59);
+            labelStartSpace3.Size = new Size(18, 44);
             labelStartSpace3.TabIndex = 23;
             labelStartSpace3.Text = "/";
             labelStartSpace3.TextAlign = ContentAlignment.MiddleCenter;
@@ -197,12 +193,11 @@ namespace WinFormsApp1
             textBoxStartMonth.BorderStyle = BorderStyle.None;
             textBoxStartMonth.Dock = DockStyle.Left;
             textBoxStartMonth.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxStartMonth.Location = new Point(333, 0);
-            textBoxStartMonth.Margin = new Padding(3, 4, 3, 4);
+            textBoxStartMonth.Location = new Point(291, 0);
             textBoxStartMonth.MaxLength = 2;
-            textBoxStartMonth.MinimumSize = new Size(17, 44);
+            textBoxStartMonth.MinimumSize = new Size(15, 44);
             textBoxStartMonth.Name = "textBoxStartMonth";
-            textBoxStartMonth.Size = new Size(39, 51);
+            textBoxStartMonth.Size = new Size(34, 41);
             textBoxStartMonth.TabIndex = 22;
             textBoxStartMonth.TabStop = false;
             textBoxStartMonth.Text = "12";
@@ -219,10 +214,10 @@ namespace WinFormsApp1
             labelStartSpace2.BackColor = Color.PaleGreen;
             labelStartSpace2.Dock = DockStyle.Left;
             labelStartSpace2.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelStartSpace2.Location = new Point(312, 0);
-            labelStartSpace2.MinimumSize = new Size(21, 0);
+            labelStartSpace2.Location = new Point(273, 0);
+            labelStartSpace2.MinimumSize = new Size(18, 0);
             labelStartSpace2.Name = "labelStartSpace2";
-            labelStartSpace2.Size = new Size(21, 59);
+            labelStartSpace2.Size = new Size(18, 44);
             labelStartSpace2.TabIndex = 21;
             labelStartSpace2.Text = "/";
             labelStartSpace2.TextAlign = ContentAlignment.MiddleLeft;
@@ -233,12 +228,11 @@ namespace WinFormsApp1
             textBoxStartDay.BorderStyle = BorderStyle.None;
             textBoxStartDay.Dock = DockStyle.Left;
             textBoxStartDay.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxStartDay.Location = new Point(295, 0);
-            textBoxStartDay.Margin = new Padding(3, 4, 3, 4);
+            textBoxStartDay.Location = new Point(258, 0);
             textBoxStartDay.MaxLength = 2;
-            textBoxStartDay.MinimumSize = new Size(17, 44);
+            textBoxStartDay.MinimumSize = new Size(15, 44);
             textBoxStartDay.Name = "textBoxStartDay";
-            textBoxStartDay.Size = new Size(17, 51);
+            textBoxStartDay.Size = new Size(15, 41);
             textBoxStartDay.TabIndex = 19;
             textBoxStartDay.TabStop = false;
             textBoxStartDay.Text = "5";
@@ -255,10 +249,10 @@ namespace WinFormsApp1
             labelStartSpace.BackColor = Color.PaleGreen;
             labelStartSpace.Dock = DockStyle.Left;
             labelStartSpace.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelStartSpace.Location = new Point(238, 0);
-            labelStartSpace.MinimumSize = new Size(21, 0);
+            labelStartSpace.Location = new Point(208, 0);
+            labelStartSpace.MinimumSize = new Size(18, 0);
             labelStartSpace.Name = "labelStartSpace";
-            labelStartSpace.Size = new Size(57, 59);
+            labelStartSpace.Size = new Size(50, 44);
             labelStartSpace.TabIndex = 20;
             labelStartSpace.Text = "🕐";
             labelStartSpace.TextAlign = ContentAlignment.MiddleLeft;
@@ -269,12 +263,11 @@ namespace WinFormsApp1
             textBoxStartMinute.BorderStyle = BorderStyle.None;
             textBoxStartMinute.Dock = DockStyle.Left;
             textBoxStartMinute.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxStartMinute.Location = new Point(204, 0);
-            textBoxStartMinute.Margin = new Padding(3, 4, 3, 4);
+            textBoxStartMinute.Location = new Point(178, 0);
             textBoxStartMinute.MaxLength = 2;
-            textBoxStartMinute.MinimumSize = new Size(17, 44);
+            textBoxStartMinute.MinimumSize = new Size(15, 44);
             textBoxStartMinute.Name = "textBoxStartMinute";
-            textBoxStartMinute.Size = new Size(34, 51);
+            textBoxStartMinute.Size = new Size(30, 41);
             textBoxStartMinute.TabIndex = 17;
             textBoxStartMinute.TabStop = false;
             textBoxStartMinute.Text = "16";
@@ -290,10 +283,10 @@ namespace WinFormsApp1
             labelStartDots.BackColor = Color.PaleGreen;
             labelStartDots.Dock = DockStyle.Left;
             labelStartDots.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelStartDots.Location = new Point(183, 0);
-            labelStartDots.MinimumSize = new Size(21, 0);
+            labelStartDots.Location = new Point(160, 0);
+            labelStartDots.MinimumSize = new Size(18, 0);
             labelStartDots.Name = "labelStartDots";
-            labelStartDots.Size = new Size(21, 59);
+            labelStartDots.Size = new Size(18, 44);
             labelStartDots.TabIndex = 18;
             labelStartDots.Text = ": ";
             // 
@@ -303,12 +296,11 @@ namespace WinFormsApp1
             textBoxStartHour.BorderStyle = BorderStyle.None;
             textBoxStartHour.Dock = DockStyle.Left;
             textBoxStartHour.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxStartHour.Location = new Point(144, 0);
-            textBoxStartHour.Margin = new Padding(3, 4, 3, 4);
+            textBoxStartHour.Location = new Point(126, 0);
             textBoxStartHour.MaxLength = 2;
-            textBoxStartHour.MinimumSize = new Size(17, 44);
+            textBoxStartHour.MinimumSize = new Size(15, 44);
             textBoxStartHour.Name = "textBoxStartHour";
-            textBoxStartHour.Size = new Size(39, 51);
+            textBoxStartHour.Size = new Size(34, 41);
             textBoxStartHour.TabIndex = 16;
             textBoxStartHour.TabStop = false;
             textBoxStartHour.Text = "16";
@@ -335,11 +327,10 @@ namespace WinFormsApp1
             panelEnd.Controls.Add(textBoxEndHour);
             panelEnd.Controls.Add(labelEndDate);
             panelEnd.Dock = DockStyle.Top;
-            panelEnd.Location = new Point(0, 311);
-            panelEnd.Margin = new Padding(3, 4, 3, 4);
-            panelEnd.MinimumSize = new Size(0, 59);
+            panelEnd.Location = new Point(0, 233);
+            panelEnd.MinimumSize = new Size(0, 44);
             panelEnd.Name = "panelEnd";
-            panelEnd.Size = new Size(714, 59);
+            panelEnd.Size = new Size(625, 44);
             panelEnd.TabIndex = 25;
             // 
             // label2
@@ -347,10 +338,10 @@ namespace WinFormsApp1
             label2.BackColor = Color.Salmon;
             label2.Dock = DockStyle.Fill;
             label2.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label2.Location = new Point(445, 0);
-            label2.MinimumSize = new Size(21, 0);
+            label2.Location = new Point(389, 0);
+            label2.MinimumSize = new Size(18, 0);
             label2.Name = "label2";
-            label2.Size = new Size(269, 59);
+            label2.Size = new Size(236, 44);
             label2.TabIndex = 25;
             label2.Text = "📅";
             label2.TextAlign = ContentAlignment.MiddleLeft;
@@ -361,12 +352,11 @@ namespace WinFormsApp1
             textBoxEndYear.BorderStyle = BorderStyle.None;
             textBoxEndYear.Dock = DockStyle.Left;
             textBoxEndYear.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxEndYear.Location = new Point(381, 0);
-            textBoxEndYear.Margin = new Padding(3, 4, 3, 4);
+            textBoxEndYear.Location = new Point(333, 0);
             textBoxEndYear.MaxLength = 4;
-            textBoxEndYear.MinimumSize = new Size(39, 44);
+            textBoxEndYear.MinimumSize = new Size(34, 44);
             textBoxEndYear.Name = "textBoxEndYear";
-            textBoxEndYear.Size = new Size(64, 51);
+            textBoxEndYear.Size = new Size(56, 41);
             textBoxEndYear.TabIndex = 24;
             textBoxEndYear.TabStop = false;
             textBoxEndYear.Text = "2000";
@@ -382,10 +372,10 @@ namespace WinFormsApp1
             labelEndSpace3.Dock = DockStyle.Left;
             labelEndSpace3.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             labelEndSpace3.ImageAlign = ContentAlignment.MiddleLeft;
-            labelEndSpace3.Location = new Point(354, 0);
-            labelEndSpace3.MinimumSize = new Size(21, 0);
+            labelEndSpace3.Location = new Point(309, 0);
+            labelEndSpace3.MinimumSize = new Size(18, 0);
             labelEndSpace3.Name = "labelEndSpace3";
-            labelEndSpace3.Size = new Size(27, 59);
+            labelEndSpace3.Size = new Size(24, 44);
             labelEndSpace3.TabIndex = 23;
             labelEndSpace3.Text = "/";
             labelEndSpace3.TextAlign = ContentAlignment.MiddleLeft;
@@ -396,12 +386,11 @@ namespace WinFormsApp1
             textBoxEndMonth.BorderStyle = BorderStyle.None;
             textBoxEndMonth.Dock = DockStyle.Left;
             textBoxEndMonth.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxEndMonth.Location = new Point(315, 0);
-            textBoxEndMonth.Margin = new Padding(3, 4, 3, 4);
+            textBoxEndMonth.Location = new Point(275, 0);
             textBoxEndMonth.MaxLength = 2;
-            textBoxEndMonth.MinimumSize = new Size(17, 44);
+            textBoxEndMonth.MinimumSize = new Size(15, 44);
             textBoxEndMonth.Name = "textBoxEndMonth";
-            textBoxEndMonth.Size = new Size(39, 51);
+            textBoxEndMonth.Size = new Size(34, 44);
             textBoxEndMonth.TabIndex = 22;
             textBoxEndMonth.TabStop = false;
             textBoxEndMonth.Text = "12";
@@ -418,10 +407,10 @@ namespace WinFormsApp1
             labelEndSpace2.BackColor = Color.Salmon;
             labelEndSpace2.Dock = DockStyle.Left;
             labelEndSpace2.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelEndSpace2.Location = new Point(294, 0);
-            labelEndSpace2.MinimumSize = new Size(21, 0);
+            labelEndSpace2.Location = new Point(257, 0);
+            labelEndSpace2.MinimumSize = new Size(18, 0);
             labelEndSpace2.Name = "labelEndSpace2";
-            labelEndSpace2.Size = new Size(21, 59);
+            labelEndSpace2.Size = new Size(18, 44);
             labelEndSpace2.TabIndex = 21;
             labelEndSpace2.Text = "/";
             labelEndSpace2.TextAlign = ContentAlignment.MiddleLeft;
@@ -432,12 +421,11 @@ namespace WinFormsApp1
             textBoxEndDay.BorderStyle = BorderStyle.None;
             textBoxEndDay.Dock = DockStyle.Left;
             textBoxEndDay.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxEndDay.Location = new Point(277, 0);
-            textBoxEndDay.Margin = new Padding(3, 4, 3, 4);
+            textBoxEndDay.Location = new Point(242, 0);
             textBoxEndDay.MaxLength = 2;
-            textBoxEndDay.MinimumSize = new Size(17, 44);
+            textBoxEndDay.MinimumSize = new Size(15, 44);
             textBoxEndDay.Name = "textBoxEndDay";
-            textBoxEndDay.Size = new Size(17, 51);
+            textBoxEndDay.Size = new Size(15, 41);
             textBoxEndDay.TabIndex = 19;
             textBoxEndDay.TabStop = false;
             textBoxEndDay.Text = "5";
@@ -454,10 +442,10 @@ namespace WinFormsApp1
             labelEndSpace.BackColor = Color.Salmon;
             labelEndSpace.Dock = DockStyle.Left;
             labelEndSpace.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelEndSpace.Location = new Point(220, 0);
-            labelEndSpace.MinimumSize = new Size(21, 0);
+            labelEndSpace.Location = new Point(192, 0);
+            labelEndSpace.MinimumSize = new Size(18, 0);
             labelEndSpace.Name = "labelEndSpace";
-            labelEndSpace.Size = new Size(57, 59);
+            labelEndSpace.Size = new Size(50, 44);
             labelEndSpace.TabIndex = 20;
             labelEndSpace.Text = "🕐";
             labelEndSpace.TextAlign = ContentAlignment.MiddleLeft;
@@ -468,12 +456,11 @@ namespace WinFormsApp1
             textBoxEndMinute.BorderStyle = BorderStyle.None;
             textBoxEndMinute.Dock = DockStyle.Left;
             textBoxEndMinute.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxEndMinute.Location = new Point(188, 0);
-            textBoxEndMinute.Margin = new Padding(3, 4, 3, 4);
+            textBoxEndMinute.Location = new Point(164, 0);
             textBoxEndMinute.MaxLength = 2;
-            textBoxEndMinute.MinimumSize = new Size(17, 44);
+            textBoxEndMinute.MinimumSize = new Size(15, 44);
             textBoxEndMinute.Name = "textBoxEndMinute";
-            textBoxEndMinute.Size = new Size(32, 51);
+            textBoxEndMinute.Size = new Size(28, 41);
             textBoxEndMinute.TabIndex = 17;
             textBoxEndMinute.TabStop = false;
             textBoxEndMinute.Text = "16";
@@ -489,10 +476,10 @@ namespace WinFormsApp1
             labelEndDots.BackColor = Color.Salmon;
             labelEndDots.Dock = DockStyle.Left;
             labelEndDots.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelEndDots.Location = new Point(167, 0);
-            labelEndDots.MinimumSize = new Size(21, 0);
+            labelEndDots.Location = new Point(146, 0);
+            labelEndDots.MinimumSize = new Size(18, 0);
             labelEndDots.Name = "labelEndDots";
-            labelEndDots.Size = new Size(21, 59);
+            labelEndDots.Size = new Size(18, 44);
             labelEndDots.TabIndex = 18;
             labelEndDots.Text = ": ";
             // 
@@ -502,12 +489,11 @@ namespace WinFormsApp1
             textBoxEndHour.BorderStyle = BorderStyle.None;
             textBoxEndHour.Dock = DockStyle.Left;
             textBoxEndHour.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxEndHour.Location = new Point(128, 0);
-            textBoxEndHour.Margin = new Padding(3, 4, 3, 4);
+            textBoxEndHour.Location = new Point(112, 0);
             textBoxEndHour.MaxLength = 2;
-            textBoxEndHour.MinimumSize = new Size(17, 44);
+            textBoxEndHour.MinimumSize = new Size(15, 44);
             textBoxEndHour.Name = "textBoxEndHour";
-            textBoxEndHour.Size = new Size(39, 51);
+            textBoxEndHour.Size = new Size(34, 41);
             textBoxEndHour.TabIndex = 16;
             textBoxEndHour.TabStop = false;
             textBoxEndHour.Text = "16";
@@ -525,9 +511,9 @@ namespace WinFormsApp1
             labelEndDate.Dock = DockStyle.Left;
             labelEndDate.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             labelEndDate.Location = new Point(0, 0);
-            labelEndDate.MinimumSize = new Size(128, 59);
+            labelEndDate.MinimumSize = new Size(112, 44);
             labelEndDate.Name = "labelEndDate";
-            labelEndDate.Size = new Size(128, 59);
+            labelEndDate.Size = new Size(112, 44);
             labelEndDate.TabIndex = 15;
             labelEndDate.Text = "End Date:";
             labelEndDate.TextAlign = ContentAlignment.MiddleLeft;
@@ -543,11 +529,10 @@ namespace WinFormsApp1
             panelDuration.Controls.Add(textBoxDurationDays);
             panelDuration.Controls.Add(label5);
             panelDuration.Dock = DockStyle.Top;
-            panelDuration.Location = new Point(0, 252);
-            panelDuration.Margin = new Padding(3, 4, 3, 4);
-            panelDuration.MinimumSize = new Size(0, 59);
+            panelDuration.Location = new Point(0, 189);
+            panelDuration.MinimumSize = new Size(0, 44);
             panelDuration.Name = "panelDuration";
-            panelDuration.Size = new Size(714, 59);
+            panelDuration.Size = new Size(625, 44);
             panelDuration.TabIndex = 26;
             // 
             // labelDurationMinutes
@@ -555,11 +540,11 @@ namespace WinFormsApp1
             labelDurationMinutes.BackColor = Color.Plum;
             labelDurationMinutes.Dock = DockStyle.Fill;
             labelDurationMinutes.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelDurationMinutes.Location = new Point(381, 0);
+            labelDurationMinutes.Location = new Point(334, 0);
             labelDurationMinutes.Margin = new Padding(0);
-            labelDurationMinutes.MinimumSize = new Size(109, 59);
+            labelDurationMinutes.MinimumSize = new Size(95, 44);
             labelDurationMinutes.Name = "labelDurationMinutes";
-            labelDurationMinutes.Size = new Size(333, 59);
+            labelDurationMinutes.Size = new Size(291, 44);
             labelDurationMinutes.TabIndex = 21;
             labelDurationMinutes.Text = "minutes⏰";
             // 
@@ -569,12 +554,11 @@ namespace WinFormsApp1
             textBoxDurationMinutes.BorderStyle = BorderStyle.None;
             textBoxDurationMinutes.Dock = DockStyle.Left;
             textBoxDurationMinutes.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxDurationMinutes.Location = new Point(364, 0);
-            textBoxDurationMinutes.Margin = new Padding(3, 4, 3, 4);
+            textBoxDurationMinutes.Location = new Point(319, 0);
             textBoxDurationMinutes.MaxLength = 2;
-            textBoxDurationMinutes.MinimumSize = new Size(17, 44);
+            textBoxDurationMinutes.MinimumSize = new Size(15, 44);
             textBoxDurationMinutes.Name = "textBoxDurationMinutes";
-            textBoxDurationMinutes.Size = new Size(17, 51);
+            textBoxDurationMinutes.Size = new Size(15, 44);
             textBoxDurationMinutes.TabIndex = 19;
             textBoxDurationMinutes.Text = "5";
             textBoxDurationMinutes.TextAlign = HorizontalAlignment.Right;
@@ -590,11 +574,11 @@ namespace WinFormsApp1
             labelDurationHours.BackColor = Color.Plum;
             labelDurationHours.Dock = DockStyle.Left;
             labelDurationHours.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelDurationHours.Location = new Point(276, 0);
+            labelDurationHours.Location = new Point(242, 0);
             labelDurationHours.Margin = new Padding(0);
-            labelDurationHours.MinimumSize = new Size(88, 59);
+            labelDurationHours.MinimumSize = new Size(77, 44);
             labelDurationHours.Name = "labelDurationHours";
-            labelDurationHours.Size = new Size(88, 59);
+            labelDurationHours.Size = new Size(77, 44);
             labelDurationHours.TabIndex = 20;
             labelDurationHours.Text = "hours";
             // 
@@ -604,12 +588,11 @@ namespace WinFormsApp1
             textBoxDurationHours.BorderStyle = BorderStyle.None;
             textBoxDurationHours.Dock = DockStyle.Left;
             textBoxDurationHours.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxDurationHours.Location = new Point(237, 0);
-            textBoxDurationHours.Margin = new Padding(3, 4, 3, 4);
+            textBoxDurationHours.Location = new Point(208, 0);
             textBoxDurationHours.MaxLength = 2;
-            textBoxDurationHours.MinimumSize = new Size(17, 44);
+            textBoxDurationHours.MinimumSize = new Size(15, 44);
             textBoxDurationHours.Name = "textBoxDurationHours";
-            textBoxDurationHours.Size = new Size(39, 51);
+            textBoxDurationHours.Size = new Size(34, 44);
             textBoxDurationHours.TabIndex = 17;
             textBoxDurationHours.Text = "16";
             textBoxDurationHours.TextAlign = HorizontalAlignment.Right;
@@ -625,11 +608,11 @@ namespace WinFormsApp1
             labelDurationDays.BackColor = Color.Plum;
             labelDurationDays.Dock = DockStyle.Left;
             labelDurationDays.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            labelDurationDays.Location = new Point(140, 0);
+            labelDurationDays.Location = new Point(123, 0);
             labelDurationDays.Margin = new Padding(0);
-            labelDurationDays.MinimumSize = new Size(21, 59);
+            labelDurationDays.MinimumSize = new Size(18, 44);
             labelDurationDays.Name = "labelDurationDays";
-            labelDurationDays.Size = new Size(97, 59);
+            labelDurationDays.Size = new Size(85, 44);
             labelDurationDays.TabIndex = 18;
             labelDurationDays.Text = " day(s)";
             // 
@@ -639,12 +622,11 @@ namespace WinFormsApp1
             textBoxDurationDays.BorderStyle = BorderStyle.None;
             textBoxDurationDays.Dock = DockStyle.Left;
             textBoxDurationDays.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            textBoxDurationDays.Location = new Point(123, 0);
-            textBoxDurationDays.Margin = new Padding(3, 4, 3, 4);
+            textBoxDurationDays.Location = new Point(108, 0);
             textBoxDurationDays.MaxLength = 4;
-            textBoxDurationDays.MinimumSize = new Size(17, 44);
+            textBoxDurationDays.MinimumSize = new Size(15, 44);
             textBoxDurationDays.Name = "textBoxDurationDays";
-            textBoxDurationDays.Size = new Size(17, 51);
+            textBoxDurationDays.Size = new Size(15, 41);
             textBoxDurationDays.TabIndex = 16;
             textBoxDurationDays.Text = "0";
             textBoxDurationDays.TextAlign = HorizontalAlignment.Center;
@@ -661,24 +643,23 @@ namespace WinFormsApp1
             label5.Dock = DockStyle.Left;
             label5.Font = new Font("Dubai", 17.9999981F, FontStyle.Regular, GraphicsUnit.Point, 0);
             label5.Location = new Point(0, 0);
-            label5.MinimumSize = new Size(123, 59);
+            label5.MinimumSize = new Size(108, 44);
             label5.Name = "label5";
-            label5.Size = new Size(123, 59);
+            label5.Size = new Size(108, 44);
             label5.TabIndex = 15;
             label5.Text = "Duration:";
             // 
             // TaskUserControl
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(panelEnd);
             Controls.Add(panelDuration);
             Controls.Add(panelStart);
             Controls.Add(textBoxDescription);
             Controls.Add(textBoxTitle);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "TaskUserControl";
-            Size = new Size(714, 632);
+            Size = new Size(625, 474);
             panelStart.ResumeLayout(false);
             panelStart.PerformLayout();
             panelEnd.ResumeLayout(false);

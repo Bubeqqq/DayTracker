@@ -8,8 +8,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-namespace WinFormsApp1.Day
+using DayTracker.UserControls.TestTask_usunac;
+namespace DayTracker.Forms.Day
 {
     public partial class DayUserControl : UserControl,IDayView
     {
