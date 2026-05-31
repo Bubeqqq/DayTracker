@@ -14,6 +14,17 @@ namespace DayTracker.Forms.Calendar
 {
     public partial class CalendarUserControl : UserControl, ICalendarView
     {
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
+
         public DateTime SelectedDate { get { return dateTimePicker1.Value; } }
         public event EventHandler<DayClickedEventArgs> DayClicked;
         public event EventHandler SelectedDateChanged;
@@ -22,6 +33,8 @@ namespace DayTracker.Forms.Calendar
         public CalendarUserControl()
         {
             InitializeComponent();
+
+            typeof(TableLayoutPanel).GetProperty("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)?.SetValue(tableLayoutPanelCalendar, true, null);
         }
         public void CreateAndAddDayCell(DateTime date, List<string> tasks, int column, int row)
         {
@@ -41,11 +54,20 @@ namespace DayTracker.Forms.Calendar
         public void SuspendAndClearCalendar()
         {
             tableLayoutPanelCalendar.SuspendLayout();
+
+            foreach (DayCellUserControl control in tableLayoutPanelCalendar.Controls)
+            {
+                control.DayCellClicked -= DayCellClicked;
+                control.Dispose();
+            }
+
             tableLayoutPanelCalendar.Controls.Clear();
         }
         public void ResumeCalendarLayout()
         {
-            tableLayoutPanelCalendar.ResumeLayout();
+            tableLayoutPanelCalendar.ResumeLayout(true);
+
+            Refresh();
         }
         public void ShowMessage(string message)
         {
@@ -70,6 +92,12 @@ namespace DayTracker.Forms.Calendar
         {
 
             PreviousButtonClicked?.Invoke(this, e);
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            Refresh();
         }
     }
 

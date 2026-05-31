@@ -15,6 +15,16 @@ namespace DayTracker.Forms.TaskControl
 {
     public partial class TaskUserControl : UserControl, ITaskView//TODO trzeba dodać coś wyświetlającego kategorie taska
     {
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
         public string Title { get { return textBoxTitle.Text; }  }
         public string Descritpion { get { return textBoxDescription.Text; }  }
         public string StartMinute { get { return textBoxStartMinute.Text; } }

@@ -78,7 +78,7 @@ namespace DayTracker.Forms.Calendar
         }
         private void OnDayClicked(object sender, DayClickedEventArgs e)
         {
-            _model.NavigationService.NavigateTo<DayPresenter, DateTime>(e.Date);//nie dziala
+            _model.NavigationService.NavigateTo<DayPresenter, DateTime>(e.Date);
         }
         private void OnSelectedDateChanged(object sender, EventArgs e) {
             TestTask task = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(2, 5, 0));

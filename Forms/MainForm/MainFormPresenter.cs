@@ -27,6 +27,12 @@ namespace DayTracker.Forms.MainForm
             {
                 _view.SetControl(scene as UserControl);
             };
+
+            _view.OnGoBack += () => _navigationService.GoBack();
+            _view.OnGoForward += () => _navigationService.GoForward();
+
+            _navigationService.OnGoForwardButtonEnableChange += (e) => _view.SetForwardButtonEnable(e);
+            _navigationService.OnGoBackButtonEnableChange += (e) => _view.SetBackButtonEnable(e);
         }
 
         public IModel Model => _model;

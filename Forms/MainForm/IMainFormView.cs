@@ -9,5 +9,11 @@ namespace DayTracker.Forms.MainForm
     internal interface IMainFormView : IView
     {
         void SetControl(UserControl form);
+
+        event Action OnGoBack;
+        event Action OnGoForward;
+
+        void SetBackButtonEnable(bool enable);
+        void SetForwardButtonEnable(bool enable);
     }
 }
