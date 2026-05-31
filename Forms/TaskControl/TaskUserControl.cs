@@ -15,8 +15,8 @@ namespace DayTracker.Forms.TaskControl
 {
     public partial class TaskUserControl : UserControl, ITaskView//TODO trzeba dodać coś wyświetlającego kategorie taska
     {
-        public string Title { get { return textBoxTitle.Text; } private set { textBoxTitle.Text = value; } }
-        public string Descritpion { get { return textBoxDescription.Text; } private set { textBoxDescription.Text = value; } }
+        public string Title { get { return textBoxTitle.Text; }  }
+        public string Descritpion { get { return textBoxDescription.Text; }  }
         public string StartMinute { get { return textBoxStartMinute.Text; } }
         public string StartHour { get { return textBoxStartHour.Text; } }
         public string StartDay { get { return textBoxStartDay.Text; } set { textBoxEndDay.Text = value; } }
@@ -38,10 +38,11 @@ namespace DayTracker.Forms.TaskControl
             AssignTagsToTextBoxes();
             ChangeAllTextBoxCursorsToArrow();
         }
-        public void SetTaskInfoFields(string title, string description, DateTime startDate, TimeSpan duration, DateTime endDate)
+        public void SetTaskInfoFields(string title, string description)
         {
-            Title = title;
-            Descritpion = description;
+            
+            textBoxTitle.Text = title;
+            textBoxDescription.Text = description;
 
             
         }

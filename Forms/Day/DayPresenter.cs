@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DayTracker.Forms.Day.TaskPreview;
 using DayTracker.UserControls.TestTask_usunac;
+using DayTracker.Forms.TaskControl;
 
 namespace DayTracker.Forms.Day
 {
@@ -15,10 +17,13 @@ namespace DayTracker.Forms.Day
         public IModel Model => _model;
         public IView View => _view;
         private List<TestTask> tasks;//wyjebac
+        private DateTime _date;
         public DayPresenter(DayUserControl view, DayModel model) {
             _view = view;
             _model = model;
             _view.SizeChanged += OnSizeChanged;
+            _view.TaskClicked += OnTaskClicked;
+            _view.DeleteClicked += OnDeleteClicked;
             TestTask task = new TestTask(1, "test1", new DateTime(2026, 5, 25), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new TimeSpan(1,1,0));
             TestTask task2 = new TestTask(1, "test2", new DateTime(2026, 5, 25), "XD",new TimeSpan(2, 5, 0));
             TestTask task3 = new TestTask(1, "test1", new DateTime(2026, 5, 25), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new TimeSpan(1, 1, 0));
@@ -40,7 +45,7 @@ namespace DayTracker.Forms.Day
         }
         public void LoadArgs(DateTime args)
         {
-
+            _date = args;
         }
         private void LayoutTasks(List<TestTask> tasks)
         {
@@ -103,6 +108,14 @@ namespace DayTracker.Forms.Day
 
         }
 
-
+        private void OnTaskClicked(object sender, TaskClickedEventArgs e)
+        {
+            
+            _model.NavigationService.NavigateTo<TaskPresenter, TestTask>(e.Task);
+        }
+        private void OnDeleteClicked(object sender, TaskClickedEventArgs e)
+        {
+            bool yesDecision=_view.YesNoMessage("Are you sure you want to delete this task?");
+        }
     }
 }

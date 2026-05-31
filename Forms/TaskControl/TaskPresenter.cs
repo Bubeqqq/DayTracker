@@ -15,17 +15,46 @@ namespace DayTracker.Forms.TaskControl
         private readonly ITaskView _view;
         public IModel Model => _model;
         public IView View => _view;
+        private TestTask defaultTask;
+        private TestTask _task;
         public TaskPresenter(ITaskView view,ITaskModel model) {
             _view=view;
             _model=model;
             _view.FieldValidation += OnFieldValidation;
-            TestTask task = new TestTask(1, "test1", new DateTime(2026, 5, 25), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new TimeSpan(1, 1, 0));
-            DateTime endTime = task.Date.Add(task.Duration);
-            _view.SetTaskInfoFields(task.Title, task.Description, task.Date, task.Duration, endTime);
+            Initialize();
+
+        }
+        private void Initialize()
+        {
+            TestTask defaultTask = new TestTask(1, "Title", DateTime.Now , "Description", new TimeSpan(1,1, 1, 0));
+            if (_task != null)
+            {
+                SetTaskFields(_task);
+            }
+            else
+            {
+                SetTaskFields(defaultTask);
+            }
+        }
+
+        private void SetTaskFields(TestTask task)
+        {
+            
+            _view.SetTaskInfoFields(task.Title, task.Description);
+
+            DateTime startDate = task.Date;
+            _view.SetStartDate(startDate.Hour.ToString(),startDate.Minute.ToString(),startDate.Day.ToString(),startDate.Month.ToString(),startDate.Year.ToString());
+
+            TimeSpan duration= task.Duration;
+            _view.SetDuration(duration.Days.ToString(), duration.Hours.ToString(), duration.Minutes.ToString());
+
+            DateTime endDate = task.Date.Add(duration);
+            _view.SetEndDate(endDate.Hour.ToString(), endDate.Minute.ToString(), endDate.Day.ToString(), endDate.Month.ToString(), endDate.Year.ToString());
         }
         public void LoadArgs(TestTask args)
-        {
-
+        {            
+            _task =args;
+            Initialize();
         }
         private void ValidateField(FieldValidationEventArgs e)
         {

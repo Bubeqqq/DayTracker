@@ -34,7 +34,7 @@ namespace DayTracker.Forms.MainForm
 
         public void Initialize()
         {
-            _navigationService.NavigateTo<TaskPresenter, TestTask>(new TestTask(0, "chuj", new DateTime(), "paweł sołtysik", new TimeSpan()));
+            _navigationService.NavigateTo<CalendarPresenter>();
         }
     }
 }

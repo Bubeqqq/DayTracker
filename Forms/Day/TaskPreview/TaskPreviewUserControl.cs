@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DayTracker.Forms.Day.TaskPreview;
+using DayTracker.UserControls.TestTask_usunac;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,12 +14,17 @@ namespace DayTracker.Forms.Day
 {
     public partial class TaskPreviewUserControl : UserControl//TODO dodać funkcję pokazującą labelDidntStartToday i ustawiającą odpowiedni tekst
     {
-        public string Title { get { return labelTitle.Text; } set { labelTitle.Text = value; } }
-        public string Description { get { return labelDescription.Text; } set { labelDescription.Text = value; } }
+        public TestTask Task { get; }
         public Size MaxLabelSize { get { return labelDescription.MaximumSize; } set { labelDescription.MaximumSize = value; } }
-        public TaskPreviewUserControl()
+        public event EventHandler<TaskClickedEventArgs> TaskClicked;
+        public event EventHandler<TaskClickedEventArgs> DeleteClicked;
+        public TaskPreviewUserControl(TestTask task)
         {
             InitializeComponent();
+            Task=task;
+            labelTitle.Text = task.Title;
+            labelDescription.Text = task.Description;
+
         }
         public void UpdateLocation(int x, int y, int taskWidth, int height)
         {
@@ -25,26 +32,21 @@ namespace DayTracker.Forms.Day
             this.Width = taskWidth;
             this.Height= height;
         }
-
+        
         private void Task_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(labelTitle.Text);//TODO musi pokazywać widok Taska
+            TaskClicked?.Invoke(this,new TaskClickedEventArgs(Task));
         }                                    // Prawdopodobnie będzie trzeba utworzyc zdarzenie i przy tworzeniu tej kontrolki podpiac je w Day Presenter
 
         private void TaskUserControl_BackColorChanged(object sender, EventArgs e)
         {
             labelDelete.BackColor = this.BackColor;
-            labelEdit.BackColor = this.BackColor;
         }
 
-        private void labelEdit_Click(object sender, EventArgs e)
-        {
-            //TODO to musi pokazywać ekran edycji Taska
-        }
 
         private void labelDelete_Click(object sender, EventArgs e)
         {
-            //TODO to musi pytać czy na pewno usunąć i jeśli tak to usunąć (Chyba będzie trzeba jebnąć model do tego)
+            DeleteClicked?.Invoke(this, new TaskClickedEventArgs(Task));
         }
     }
 }

@@ -31,7 +31,6 @@
             labelTitle = new Label();
             labelDescription = new Label();
             labelDelete = new Label();
-            labelEdit = new Label();
             labelDidntStartToday = new Label();
             SuspendLayout();
             // 
@@ -72,20 +71,6 @@
             labelDelete.Text = "X";
             labelDelete.Click += labelDelete_Click;
             // 
-            // labelEdit
-            // 
-            labelEdit.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            labelEdit.AutoSize = true;
-            labelEdit.BackColor = Color.White;
-            labelEdit.Font = new Font("Segoe UI Emoji", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            labelEdit.ForeColor = Color.Black;
-            labelEdit.Location = new Point(142, 5);
-            labelEdit.Name = "labelEdit";
-            labelEdit.Size = new Size(24, 16);
-            labelEdit.TabIndex = 5;
-            labelEdit.Text = "📝";
-            labelEdit.Click += labelEdit_Click;
-            // 
             // labelDidntStartToday
             // 
             labelDidntStartToday.AutoSize = true;
@@ -95,6 +80,7 @@
             labelDidntStartToday.TabIndex = 6;
             labelDidntStartToday.Text = "This Event started on:";
             labelDidntStartToday.Visible = false;
+            labelDidntStartToday.Click += Task_Click;
             // 
             // TaskPreviewUserControl
             // 
@@ -103,7 +89,6 @@
             AutoScroll = true;
             BackColor = Color.Lime;
             Controls.Add(labelDidntStartToday);
-            Controls.Add(labelEdit);
             Controls.Add(labelDelete);
             Controls.Add(labelDescription);
             Controls.Add(labelTitle);
@@ -120,7 +105,6 @@
         private Label labelTitle;
         private Label labelDescription;
         private Label labelDelete;
-        private Label labelEdit;
         private Label labelDidntStartToday;
     }
 }

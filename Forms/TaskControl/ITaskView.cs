@@ -23,7 +23,7 @@ namespace DayTracker.Forms.TaskControl
         string EndDay { get; set; }
         string EndMonth { get; } 
         string EndYear { get; }
-        void SetTaskInfoFields(string title, string description, DateTime startDate, TimeSpan duration, DateTime endDate);
+        void SetTaskInfoFields(string title, string description);
         void SetStartDate(string hour, string minute, string day, string month, string year);
         void SetEndDate(string hour, string minute, string day, string month, string year);
         void SetDuration(string days, string hours, string minutes);

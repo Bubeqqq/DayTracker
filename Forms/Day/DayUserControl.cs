@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DayTracker.Forms.Day.TaskPreview;
 using DayTracker.UserControls.TestTask_usunac;
 namespace DayTracker.Forms.Day
 {
@@ -17,6 +18,8 @@ namespace DayTracker.Forms.Day
         public int LeftMargin { get; }
         public int TotalWidth { get { return this.ClientSize.Width; } }
         public event EventHandler SizeChanged;
+        public event EventHandler<TaskClickedEventArgs> TaskClicked;
+        public event EventHandler<TaskClickedEventArgs> DeleteClicked;
         public DayUserControl()
         {
             InitializeComponent();
@@ -30,23 +33,27 @@ namespace DayTracker.Forms.Day
 
         public void CreateAndPlaceTaskControl(TestTask task, int x, int y, int taskWidth, int height)
         {
-            TaskPreviewUserControl control = new TaskPreviewUserControl();
-            control.Title = task.Title;
-            control.Description = task.Description;
+            TaskPreviewUserControl control = new TaskPreviewUserControl(task);
             control.Location = new Point(x, y);
             control.Width = taskWidth;
             control.Height = height;
             control.BackColor = Color.Yellow;
             control.MaxLabelSize = new Size(taskWidth - 20, 0);
+            control.DeleteClicked += DeleteClicked;
+            control.TaskClicked += TaskClicked;
             this.Controls.Add(control);
 
 
         }
-
         public void ModifyControl(int index,int x,int y, int taskWidth, int height)
         {
             TaskPreviewUserControl control = (TaskPreviewUserControl)this.Controls[index];
             control.UpdateLocation(x,y,taskWidth,height);
+        }
+        public bool YesNoMessage(string message)
+        {
+            DialogResult dialogResult = MessageBox.Show(message, "Choose an option", MessageBoxButtons.YesNo);
+            return dialogResult == DialogResult.Yes ? true : false;
         }
         protected override void OnPaint(PaintEventArgs e)
         {
