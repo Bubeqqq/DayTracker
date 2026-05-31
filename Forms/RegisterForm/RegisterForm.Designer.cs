@@ -281,6 +281,7 @@
             // 
             // errorProvider
             // 
+            errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
             errorProvider.ContainerControl = this;
             // 
             // RegisterForm

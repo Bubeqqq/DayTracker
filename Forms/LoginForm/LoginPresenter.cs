@@ -1,0 +1,88 @@
+﻿using DayTracker.Forms.RegisterForm;
+using DayTracker.Navigation;
+
+namespace DayTracker.Forms.LoginForm
+{
+    internal class LoginPresenter: IPresenter
+    {
+        private readonly ILoginView _view;
+        private readonly ILoginModel _model;
+        private readonly INavigationService _navigationService;
+        public LoginPresenter(ILoginView view, ILoginModel model, INavigationService navigationService)
+        {
+            _view = view;
+            _model = model;
+            _navigationService = navigationService;
+
+            _view.BtnLoginClicked += OnBtnLoginClicked;
+            _view.BtnRegisterClicked += OnBtnRegisterClicked;
+            _view.BtnShowPassMouseDown += OnBtnShowPassMouseDown;
+            _view.BtnShowPassMouseUp += OnBtnShowPassMouseUp;
+            _view.BtnShowPassMouseLeave += OnBtnShowPassMouseLeave;
+        }
+
+        private void OnBtnShowPassMouseDown()
+        {
+            _view.IsPasswordHidden = false;
+        }
+
+        private void OnBtnShowPassMouseUp()
+        {
+            _view.IsPasswordHidden = true;
+        }
+
+        private void OnBtnShowPassMouseLeave()
+        {
+            _view.IsPasswordHidden = true;
+        }
+
+        private void OnBtnRegisterClicked()
+        {
+            _navigationService.NavigateTo<RegisterPresenter>();
+        }
+
+        private async void OnBtnLoginClicked()
+        {
+            string email = _view.Email.Trim();
+            string password = _view.Password;
+
+            _view.ClearAllValidationErrors();
+            var errors = new Dictionary<string, string>();
+
+            // TODO: Dodaj bardziej zaawansowaną walidację (np. regex dla emaila, sprawdzanie siły hasła itp.)
+
+            if (string.IsNullOrEmpty(email))
+            {
+                errors[nameof(_view.Email)] = "Email is required.";
+            }
+            if (string.IsNullOrEmpty(password))
+            {
+                errors[nameof(_view.Password)] = "Password is required.";
+            }
+
+            if (errors.Count > 0)
+            {
+                _view.ShowValidationErrors(errors);
+                return;
+            }
+
+            var result = await _model.Login(email, password);
+            
+            if (result.IsSuccess)
+            {
+                // TODO: Przejdź do głównego widoku aplikacji
+                MessageBox.Show("Login successful!"); // placeholder
+            }
+            else
+            {
+                // TODO: Wyświetl błąd logowania w message boxie
+                MessageBox.Show(result.ErrorMsg); // placeholder
+                return;
+            }
+        }
+
+        public IModel Model => _model;
+        public IView View => _view;
+        public void LoadArgs(int args) {}
+    }
+}

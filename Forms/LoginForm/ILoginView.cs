@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DayTracker.Navigation;
 
 namespace DayTracker.Forms.LoginForm
 {
-    internal interface ILoginView
+    internal interface ILoginView : IView
     {
         string Email { get; }
         string Password { get; }
@@ -14,5 +10,11 @@ namespace DayTracker.Forms.LoginForm
 
         event Action BtnLoginClicked;
         event Action BtnRegisterClicked;
+        event Action? BtnShowPassMouseDown;
+        event Action? BtnShowPassMouseUp;
+        event Action? BtnShowPassMouseLeave;
+
+        void ShowValidationErrors(Dictionary<string, string> errors);
+        void ClearAllValidationErrors();
     }
 }

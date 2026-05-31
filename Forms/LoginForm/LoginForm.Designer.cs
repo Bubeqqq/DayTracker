@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             label6 = new Label();
             textBoxPass = new TextBox();
             label4 = new Label();
@@ -35,7 +36,9 @@
             label3 = new Label();
             btnRegister = new Button();
             btnLogIn = new Button();
-            btnShowPass1 = new Button();
+            btnShowPass = new Button();
+            errorProvider = new ErrorProvider(components);
+            ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
             // label6
@@ -56,6 +59,8 @@
             textBoxPass.BackColor = SystemColors.Window;
             textBoxPass.BorderStyle = BorderStyle.FixedSingle;
             textBoxPass.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 238);
+            errorProvider.SetIconAlignment(textBoxPass, ErrorIconAlignment.MiddleLeft);
+            errorProvider.SetIconPadding(textBoxPass, 4);
             textBoxPass.Location = new Point(70, 171);
             textBoxPass.Margin = new Padding(0, 0, 0, 50);
             textBoxPass.Name = "textBoxPass";
@@ -82,6 +87,8 @@
             textBoxEmail.BackColor = SystemColors.Window;
             textBoxEmail.BorderStyle = BorderStyle.FixedSingle;
             textBoxEmail.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 238);
+            errorProvider.SetIconAlignment(textBoxEmail, ErrorIconAlignment.MiddleLeft);
+            errorProvider.SetIconPadding(textBoxEmail, 4);
             textBoxEmail.Location = new Point(70, 111);
             textBoxEmail.Margin = new Padding(0, 0, 0, 10);
             textBoxEmail.Name = "textBoxEmail";
@@ -129,26 +136,31 @@
             btnLogIn.Text = "Log In";
             btnLogIn.UseVisualStyleBackColor = true;
             // 
-            // btnShowPass1
+            // btnShowPass
             // 
-            btnShowPass1.Anchor = AnchorStyles.Top;
-            btnShowPass1.Cursor = Cursors.Hand;
-            btnShowPass1.FlatAppearance.BorderSize = 0;
-            btnShowPass1.FlatStyle = FlatStyle.Flat;
-            btnShowPass1.Font = new Font("Segoe UI Symbol", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            btnShowPass1.Location = new Point(333, 171);
-            btnShowPass1.Name = "btnShowPass1";
-            btnShowPass1.Size = new Size(30, 30);
-            btnShowPass1.TabIndex = 29;
-            btnShowPass1.Text = "";
-            btnShowPass1.UseVisualStyleBackColor = true;
+            btnShowPass.Anchor = AnchorStyles.Top;
+            btnShowPass.Cursor = Cursors.Hand;
+            btnShowPass.FlatAppearance.BorderSize = 0;
+            btnShowPass.FlatStyle = FlatStyle.Flat;
+            btnShowPass.Font = new Font("Segoe UI Symbol", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnShowPass.Location = new Point(333, 171);
+            btnShowPass.Name = "btnShowPass";
+            btnShowPass.Size = new Size(30, 30);
+            btnShowPass.TabIndex = 29;
+            btnShowPass.Text = "";
+            btnShowPass.UseVisualStyleBackColor = true;
+            // 
+            // errorProvider
+            // 
+            errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+            errorProvider.ContainerControl = this;
             // 
             // LoginForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
-            Controls.Add(btnShowPass1);
+            Controls.Add(btnShowPass);
             Controls.Add(btnRegister);
             Controls.Add(btnLogIn);
             Controls.Add(label6);
@@ -158,6 +170,7 @@
             Controls.Add(label3);
             Name = "LoginForm";
             Size = new Size(400, 400);
+            ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -171,6 +184,7 @@
         private Label label3;
         private Button btnRegister;
         private Button btnLogIn;
-        private Button btnShowPass1;
+        private Button btnShowPass;
+        private ErrorProvider errorProvider;
     }
 }

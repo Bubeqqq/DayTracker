@@ -24,11 +24,56 @@ namespace DayTracker.UserControls.ToDoControl
         public event Action? BtnRegisterClicked;
         public event Action? BtnLoginClicked;
 
+        public event Action? BtnShowPassMouseDown;
+        public event Action? BtnShowPassMouseUp;
+        public event Action? BtnShowPassMouseLeave;
+
+        public event Action? BtnShowConfirmPassMouseDown;
+        public event Action? BtnShowConfirmPassMouseUp;
+        public event Action? BtnShowConfirmPassMouseLeave;
+
         public RegisterForm()
         {
             InitializeComponent();
+
             btnRegister.Click += (s, e) => BtnRegisterClicked?.Invoke();
             btnLogIn.Click += (s, e) => BtnLoginClicked?.Invoke();
+
+            btnShowPass.MouseDown += (s, e) => BtnShowPassMouseDown?.Invoke();
+            btnShowPass.MouseUp += (s, e) => BtnShowPassMouseUp?.Invoke();
+            btnShowPass.MouseLeave += (s, e) => BtnShowPassMouseLeave?.Invoke();
+
+            btnShowConfirmPass.MouseDown += (s, e) => BtnShowConfirmPassMouseDown?.Invoke();
+            btnShowConfirmPass.MouseUp += (s, e) => BtnShowConfirmPassMouseUp?.Invoke();
+            btnShowConfirmPass.MouseLeave += (s, e) => BtnShowConfirmPassMouseLeave?.Invoke();
+        }
+
+        public void ShowValidationErrors(Dictionary<string, string> errors)
+        {
+            foreach (var e in errors)
+            {
+                switch (e.Key)
+                {
+                    case nameof(FirstName):
+                        errorProvider.SetError(textBoxName, e.Value); break;
+                    case nameof(LastName):
+                        errorProvider.SetError(textBoxLastName, e.Value); break;
+                    case nameof(Email):
+                        errorProvider.SetError(textBoxEmail, e.Value); break;
+                    case nameof(Password):
+                        errorProvider.SetError(textBoxPass, e.Value); break;
+                    case nameof(ConfirmPassword):
+                        errorProvider.SetError(textBoxConfirmPass, e.Value); break;
+                }
+            }
+        }
+        public void ClearAllValidationErrors()
+        {
+            errorProvider.SetError(textBoxName, string.Empty);
+            errorProvider.SetError(textBoxLastName, string.Empty);
+            errorProvider.SetError(textBoxEmail, string.Empty);
+            errorProvider.SetError(textBoxPass, string.Empty);
+            errorProvider.SetError(textBoxConfirmPass, string.Empty);
         }
     }
 }

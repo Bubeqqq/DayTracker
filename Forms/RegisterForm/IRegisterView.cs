@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DayTracker.Forms.RegisterForm
 {
-    internal interface IRegisterView
+    internal interface IRegisterView : IView
     {
         string FirstName { get; }
         string LastName { get; }
@@ -18,5 +18,16 @@ namespace DayTracker.Forms.RegisterForm
 
         event Action BtnRegisterClicked;
         event Action BtnLoginClicked;
+
+        event Action BtnShowPassMouseDown;
+        event Action BtnShowPassMouseUp;
+        event Action BtnShowPassMouseLeave;
+
+        event Action BtnShowConfirmPassMouseDown;
+        event Action BtnShowConfirmPassMouseUp;
+        event Action BtnShowConfirmPassMouseLeave;
+
+        void ShowValidationErrors(Dictionary<string, string> errors);
+        void ClearAllValidationErrors();
     }
 }
