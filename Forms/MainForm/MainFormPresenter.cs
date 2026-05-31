@@ -1,8 +1,11 @@
 ﻿// Plik: MainFormPresenter.cs
 using DayTracker.Database;
 using DayTracker.Forms.Calendar;
+using DayTracker.Forms.Day;
+using DayTracker.Forms.TaskControl;
 using DayTracker.Forms.TestForm;
 using DayTracker.Navigation;
+using DayTracker.UserControls.TestTask_usunac;
 using System;
 using System.Windows.Forms;
 
@@ -31,7 +34,7 @@ namespace DayTracker.Forms.MainForm
 
         public void Initialize()
         {
-            _navigationService.NavigateTo<CalendarPresenter>();
+            _navigationService.NavigateTo<TaskPresenter, TestTask>(new TestTask(0, "chuj", new DateTime(), "paweł sołtysik", new TimeSpan()));
         }
     }
 }
