@@ -33,6 +33,12 @@ namespace DayTracker.Forms.MainForm
 
             _navigationService.OnGoForwardButtonEnableChange += (e) => _view.SetForwardButtonEnable(e);
             _navigationService.OnGoBackButtonEnableChange += (e) => _view.SetBackButtonEnable(e);
+
+            _navigationService.OnBarShow += () => _view.ShowBar();
+            _navigationService.OnBarHide += (absolute) => _view.HideBar(absolute);
+
+            _view.OnMouseEnterUserBar += () => _navigationService.MouseEnterUserBar();
+            _view.OnMouseLeaveUserBar += () => _navigationService.MouseLeaveUserBar();
         }
 
         public IModel Model => _model;
@@ -40,7 +46,7 @@ namespace DayTracker.Forms.MainForm
 
         public void Initialize()
         {
-            _navigationService.NavigateTo<CalendarPresenter>();
+            _navigationService.NavigateTo<TestPresenter>();
         }
     }
 }

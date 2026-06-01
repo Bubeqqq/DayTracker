@@ -40,26 +40,30 @@
             mainPanel.Controls.Add(userBar, 0, 0);
             mainPanel.Dock = DockStyle.Fill;
             mainPanel.Location = new Point(0, 0);
+            mainPanel.Margin = new Padding(3, 2, 3, 2);
             mainPanel.Name = "mainPanel";
             mainPanel.RowCount = 2;
-            mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 10F));
-            mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 90F));
-            mainPanel.Size = new Size(893, 508);
+            mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            mainPanel.Size = new Size(781, 381);
             mainPanel.TabIndex = 0;
             // 
             // userBar
             // 
-            userBar.Location = new Point(3, 3);
+            userBar.Dock = DockStyle.Fill;
+            userBar.Location = new Point(3, 2);
+            userBar.Margin = new Padding(3, 2, 3, 2);
             userBar.Name = "userBar";
-            userBar.Size = new Size(887, 44);
+            userBar.Size = new Size(775, 31);
             userBar.TabIndex = 0;
             // 
             // Form1
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(893, 508);
+            ClientSize = new Size(781, 381);
             Controls.Add(mainPanel);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "Form1";
             Text = "Form1";
             Load += Form1_Load;

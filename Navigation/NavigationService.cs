@@ -13,6 +13,8 @@ namespace DayTracker.Navigation
         public event Action<IView> OnSceneChanged;
         public event Action<bool> OnGoBackButtonEnableChange;
         public event Action<bool> OnGoForwardButtonEnableChange;
+        public event Action OnBarShow;
+        public event Action<bool> OnBarHide;
 
         private readonly IServiceProvider _serviceProvider;
 
@@ -22,6 +24,7 @@ namespace DayTracker.Navigation
 
         private readonly List<NavigationEntry> _history = new();
         private int _currentIndex = 0;
+        private bool _userBarAutoHideEnabled;
 
         public NavigationService(IServiceProvider serviceProvider)
         {
@@ -184,6 +187,42 @@ namespace DayTracker.Navigation
         public void UpdateCurrentArgs<TArgs>(TArgs args)
         {
             _history[_currentIndex] = new NavigationEntry(_history[_currentIndex].PresenterType, args);
+        }
+
+        public void ShowBar()
+        {
+            OnBarShow?.Invoke();
+        }
+
+        public void HideBar()
+        {
+            OnBarHide?.Invoke(true);
+        }
+
+        public void MouseEnterUserBar()
+        {
+            if (_userBarAutoHideEnabled)
+            {
+                ShowBar();
+            }
+        }
+
+        public void MouseLeaveUserBar()
+        {
+            if (_userBarAutoHideEnabled)
+            {
+                OnBarHide?.Invoke(false);
+            }
+        }
+
+        public void ShowOnMouseEnterUserBar(bool enabled)
+        {
+            if (enabled)
+            {
+                OnBarHide?.Invoke(false);
+            }
+
+            _userBarAutoHideEnabled = enabled;
         }
     }
 }

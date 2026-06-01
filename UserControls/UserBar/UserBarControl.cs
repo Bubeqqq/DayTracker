@@ -15,6 +15,9 @@ namespace DayTracker.UserControls.UserBar
         public event Action BackButtonClicked;
         public event Action ForwardButtonClicked;
 
+        public event Action MouseEnterUserBar;
+        public event Action MouseLeaveUserBar;
+
         public UserBarControl()
         {
             InitializeComponent();
@@ -34,11 +37,20 @@ namespace DayTracker.UserControls.UserBar
         {
             forwardButton.Enabled = enable;
         }
-        
+
         public void SetBackButtonEnable(bool enable)
         {
-           backButton.Enabled = enable;
+            backButton.Enabled = enable;
         }
 
+        private void UserBarControl_MouseEnter(object sender, EventArgs e)
+        {
+            MouseEnterUserBar?.Invoke();
+        }
+
+        private void UserBarControl_MouseLeave(object sender, EventArgs e)
+        {
+            MouseLeaveUserBar?.Invoke();
+        }
     }
 }

@@ -13,7 +13,13 @@ namespace DayTracker.Forms.MainForm
         event Action OnGoBack;
         event Action OnGoForward;
 
+        event Action OnMouseEnterUserBar;
+        event Action OnMouseLeaveUserBar;
+
         void SetBackButtonEnable(bool enable);
         void SetForwardButtonEnable(bool enable);
+
+        void ShowBar();
+        void HideBar(bool absolute);
     }
 }
