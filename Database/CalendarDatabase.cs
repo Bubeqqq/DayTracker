@@ -14,19 +14,11 @@ namespace DayTracker.Database
         DbSet<TodoItem> TodoItems { get; set; }
         DbSet<CalendarEvent> CalendarEvents { get; set; }
 
+        DbSet<Sleep> Sleeps { get; set; }
+
         public CalendarDatabase(DbContextOptions<CalendarDatabase> options) : base(options)
         {
             
-        }
-
-        public async Task<List<T>> ExecuteRawSqlSelectAsync<T>(string sqlQuery) where T : class
-        {
-            return await Set<T>().FromSqlRaw(sqlQuery).ToListAsync();
-        }
-
-        public async Task<int> ExecuteRawSqlCommandAsync(string sqlCommand)
-        {
-            return await Database.ExecuteSqlRawAsync(sqlCommand);
         }
 
         public async Task AddAsync<T>(T record)
@@ -52,11 +44,31 @@ namespace DayTracker.Database
                 await SaveChangesAsync();
                 return;
             }
+            Sleep? sleep = record as Sleep;
+            if (sleep != null)
+            {
+                await Sleeps.AddAsync(sleep);
+                await SaveChangesAsync();
+                return;
+            }
+
         }
 
         public async Task EnsureCreated()
         {
             await Database.EnsureCreatedAsync();
+        }
+
+        public async Task<List<T>?> GetType<T>() where T : class
+        {
+            return typeof(T) switch
+            {
+                Type t when t == typeof(User) => await Users.ToListAsync() as List<T>,
+                Type t when t == typeof(TodoItem) => await TodoItems.ToListAsync() as List<T>,
+                Type t when t == typeof(CalendarEvent) => await CalendarEvents.ToListAsync() as List<T>,
+                Type t when t == typeof(Sleep) => await Sleeps.ToListAsync() as List<T>,
+                _ => throw new InvalidOperationException($"Type {typeof(T).Name} is not supported.")
+            };
         }
     }
 }

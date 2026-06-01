@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DayTracker.HabitAnalysis
+namespace DayTracker.Forms.Habits
 {
-    internal interface IAnalysisService
+    internal interface IHabitModel : IModel
     {
-        Task<DashboardData> AnalyzeHabitsAsync();
     }
 }

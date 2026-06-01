@@ -20,8 +20,12 @@ namespace DayTracker.Database.Datatypes
         public DateTime StartTime { get; set; }
         public TimeSpan Duration { get; set; }
 
-        public bool IsHard { get; set; }
+        public bool IsHard { get; set; } // Task should be completed in this time, otherwise it is failed
         public bool IsOutdoor { get; set; }
         public bool IsSport { get; set; }
+        public bool IsWork { get; set; }
+        public bool IsRelax { get; set; }
+        public bool IsEducation { get; set; }
+
     }
 }
