@@ -18,12 +18,14 @@ namespace DayTracker.Forms.Calendar
         {
             InitializeComponent();
 
+            DoubleBuffered = true;
+
         }
         public void Setup(DateTime date,List<string> tasks)
         {
             this.Date = date;
             labelDayNumber.Text = date.Day.ToString();
-            listBoxTasks.DataSource= tasks;
+            listBoxTasks.DataSource = tasks;
         }
         private void DayCell_Click(object sender, EventArgs e)
         {

@@ -54,6 +54,7 @@
             listBoxTasks.FormattingEnabled = true;
             listBoxTasks.ItemHeight = 20;
             listBoxTasks.Location = new Point(0, 17);
+            listBoxTasks.Margin = new Padding(3, 2, 3, 2);
             listBoxTasks.Name = "listBoxTasks";
             listBoxTasks.SelectionMode = SelectionMode.None;
             listBoxTasks.Size = new Size(143, 105);

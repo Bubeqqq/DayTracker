@@ -14,6 +14,16 @@ namespace DayTracker.Forms.Day
 {
     public partial class DayUserControl : UserControl,IDayView
     {
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
         public int PixelsPerHour { get; }
         public int LeftMargin { get; }
         public int TotalWidth { get { return this.ClientSize.Width; } }

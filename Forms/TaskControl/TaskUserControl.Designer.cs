@@ -199,7 +199,7 @@ namespace DayTracker.Forms.TaskControl
             textBoxStartMonth.MaxLength = 2;
             textBoxStartMonth.MinimumSize = new Size(15, 44);
             textBoxStartMonth.Name = "textBoxStartMonth";
-            textBoxStartMonth.Size = new Size(34, 44);
+            textBoxStartMonth.Size = new Size(34, 41);
             textBoxStartMonth.TabIndex = 22;
             textBoxStartMonth.TabStop = false;
             textBoxStartMonth.Text = "12";
@@ -234,7 +234,7 @@ namespace DayTracker.Forms.TaskControl
             textBoxStartDay.MaxLength = 2;
             textBoxStartDay.MinimumSize = new Size(15, 44);
             textBoxStartDay.Name = "textBoxStartDay";
-            textBoxStartDay.Size = new Size(15, 44);
+            textBoxStartDay.Size = new Size(15, 41);
             textBoxStartDay.TabIndex = 19;
             textBoxStartDay.TabStop = false;
             textBoxStartDay.Text = "5";
@@ -269,7 +269,7 @@ namespace DayTracker.Forms.TaskControl
             textBoxStartMinute.MaxLength = 2;
             textBoxStartMinute.MinimumSize = new Size(15, 44);
             textBoxStartMinute.Name = "textBoxStartMinute";
-            textBoxStartMinute.Size = new Size(30, 44);
+            textBoxStartMinute.Size = new Size(30, 41);
             textBoxStartMinute.TabIndex = 17;
             textBoxStartMinute.TabStop = false;
             textBoxStartMinute.Text = "16";
@@ -302,7 +302,7 @@ namespace DayTracker.Forms.TaskControl
             textBoxStartHour.MaxLength = 2;
             textBoxStartHour.MinimumSize = new Size(15, 44);
             textBoxStartHour.Name = "textBoxStartHour";
-            textBoxStartHour.Size = new Size(34, 44);
+            textBoxStartHour.Size = new Size(34, 41);
             textBoxStartHour.TabIndex = 16;
             textBoxStartHour.TabStop = false;
             textBoxStartHour.Text = "16";
@@ -358,7 +358,7 @@ namespace DayTracker.Forms.TaskControl
             textBoxEndYear.MaxLength = 4;
             textBoxEndYear.MinimumSize = new Size(34, 44);
             textBoxEndYear.Name = "textBoxEndYear";
-            textBoxEndYear.Size = new Size(56, 44);
+            textBoxEndYear.Size = new Size(56, 41);
             textBoxEndYear.TabIndex = 24;
             textBoxEndYear.TabStop = false;
             textBoxEndYear.Text = "2000";
@@ -427,7 +427,7 @@ namespace DayTracker.Forms.TaskControl
             textBoxEndDay.MaxLength = 2;
             textBoxEndDay.MinimumSize = new Size(15, 44);
             textBoxEndDay.Name = "textBoxEndDay";
-            textBoxEndDay.Size = new Size(15, 44);
+            textBoxEndDay.Size = new Size(15, 41);
             textBoxEndDay.TabIndex = 19;
             textBoxEndDay.TabStop = false;
             textBoxEndDay.Text = "5";
@@ -462,7 +462,7 @@ namespace DayTracker.Forms.TaskControl
             textBoxEndMinute.MaxLength = 2;
             textBoxEndMinute.MinimumSize = new Size(15, 44);
             textBoxEndMinute.Name = "textBoxEndMinute";
-            textBoxEndMinute.Size = new Size(28, 44);
+            textBoxEndMinute.Size = new Size(28, 41);
             textBoxEndMinute.TabIndex = 17;
             textBoxEndMinute.TabStop = false;
             textBoxEndMinute.Text = "16";
@@ -495,7 +495,7 @@ namespace DayTracker.Forms.TaskControl
             textBoxEndHour.MaxLength = 2;
             textBoxEndHour.MinimumSize = new Size(15, 44);
             textBoxEndHour.Name = "textBoxEndHour";
-            textBoxEndHour.Size = new Size(34, 44);
+            textBoxEndHour.Size = new Size(34, 41);
             textBoxEndHour.TabIndex = 16;
             textBoxEndHour.TabStop = false;
             textBoxEndHour.Text = "16";
@@ -628,7 +628,7 @@ namespace DayTracker.Forms.TaskControl
             textBoxDurationDays.MaxLength = 4;
             textBoxDurationDays.MinimumSize = new Size(15, 44);
             textBoxDurationDays.Name = "textBoxDurationDays";
-            textBoxDurationDays.Size = new Size(15, 44);
+            textBoxDurationDays.Size = new Size(15, 41);
             textBoxDurationDays.TabIndex = 16;
             textBoxDurationDays.Text = "0";
             textBoxDurationDays.TextAlign = HorizontalAlignment.Center;
@@ -657,7 +657,7 @@ namespace DayTracker.Forms.TaskControl
             checkedListBoxCategories.FormattingEnabled = true;
             checkedListBoxCategories.Location = new Point(0, 277);
             checkedListBoxCategories.Name = "checkedListBoxCategories";
-            checkedListBoxCategories.Size = new Size(509, 94);
+            checkedListBoxCategories.Size = new Size(509, 76);
             checkedListBoxCategories.TabIndex = 27;
             // 
             // toDoList1
@@ -674,9 +674,9 @@ namespace DayTracker.Forms.TaskControl
             buttonConfirm.BackColor = Color.Aquamarine;
             buttonConfirm.Dock = DockStyle.Fill;
             buttonConfirm.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 238);
-            buttonConfirm.Location = new Point(0, 371);
+            buttonConfirm.Location = new Point(0, 353);
             buttonConfirm.Name = "buttonConfirm";
-            buttonConfirm.Size = new Size(509, 278);
+            buttonConfirm.Size = new Size(509, 296);
             buttonConfirm.TabIndex = 29;
             buttonConfirm.Text = "Confirm Changes";
             buttonConfirm.UseVisualStyleBackColor = false;

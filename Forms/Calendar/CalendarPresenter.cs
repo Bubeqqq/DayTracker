@@ -1,12 +1,13 @@
 ﻿using DayTracker.Forms;
+using DayTracker.Forms.Day;
+using DayTracker.UserControls.TestTask_usunac;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DayTracker.UserControls.TestTask_usunac;
-using DayTracker.Forms.Day;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 namespace DayTracker.Forms.Calendar
 {
     internal class CalendarPresenter:IPresenter//TODO to musi jakos pobrać liste taskow dla danego miesiąca
@@ -54,11 +55,13 @@ namespace DayTracker.Forms.Calendar
                 int daysInMonth = DateTime.DaysInMonth(date.Year, date.Month);
                 int offset = _model.CalculateOffset(date);
 
+
                 for (int day = 1; day <= daysInMonth; day++)
                 {
                     DateTime currentDate = new DateTime(date.Year, date.Month, day);
 
                     List<string> tasks = _model.GetStringTaskList(allTasks, currentDate);
+
 
                     int position = offset + (day - 1);
                     int column = position % 7;
@@ -78,7 +81,7 @@ namespace DayTracker.Forms.Calendar
         }
         private void OnDayClicked(object sender, DayClickedEventArgs e)
         {
-            _model.NavigationService.NavigateTo<DayPresenter, DateTime>(e.Date);//nie dziala
+            _model.NavigationService.NavigateTo<DayPresenter, DateTime>(e.Date);
         }
         private void OnSelectedDateChanged(object sender, EventArgs e) {
             TestTask task = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(2, 5, 0));

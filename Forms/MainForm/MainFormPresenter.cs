@@ -2,6 +2,7 @@
 using DayTracker.Database;
 using DayTracker.Forms.Calendar;
 using DayTracker.Forms.Day;
+using DayTracker.Forms.Habits;
 using DayTracker.Forms.TaskControl;
 using DayTracker.Forms.TestForm;
 using DayTracker.Navigation;
@@ -27,6 +28,18 @@ namespace DayTracker.Forms.MainForm
             {
                 _view.SetControl(scene as UserControl);
             };
+
+            _view.OnGoBack += () => _navigationService.GoBack();
+            _view.OnGoForward += () => _navigationService.GoForward();
+
+            _navigationService.OnGoForwardButtonEnableChange += (e) => _view.SetForwardButtonEnable(e);
+            _navigationService.OnGoBackButtonEnableChange += (e) => _view.SetBackButtonEnable(e);
+
+            _navigationService.OnBarShow += () => _view.ShowBar();
+            _navigationService.OnBarHide += (absolute) => _view.HideBar(absolute);
+
+            _view.OnMouseEnterUserBar += () => _navigationService.MouseEnterUserBar();
+            _view.OnMouseLeaveUserBar += () => _navigationService.MouseLeaveUserBar();
         }
 
         public IModel Model => _model;

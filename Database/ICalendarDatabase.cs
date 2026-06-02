@@ -9,9 +9,8 @@ namespace DayTracker.Database
 {
     internal interface ICalendarDatabase : IDisposable
     {
-        Task<List<T>> ExecuteRawSqlSelectAsync<T>(string sqlQuery) where T : class;
 
-        Task<int> ExecuteRawSqlCommandAsync(string sqlCommand);
+        Task<List<T>?> GetType<T>() where T : class;
 
         Task AddAsync<T>(T user);
 

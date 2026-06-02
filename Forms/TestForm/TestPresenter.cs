@@ -17,14 +17,18 @@ namespace DayTracker.Forms.TestForm
             _view = view;
             _model = model;
 
+            navigationService.ShowOnMouseEnterUserBar(true);
+
             _view.OnTestButtonClicked += () =>
                 {
-                    _model.Login(_view.email, _view.password);
+                    //_model.Login(_view.email, _view.password);
+                    navigationService.HideBar();
                 };
 
             _view.OnTestButton2Clicked += () =>
                 {
-                    _model.Register(_view.email, _view.password, _view.name, _view.surname);
+                    //_model.Register(_view.email, _view.password, _view.name, _view.surname);
+                    navigationService.ShowBar();
                 };
         }
 

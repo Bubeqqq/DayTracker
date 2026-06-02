@@ -10,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using DayTracker.Database;
 using DayTracker.LoginServices;
 using DayTracker.CalendarServices;
+using DayTracker.HabitAnalysis;
 
 namespace DayTracker
 {
@@ -31,6 +32,8 @@ namespace DayTracker
             services.AddSingleton<ICalendarService, CalendarService>();
 
             services.AddSingleton<INavigationService, NavigationService>();
+
+            services.AddSingleton<IAnalysisService, AnalysisService>();
 
             ConfigureService<IPresenter>(services);
             ConfigureService<IView>(services);

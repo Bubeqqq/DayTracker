@@ -11,8 +11,20 @@ namespace DayTracker.Navigation
     internal class NavigationService : INavigationService
     {
         public event Action<IView> OnSceneChanged;
+        public event Action<bool> OnGoBackButtonEnableChange;
+        public event Action<bool> OnGoForwardButtonEnableChange;
+        public event Action OnBarShow;
+        public event Action<bool> OnBarHide;
 
         private readonly IServiceProvider _serviceProvider;
+
+        //States
+
+        private record NavigationEntry(Type PresenterType, object? Args);
+
+        private readonly List<NavigationEntry> _history = new();
+        private int _currentIndex = 0;
+        private bool _userBarAutoHideEnabled;
 
         public NavigationService(IServiceProvider serviceProvider)
         {
@@ -25,7 +37,15 @@ namespace DayTracker.Navigation
 
             if (presenter.View is IView view)
             {
-                OnSceneChanged?.Invoke(view);
+                if (_history.Count - 1 > _currentIndex)
+                    _history.RemoveRange(_currentIndex + 1, _history.Count - 1 - _currentIndex);
+                _history.Add(new NavigationEntry(presenter.GetType(), null));
+                _currentIndex = _history.Count - 1;
+                OnGoForwardButtonEnableChange?.Invoke(false);
+                OnGoBackButtonEnableChange?.Invoke(_currentIndex != 0);
+
+
+                    OnSceneChanged?.Invoke(view);
             }
             else
             {
@@ -53,6 +73,13 @@ namespace DayTracker.Navigation
 
             if (presenter.View is IView view)
             {
+                if(_history.Count - 1 > _currentIndex)
+                    _history.RemoveRange(_currentIndex + 1, _history.Count - 1 - _currentIndex);
+                _history.Add(new NavigationEntry(presenter.GetType(), args));
+                _currentIndex = _history.Count - 1;
+                OnGoForwardButtonEnableChange?.Invoke(false);
+                OnGoBackButtonEnableChange?.Invoke(_currentIndex != 0);
+
                 presenter.LoadArgs(args);
 
                 OnSceneChanged?.Invoke(view);
@@ -77,6 +104,125 @@ namespace DayTracker.Navigation
             {
                 throw new InvalidOperationException($"Widok prezentera {typeof(TPresenter).Name} musi dziedziczyć po UserControl, aby mógł być wyświetlony jako scena.");
             }
+        }
+
+        public void GoBack()
+        {
+            if (_currentIndex <= 0)
+                return;
+
+            _currentIndex--;
+
+            NavigationEntry navigationEntry = _history[_currentIndex];
+
+            object presenterObj = _serviceProvider.GetRequiredService(navigationEntry.PresenterType);
+
+            if(_currentIndex == 0)
+                OnGoBackButtonEnableChange?.Invoke(false);
+            OnGoForwardButtonEnableChange?.Invoke(true);
+
+            if (presenterObj is IPresenter basePresenter)
+            {
+                if (basePresenter.View is IView view)
+                {
+                    dynamic dynamicPresenter = basePresenter;
+
+                    if (navigationEntry.Args != null)
+                    {
+                        dynamicPresenter.LoadArgs((dynamic)navigationEntry.Args);
+                    }
+
+                    OnSceneChanged?.Invoke(view);
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Widok prezentera {navigationEntry.PresenterType.Name} musi dziedziczyć po odpowiednim interfejsie (np. UserControl), aby mógł być wyświetlony jako scena.");
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException($"{navigationEntry.PresenterType.Name} nie implementuje IPresenter.");
+            }
+        }
+
+        public void GoForward()
+        {
+            if (_currentIndex >= _history.Count - 1)
+                return;
+
+            _currentIndex++;
+
+            OnGoBackButtonEnableChange?.Invoke(true);
+            if(_currentIndex == _history.Count - 1)
+                OnGoForwardButtonEnableChange?.Invoke(false);
+
+            NavigationEntry navigationEntry = _history[_currentIndex];
+
+            object presenterObj = _serviceProvider.GetRequiredService(navigationEntry.PresenterType);
+
+            if (presenterObj is IPresenter basePresenter)
+            {
+                if (basePresenter.View is IView view)
+                {
+                    dynamic dynamicPresenter = basePresenter;
+
+                    if (navigationEntry.Args != null)
+                    {
+                        dynamicPresenter.LoadArgs((dynamic)navigationEntry.Args);
+                    }
+
+                    OnSceneChanged?.Invoke(view);
+                }
+                else
+                {
+                    throw new InvalidOperationException($"Widok prezentera {navigationEntry.PresenterType.Name} musi dziedziczyć po odpowiednim interfejsie (np. UserControl), aby mógł być wyświetlony jako scena.");
+                }
+            }
+            else
+            {
+                throw new InvalidOperationException($"{navigationEntry.PresenterType.Name} nie implementuje IPresenter.");
+            }
+        }
+
+        public void UpdateCurrentArgs<TArgs>(TArgs args)
+        {
+            _history[_currentIndex] = new NavigationEntry(_history[_currentIndex].PresenterType, args);
+        }
+
+        public void ShowBar()
+        {
+            OnBarShow?.Invoke();
+        }
+
+        public void HideBar()
+        {
+            OnBarHide?.Invoke(true);
+        }
+
+        public void MouseEnterUserBar()
+        {
+            if (_userBarAutoHideEnabled)
+            {
+                ShowBar();
+            }
+        }
+
+        public void MouseLeaveUserBar()
+        {
+            if (_userBarAutoHideEnabled)
+            {
+                OnBarHide?.Invoke(false);
+            }
+        }
+
+        public void ShowOnMouseEnterUserBar(bool enabled)
+        {
+            if (enabled)
+            {
+                OnBarHide?.Invoke(false);
+            }
+
+            _userBarAutoHideEnabled = enabled;
         }
     }
 }
