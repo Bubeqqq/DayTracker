@@ -8,6 +8,10 @@ namespace DayTracker.Forms.LoginForm
         private readonly ILoginView _view;
         private readonly ILoginModel _model;
         private readonly INavigationService _navigationService;
+
+        public IModel Model => _model;
+        public IView View => _view;
+
         public LoginPresenter(ILoginView view, ILoginModel model, INavigationService navigationService)
         {
             _view = view;
@@ -16,24 +20,10 @@ namespace DayTracker.Forms.LoginForm
 
             _view.BtnLoginClicked += OnBtnLoginClicked;
             _view.BtnRegisterClicked += OnBtnRegisterClicked;
-            _view.BtnShowPassMouseDown += OnBtnShowPassMouseDown;
-            _view.BtnShowPassMouseUp += OnBtnShowPassMouseUp;
-            _view.BtnShowPassMouseLeave += OnBtnShowPassMouseLeave;
-        }
 
-        private void OnBtnShowPassMouseDown()
-        {
-            _view.IsPasswordHidden = false;
-        }
-
-        private void OnBtnShowPassMouseUp()
-        {
-            _view.IsPasswordHidden = true;
-        }
-
-        private void OnBtnShowPassMouseLeave()
-        {
-            _view.IsPasswordHidden = true;
+            _view.BtnShowPassMouseDown += () => _view.IsPasswordHidden = false;
+            _view.BtnShowPassMouseUp += () => _view.IsPasswordHidden = true;
+            _view.BtnShowPassMouseLeave += () => _view.IsPasswordHidden = true;
         }
 
         private void OnBtnRegisterClicked()
@@ -81,8 +71,6 @@ namespace DayTracker.Forms.LoginForm
             }
         }
 
-        public IModel Model => _model;
-        public IView View => _view;
         public void LoadArgs(int args) {}
     }
 }

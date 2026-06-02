@@ -80,7 +80,7 @@ namespace DayTracker.Forms.RegisterForm
                 return;
             }
 
-            var result = await _model.Register(email, password, firstName, lastName);
+            var result = await _model.Register(firstName, lastName, email, password);
 
             if (result.IsSuccess)
             {

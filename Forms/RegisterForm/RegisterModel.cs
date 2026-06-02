@@ -16,9 +16,9 @@ namespace DayTracker.Forms.RegisterForm
         {
             _loginService = loginService;
         }
-        public async Task<OperationResult<bool>> Register(string email, string password, string name, string lastName)
+        public async Task<OperationResult<bool>> Register(string name, string lastName, string email, string password)
         {
-            int result = await _loginService.Register(email, password, name, lastName);
+            int result = await _loginService.Register(name, lastName, email, password);
             return result == LoginService.SUCCESS ?
                 OperationResult<bool>.Success(true) :
                 OperationResult<bool>.Failure(_loginService.ConvertLoginResultToMessage(result));
