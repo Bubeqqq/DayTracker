@@ -11,11 +11,11 @@ namespace DayTracker.LoginServices
 {
     internal class LoginService : ILoginService
     {
-        private readonly IUsersDatabase _databaseService;
+        private readonly IDatabaseService _databaseService;
 
         public const int MULTIPLE_USERS = 1, USER_NOT_FOUND = 2, INVALID_PASSWORD = 3, USER_EXISTS = 4, SUCCESS = 5;
 
-        public LoginService(IUsersDatabase databaseService)
+        public LoginService(IDatabaseService databaseService)
         {
             _databaseService = databaseService;
         }

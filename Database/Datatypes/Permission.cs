@@ -6,13 +6,18 @@ using System.Threading.Tasks;
 
 namespace DayTracker.Database.Datatypes
 {
-    internal class Sleep : ICalendarRecord
+    internal class Permission
     {
         public int Id { get; set; }
-
         public int UserId { get; set; }
+        public User User { get; set; }
+        public PermissionType PermissionName { get; set; }
+    }
 
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+    enum PermissionType
+    {
+        ReadOnly,
+        Edit,
+        Admin
     }
 }

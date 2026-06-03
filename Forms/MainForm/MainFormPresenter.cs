@@ -3,6 +3,7 @@ using DayTracker.Database;
 using DayTracker.Forms.Calendar;
 using DayTracker.Forms.Day;
 using DayTracker.Forms.Habits;
+using DayTracker.Forms.LoginForm;
 using DayTracker.Forms.TaskControl;
 using DayTracker.Forms.TestForm;
 using DayTracker.Navigation;
@@ -47,7 +48,7 @@ namespace DayTracker.Forms.MainForm
 
         public void Initialize()
         {
-            _navigationService.NavigateTo<CalendarPresenter>();
+            _navigationService.NavigateTo<LoginPresenter>();
         }
     }
 }

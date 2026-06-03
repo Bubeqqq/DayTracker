@@ -9,15 +9,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using DayTracker.Database;
 using DayTracker.LoginServices;
-using DayTracker.CalendarServices;
 using DayTracker.HabitAnalysis;
+using System.Threading.Tasks;
 
 namespace DayTracker
 {
     internal static class Program
     {
         [STAThread]
-        static void Main()
+        static async Task Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -26,10 +26,10 @@ namespace DayTracker
 
             var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("Resources/appsettings.json", optional: false, reloadOnChange: true).Build();
 
-            services.AddDbContext<IUsersDatabase, UsersDatabase>(options => options.UseNpgsql(configuration.GetConnectionString("NeonDatabase")));
+            services.AddDbContext<IDatabaseService, DatabaseService>(options => options.UseNpgsql(configuration.GetConnectionString("NeonDatabase")));
             services.AddSingleton<ILoginService, LoginService>();
 
-            services.AddSingleton<ICalendarService, CalendarService>();
+            //services.AddSingleton<ICalendarService, CalendarService>();
 
             services.AddSingleton<INavigationService, NavigationService>();
 
@@ -47,12 +47,12 @@ namespace DayTracker
 
             using (var scope = serviceProvider.CreateScope())
             {
-                var db = scope.ServiceProvider.GetRequiredService<IUsersDatabase>() as UsersDatabase;
+                var db = scope.ServiceProvider.GetRequiredService<IDatabaseService>();
 
                 if (db != null)
                 {
                     Console.WriteLine("Sprawdzanie i tworzenie bazy danych...");
-                    db.Database.EnsureCreated();
+                    await db.EnsureCreated();
                 }
             }
 

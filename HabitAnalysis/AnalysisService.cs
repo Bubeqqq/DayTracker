@@ -1,4 +1,4 @@
-﻿using DayTracker.CalendarServices;
+﻿
 using DayTracker.Database.Datatypes;
 using System;
 using System.Collections.Generic;
@@ -9,11 +9,10 @@ namespace DayTracker.HabitAnalysis
 {
     internal class AnalysisService : IAnalysisService
     {
-        private readonly ICalendarService _calendarService;
-
-        public AnalysisService(ICalendarService calendarService)
+        
+        public AnalysisService()
         {
-            _calendarService = calendarService;
+            
         }
 
         
@@ -36,10 +35,10 @@ namespace DayTracker.HabitAnalysis
             // --- 1. MOCK: ZADANIA TODO ---
             var todoItems = new List<TodoItem>
 {
-    new TodoItem(1, "Skończyć projekt WinForms", dzisiaj.AddDays(-2), "Dodać wykresy", TimeSpan.FromHours(2)),
-    new TodoItem(2, "Zrobić zakupy", dzisiaj.AddDays(-1), "Mleko, chleb, jajka", TimeSpan.FromMinutes(30)),
-    new TodoItem(3, "Trening siłowy", dzisiaj, "Klatka i triceps", TimeSpan.FromHours(1.5)),
-    new TodoItem(4, "Napisać raport", dzisiaj, "Raport miesięczny", TimeSpan.FromHours(3))
+    new TodoItem(1, "Skończyć projekt WinForms", "Dodać wykresy"),
+    new TodoItem(2, "Zrobić zakupy", "Mleko, chleb, jajka"),
+    new TodoItem(3, "Trening siłowy", "Klatka i triceps"),
+    new TodoItem(4, "Napisać raport", "Raport miesięczny")
 };
 
             // --- 2. MOCK: SEN ---

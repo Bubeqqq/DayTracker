@@ -1,4 +1,4 @@
-﻿using DayTracker.CalendarServices;
+﻿
 using DayTracker.Database;
 using DayTracker.Database.Datatypes;
 using DayTracker.LoginServices;
@@ -17,12 +17,10 @@ namespace DayTracker.Forms.TestForm
     internal class TestModel : ITestModel
     {
         private readonly ILoginService _loginService;
-        private readonly ICalendarService _calendarService;
 
-        public TestModel(ILoginService loginService, ICalendarService calendarService)
+        public TestModel(ILoginService loginService)
         {
             _loginService = loginService;
-            _calendarService = calendarService;
             
         }
 

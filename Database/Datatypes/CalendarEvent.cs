@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace DayTracker.Database.Datatypes
 {
-    public class CalendarEvent
+    public class CalendarEvent : ICalendarRecord
     {
         public int Id { get; set; }
-        public int? ActionId { get; set; }
 
-        public int? UserId { get; set; }
-        public User? User { get; set; }
+        public int CalendarId { get; set; }
 
         public int? TodoId { get; set; }
         public TodoItem? Todo { get; set; }
