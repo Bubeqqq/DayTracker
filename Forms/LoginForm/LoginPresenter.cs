@@ -17,6 +17,7 @@ namespace DayTracker.Forms.LoginForm
             _view = view;
             _model = model;
             _navigationService = navigationService;
+            _navigationService.HideBar();
 
             _view.BtnLoginClicked += OnBtnLoginClicked;
             _view.BtnRegisterClicked += OnBtnRegisterClicked;
