@@ -71,7 +71,7 @@ namespace DayTracker.Database
             {
                 Type t when t == typeof(TodoItem) => await TodoItems.ToListAsync() as List<T>,
                 Type t when t == typeof(CalendarEvent) => await CalendarEvents.Where(e => e.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
-                Type t when t == typeof(Sleep) => await Sleeps.ToListAsync() as List<T>,
+                Type t when t == typeof(Sleep) => await Sleeps.Where(s => s.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
                 Type t when t == typeof(Permission) => await Permissions.Where(p => p.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
                 _ => throw new InvalidOperationException($"Type {typeof(T).Name} is not supported.")
             };
@@ -83,7 +83,7 @@ namespace DayTracker.Database
             {
                 Type t when t == typeof(TodoItem) => await TodoItems.Where(predicate as Expression<Func<TodoItem, bool>>).ToListAsync() as List<T>,
                 Type t when t == typeof(CalendarEvent) => await CalendarEvents.Where(predicate as Expression<Func<CalendarEvent, bool>>).Where(e => e.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
-                Type t when t == typeof(Sleep) => await Sleeps.Where(predicate as Expression<Func<Sleep, bool>>).ToListAsync() as List<T>,
+                Type t when t == typeof(Sleep) => await Sleeps.Where(predicate as Expression<Func<Sleep, bool>>).Where(s => s.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
                 Type t when t == typeof(Permission) => await Permissions.Where(predicate as Expression<Func<Permission, bool>>).Where(p => p.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
                 _ => throw new InvalidOperationException($"Type {typeof(T).Name} is not supported.")
             };
