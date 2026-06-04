@@ -10,6 +10,8 @@ namespace DayTracker.Database.Datatypes
     {
         public int Id { get; set; }
 
+        public string Title { get; set; }
+
         public int CalendarId { get; set; }
 
         public int? TodoId { get; set; }

@@ -10,7 +10,7 @@ namespace DayTracker.Database.Datatypes
     {
         public int Id { get; set; }
 
-        public int UserId { get; set; }
+        public int CalendarId { get; set; }
 
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }

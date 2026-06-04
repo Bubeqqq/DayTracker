@@ -11,6 +11,7 @@ using DayTracker.Database;
 using DayTracker.LoginServices;
 using DayTracker.HabitAnalysis;
 using System.Threading.Tasks;
+using DayTracker.LoadedData;
 
 namespace DayTracker
 {
@@ -29,11 +30,11 @@ namespace DayTracker
             services.AddDbContext<IDatabaseService, DatabaseService>(options => options.UseNpgsql(configuration.GetConnectionString("NeonDatabase")));
             services.AddSingleton<ILoginService, LoginService>();
 
-            //services.AddSingleton<ICalendarService, CalendarService>();
-
             services.AddSingleton<INavigationService, NavigationService>();
 
             services.AddSingleton<IAnalysisService, AnalysisService>();
+
+            services.AddSingleton<ILoadedDataService, LoadedDataService>();
 
             ConfigureService<IPresenter>(services);
             ConfigureService<IView>(services);
@@ -55,6 +56,8 @@ namespace DayTracker
                     await db.EnsureCreated();
                 }
             }
+
+            await serviceProvider.GetRequiredService<ILoadedDataService>().Initialize();
 
             var mainForm = serviceProvider.GetRequiredService<MainFormPresenter>();
             mainForm.Initialize();

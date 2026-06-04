@@ -15,6 +15,8 @@ namespace DayTracker.LoginServices
 
         public const int MULTIPLE_USERS = 1, USER_NOT_FOUND = 2, INVALID_PASSWORD = 3, USER_EXISTS = 4, SUCCESS = 5;
 
+        private User? CurrentUser;
+
         public LoginService(IDatabaseService databaseService)
         {
             _databaseService = databaseService;
@@ -41,6 +43,8 @@ namespace DayTracker.LoginServices
                 return INVALID_PASSWORD;
             }
 
+            List<User> newUsers = await _databaseService.GetUsersAsync(u => u.email == email);
+            CurrentUser = newUsers[0];
             return SUCCESS;
         }
 
@@ -64,6 +68,11 @@ namespace DayTracker.LoginServices
             return SUCCESS;
         }
 
+        public void Logout()
+        {
+            CurrentUser = null;
+        }
+
         public string ConvertLoginResultToMessage(int result)
         {
             switch(result)
@@ -81,6 +90,11 @@ namespace DayTracker.LoginServices
                 default:
                     return "An unknown error occurred. Please try again later.";
             }
+        }
+
+        public User? GetUser()
+        {
+            return CurrentUser;
         }
     }
 }

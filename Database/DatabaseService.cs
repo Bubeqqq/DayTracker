@@ -19,10 +19,14 @@ namespace DayTracker.Database
 
         DbSet<Permission> Permissions { get; set; }
 
+        private int CurrentCalendarID { get; set; } = -1;
+
         public DatabaseService(DbContextOptions<DatabaseService> options) : base(options)
         {
 
         }
+
+        public event Action<string, EntityState> OnEntityChanged;
 
         public async Task AddAsync<T>(T record) where T : class, ICalendarRecord
         {
@@ -40,8 +44,7 @@ namespace DayTracker.Database
                 case Type t when t == typeof(Permission):
                     await Permissions.AddAsync(record as Permission);
                     break;
-            }
-            ;
+            };
 
             await SaveChangesAsync();
         }
@@ -67,9 +70,9 @@ namespace DayTracker.Database
             return typeof(T) switch
             {
                 Type t when t == typeof(TodoItem) => await TodoItems.ToListAsync() as List<T>,
-                Type t when t == typeof(CalendarEvent) => await CalendarEvents.ToListAsync() as List<T>,
+                Type t when t == typeof(CalendarEvent) => await CalendarEvents.Where(e => e.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
                 Type t when t == typeof(Sleep) => await Sleeps.ToListAsync() as List<T>,
-                Type t when t == typeof(Permission) => await Permissions.ToListAsync() as List<T>,
+                Type t when t == typeof(Permission) => await Permissions.Where(p => p.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
                 _ => throw new InvalidOperationException($"Type {typeof(T).Name} is not supported.")
             };
         }
@@ -79,11 +82,63 @@ namespace DayTracker.Database
             return typeof(T) switch
             {
                 Type t when t == typeof(TodoItem) => await TodoItems.Where(predicate as Expression<Func<TodoItem, bool>>).ToListAsync() as List<T>,
-                Type t when t == typeof(CalendarEvent) => await CalendarEvents.Where(predicate as Expression<Func<CalendarEvent, bool>>).ToListAsync() as List<T>,
+                Type t when t == typeof(CalendarEvent) => await CalendarEvents.Where(predicate as Expression<Func<CalendarEvent, bool>>).Where(e => e.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
                 Type t when t == typeof(Sleep) => await Sleeps.Where(predicate as Expression<Func<Sleep, bool>>).ToListAsync() as List<T>,
-                Type t when t == typeof(Permission) => await Permissions.Where(predicate as Expression<Func<Permission, bool>>).ToListAsync() as List<T>,
+                Type t when t == typeof(Permission) => await Permissions.Where(predicate as Expression<Func<Permission, bool>>).Where(p => p.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
                 _ => throw new InvalidOperationException($"Type {typeof(T).Name} is not supported.")
             };
+        }
+
+        public void LoadCalendar(int CalendarID)
+        {
+            CurrentCalendarID = CalendarID;
+        }
+
+        public async Task<PermissionType> LoadUserPermissions(int UserID, int CalendarID)
+        {
+            List<Permission> permissions = await Permissions.Where(p => p.UserId == UserID && p.CalendarId == CalendarID).ToListAsync();
+
+            if(permissions.Count == 0)
+            {
+                return PermissionType.Blocked;
+            }
+
+            if(permissions.Count > 1)
+            {
+                throw new InvalidOperationException($"User with ID {UserID} has multiple permissions for calendar with ID {CalendarID}.");
+            }
+            
+            return permissions[0].PermissionName;
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            var modifiedEntries = ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Added ||
+                            e.State == EntityState.Modified ||
+                            e.State == EntityState.Deleted)
+                .ToList();
+
+            var result = await base.SaveChangesAsync(cancellationToken);
+
+            foreach (var entry in modifiedEntries)
+            {
+
+                if (entry.Entity is CalendarEvent calendarEvent)
+                {
+                    if (calendarEvent.CalendarId == CurrentCalendarID)
+                    {
+                        OnEntityChanged?.Invoke(nameof(CalendarEvent), entry.State);
+                    }
+                }
+                else
+                {
+                    string tableName = entry.Entity.GetType().Name;
+                    OnEntityChanged?.Invoke(tableName, entry.State);
+                }
+            }
+
+            return result;
         }
     }
 }

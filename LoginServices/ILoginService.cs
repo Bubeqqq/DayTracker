@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DayTracker.Database.Datatypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,12 @@ namespace DayTracker.LoginServices
     {
         Task<int> Login(string email, string password);
 
+        void Logout();
+
         Task<int> Register(string name, string surname, string email, string password);
 
         string ConvertLoginResultToMessage(int result);
+
+        User? GetUser();
     }
 }
