@@ -36,6 +36,8 @@
             label3 = new Label();
             label1 = new Label();
             label2 = new Label();
+            btnSubmitCode = new Button();
+            btnSubmitSelectedCalendar = new Button();
             SuspendLayout();
             // 
             // btnYourCalendar
@@ -67,7 +69,7 @@
             comboBoxSelectCalendar.Location = new Point(286, 299);
             comboBoxSelectCalendar.Margin = new Padding(3, 3, 3, 40);
             comboBoxSelectCalendar.Name = "comboBoxSelectCalendar";
-            comboBoxSelectCalendar.Size = new Size(300, 28);
+            comboBoxSelectCalendar.Size = new Size(217, 28);
             comboBoxSelectCalendar.TabIndex = 30;
             // 
             // labelGreeting
@@ -91,7 +93,7 @@
             textBoxInviteCode.Location = new Point(286, 407);
             textBoxInviteCode.Margin = new Padding(0, 0, 0, 10);
             textBoxInviteCode.Name = "textBoxInviteCode";
-            textBoxInviteCode.Size = new Size(300, 30);
+            textBoxInviteCode.Size = new Size(217, 30);
             textBoxInviteCode.TabIndex = 33;
             // 
             // label3
@@ -132,11 +134,41 @@
             label2.Text = "Select the calendar which you would like to use";
             label2.TextAlign = ContentAlignment.BottomLeft;
             // 
+            // btnSubmitCode
+            // 
+            btnSubmitCode.Anchor = AnchorStyles.None;
+            btnSubmitCode.FlatAppearance.BorderSize = 2;
+            btnSubmitCode.FlatStyle = FlatStyle.Flat;
+            btnSubmitCode.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 238);
+            btnSubmitCode.Location = new Point(513, 407);
+            btnSubmitCode.Margin = new Padding(10, 50, 20, 50);
+            btnSubmitCode.Name = "btnSubmitCode";
+            btnSubmitCode.Size = new Size(73, 30);
+            btnSubmitCode.TabIndex = 37;
+            btnSubmitCode.Text = "Submit";
+            btnSubmitCode.UseVisualStyleBackColor = true;
+            // 
+            // btnSubmitSelectedCalendar
+            // 
+            btnSubmitSelectedCalendar.Anchor = AnchorStyles.None;
+            btnSubmitSelectedCalendar.FlatAppearance.BorderSize = 2;
+            btnSubmitSelectedCalendar.FlatStyle = FlatStyle.Flat;
+            btnSubmitSelectedCalendar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
+            btnSubmitSelectedCalendar.Location = new Point(513, 299);
+            btnSubmitSelectedCalendar.Margin = new Padding(10, 50, 20, 50);
+            btnSubmitSelectedCalendar.Name = "btnSubmitSelectedCalendar";
+            btnSubmitSelectedCalendar.Size = new Size(73, 30);
+            btnSubmitSelectedCalendar.TabIndex = 38;
+            btnSubmitSelectedCalendar.Text = "Select";
+            btnSubmitSelectedCalendar.UseVisualStyleBackColor = true;
+            // 
             // SelectCalendarForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.ActiveCaption;
+            Controls.Add(btnSubmitSelectedCalendar);
+            Controls.Add(btnSubmitCode);
             Controls.Add(label2);
             Controls.Add(label1);
             Controls.Add(label3);
@@ -161,5 +193,7 @@
         private Label label3;
         private Label label1;
         private Label label2;
+        private Button btnSubmitCode;
+        private Button btnSubmitSelectedCalendar;
     }
 }

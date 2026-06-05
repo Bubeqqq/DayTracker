@@ -1,5 +1,4 @@
-﻿using DayTracker.Forms.RegisterForm;
-using DayTracker.Navigation;
+﻿using DayTracker.Navigation;
 
 namespace DayTracker.Forms.LoginForm
 {
@@ -29,7 +28,7 @@ namespace DayTracker.Forms.LoginForm
 
         private void OnBtnRegisterClicked()
         {
-            _navigationService.NavigateTo<RegisterPresenter>();
+            _navigationService.NavigateTo<RegisterForm.RegisterPresenter>();
         }
 
         private async void OnBtnLoginClicked()
@@ -61,8 +60,7 @@ namespace DayTracker.Forms.LoginForm
             
             if (result.IsSuccess)
             {
-                // TODO: Przejdź do głównego widoku aplikacji
-                MessageBox.Show("Login successful!"); // placeholder
+                _navigationService.NavigateTo<DayTracker.Forms.SelectCalendarForm.SelectCalendarPresenter>();
             }
             else
             {
