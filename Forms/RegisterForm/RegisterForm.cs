@@ -21,7 +21,7 @@ namespace DayTracker.UserControls.ToDoControl
             set => textBoxConfirmPass.UseSystemPasswordChar = value;
         }
 
-        public event Action? BtnRegisterClicked;
+        public event Action? RegistrationRequested;
         public event Action? BtnLoginClicked;
 
         public event Action? BtnShowPassMouseDown;
@@ -36,7 +36,7 @@ namespace DayTracker.UserControls.ToDoControl
         {
             InitializeComponent();
 
-            btnRegister.Click += (s, e) => BtnRegisterClicked?.Invoke();
+            btnRegister.Click += (s, e) => RegistrationRequested?.Invoke();
             btnLogIn.Click += (s, e) => BtnLoginClicked?.Invoke();
 
             btnShowPass.MouseDown += (s, e) => BtnShowPassMouseDown?.Invoke();
@@ -46,6 +46,15 @@ namespace DayTracker.UserControls.ToDoControl
             btnShowConfirmPass.MouseDown += (s, e) => BtnShowConfirmPassMouseDown?.Invoke();
             btnShowConfirmPass.MouseUp += (s, e) => BtnShowConfirmPassMouseUp?.Invoke();
             btnShowConfirmPass.MouseLeave += (s, e) => BtnShowConfirmPassMouseLeave?.Invoke();
+        }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Enter)
+            {
+                RegistrationRequested?.Invoke();
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
 
         public void ShowValidationErrors(Dictionary<string, string> errors)

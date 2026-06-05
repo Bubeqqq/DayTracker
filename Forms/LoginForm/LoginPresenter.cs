@@ -18,7 +18,7 @@ namespace DayTracker.Forms.LoginForm
             _navigationService = navigationService;
             _navigationService.HideBar();
 
-            _view.BtnLoginClicked += OnBtnLoginClicked;
+            _view.LoginRequested += OnLoginRequested;
             _view.BtnRegisterClicked += OnBtnRegisterClicked;
 
             _view.BtnShowPassMouseDown += () => _view.IsPasswordHidden = false;
@@ -31,7 +31,7 @@ namespace DayTracker.Forms.LoginForm
             _navigationService.NavigateTo<RegisterForm.RegisterPresenter>();
         }
 
-        private async void OnBtnLoginClicked()
+        private async void OnLoginRequested()
         {
             string email = _view.Email.Trim();
             string password = _view.Password;

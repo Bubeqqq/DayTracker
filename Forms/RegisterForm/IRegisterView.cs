@@ -16,7 +16,7 @@ namespace DayTracker.Forms.RegisterForm
         bool IsPasswordHidden { get; set; }
         bool IsConfirmPasswordHidden { get; set; }
 
-        event Action BtnRegisterClicked;
+        event Action RegistrationRequested;
         event Action BtnLoginClicked;
 
         event Action BtnShowPassMouseDown;

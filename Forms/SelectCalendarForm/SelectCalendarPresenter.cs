@@ -1,4 +1,5 @@
 ﻿using DayTracker.Navigation;
+using System.Windows.Navigation;
 
 namespace DayTracker.Forms.SelectCalendarForm
 {
@@ -11,10 +12,11 @@ namespace DayTracker.Forms.SelectCalendarForm
         public IModel Model => _model;
         public IView View => _view;
 
-        public SelectCalendarPresenter(ISelectCalendarView view, ISelectCalendarModel model)
+        public SelectCalendarPresenter(ISelectCalendarView view, ISelectCalendarModel model, INavigationService navigationService)
         {
             _view = view;
             _model = model;
+            _navigationService = navigationService;
 
             _view.BtnYourCalendarClicked += OnBtnYourCalendarClicked;
             _view.BtnSubmitSelectedCalendarClicked += OnBtnSubmitSelectedCalendarClicked;
@@ -25,27 +27,40 @@ namespace DayTracker.Forms.SelectCalendarForm
         private void OnBtnYourCalendarClicked()
         {
             // model ustawia kalendarz na ten użytwkonika 
+            _navigationService.NavigateTo<Calendar.CalendarPresenter>();
+
         }
         private void OnBtnSubmitSelectedCalendarClicked(int? calendarId)
         {
             // model ustawia kalendarz na ten o id calendarId
+            _navigationService.NavigateTo<Calendar.CalendarPresenter>();
         }
         private void OnBtnSubmitCodeClicked(string inviteCode)
         {
             // model wykonuje zapytanie do bazy danych, aby znaleźć kalendarz odpowiadający inviteCode i ustawia go jako aktualny
-            // model dodaje permisje dla użytkownika do tego kalendarza
+            _navigationService.NavigateTo<Calendar.CalendarPresenter>();
         }
         private void OnFormLoading()
         {
-            var firstNameResult = _model.GetUserFirstName();
-            if (firstNameResult.IsSuccess)
+            SetUserGreeting();
+            LoadUserSharedCalendars();
+        }
+        
+        private void SetUserGreeting()
+        {
+            var result = _model.GetUserFirstName();
+            if (result.IsSuccess)
             {
-                _view.Greeting = $"Hello {firstNameResult.Data}!";
+                _view.Greeting = $"Hello {result.Data}!";
             }
             else
             {
-                _view.Greeting = $"Error occured: {firstNameResult.ErrorMsg}";
+                _view.Greeting = $"Error occured: {result.ErrorMsg}";
             }
+        }
+        private void LoadUserSharedCalendars() // TODO: funkcja ładuje nazwy kalendarzy udostępnionych użytkownikowi i ich id, aby można było je wybrać w interfejsie
+        {
+            return;
         }
     }
 }

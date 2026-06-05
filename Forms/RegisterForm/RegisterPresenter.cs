@@ -17,7 +17,7 @@ namespace DayTracker.Forms.RegisterForm
             _model = model;
             _navigationService = navigationService;
 
-            _view.BtnRegisterClicked += OnBtnRegisterClicked;
+            _view.RegistrationRequested += OnRegistrationRequested;
             _view.BtnLoginClicked += OnBtnLoginClicked;
 
             _view.BtnShowPassMouseDown += () => _view.IsPasswordHidden = false;
@@ -28,7 +28,7 @@ namespace DayTracker.Forms.RegisterForm
             _view.BtnShowConfirmPassMouseUp += () => _view.IsConfirmPasswordHidden = true;
             _view.BtnShowConfirmPassMouseLeave += () => _view.IsConfirmPasswordHidden = true;
         }
-        private async void OnBtnRegisterClicked()
+        private async void OnRegistrationRequested()
         {
             string firstName = _view.FirstName.Trim();
             string lastName = _view.LastName.Trim();

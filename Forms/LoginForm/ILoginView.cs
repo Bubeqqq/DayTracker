@@ -8,8 +8,9 @@ namespace DayTracker.Forms.LoginForm
         string Password { get; }
         bool IsPasswordHidden { get; set; }
 
-        event Action BtnLoginClicked;
+        event Action LoginRequested;
         event Action BtnRegisterClicked;
+
         event Action? BtnShowPassMouseDown;
         event Action? BtnShowPassMouseUp;
         event Action? BtnShowPassMouseLeave;
