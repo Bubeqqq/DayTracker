@@ -44,6 +44,7 @@ namespace DayTracker.Forms.SelectCalendarForm
         {
             SetUserGreeting();
             LoadUserSharedCalendars();
+
         }
         
         private void SetUserGreeting()
@@ -60,7 +61,11 @@ namespace DayTracker.Forms.SelectCalendarForm
         }
         private void LoadUserSharedCalendars() // TODO: funkcja ładuje nazwy kalendarzy udostępnionych użytkownikowi i ich id, aby można było je wybrać w interfejsie
         {
-            return;
+            var result = _model.GetUserSharedCalendars();
+            if (result.IsSuccess)
+            {
+                // widok.załadujKalendarzeDoComboBoxa(result.Data);
+            }
         }
     }
 }
