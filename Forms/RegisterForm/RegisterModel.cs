@@ -23,5 +23,12 @@ namespace DayTracker.Forms.RegisterForm
                 OperationResult<bool>.Success(true) :
                 OperationResult<bool>.Failure(_loginService.ConvertLoginResultToMessage(result));
         }
+        public async Task<OperationResult<bool>> Login(string email, string password)
+        {
+            int result = await _loginService.Login(email, password);
+            return result == LoginService.SUCCESS ?
+                OperationResult<bool>.Success(true) :
+                OperationResult<bool>.Failure(_loginService.ConvertLoginResultToMessage(result));
+        }
     }
 }

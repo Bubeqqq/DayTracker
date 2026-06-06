@@ -79,21 +79,34 @@ namespace DayTracker.Forms.RegisterForm
                 return;
             }
 
-            var result = await _model.Register(firstName, lastName, email, password);
+            var registrationResult = await _model.Register(firstName, lastName, email, password);
 
-            if (result.IsSuccess)
+            if (registrationResult.IsSuccess)
             {
-                _navigationService.NavigateTo<SelectCalendarForm.SelectCalendarPresenter>();
+                // powiadom użytkownika o pomyślnej rejestracji
+                MessageBox.Show("Registration successful!"); // placeholder
+
+                var loginResult = await _model.Login(email, password);
+                if (loginResult.IsSuccess)
+                {
+                    _navigationService.NavigateTo<SelectCalendarForm.SelectCalendarPresenter>();
+                }
+                else
+                {
+                    // TODO: Wyświetl błąd logowania w message boxie
+                    MessageBox.Show(loginResult.ErrorMsg); // placeholder
+                    return;
+                }
             }
             else
             {
                 // TODO: Wyświetl błąd rejestracji w message boxie
-                MessageBox.Show(result.ErrorMsg); // placeholder
+                MessageBox.Show(registrationResult.ErrorMsg); // placeholder
                 return;
             }
         }
 
-        private async void OnBtnLoginClicked()
+        private void OnBtnLoginClicked()
         {
             _navigationService.NavigateTo<LoginForm.LoginPresenter>();
         }
