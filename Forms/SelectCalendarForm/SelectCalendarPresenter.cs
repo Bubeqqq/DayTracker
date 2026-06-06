@@ -32,11 +32,29 @@ namespace DayTracker.Forms.SelectCalendarForm
         }
         private void OnBtnSubmitSelectedCalendarClicked(int? calendarId)
         {
-            // model ustawia kalendarz na ten o id calendarId
-            _navigationService.NavigateTo<Calendar.CalendarPresenter>();
+            if (calendarId != null && calendarId > 0)
+            {
+                // model ustawia kalendarz na ten o id calendarId
+                _navigationService.NavigateTo<Calendar.CalendarPresenter>();
+            }
         }
         private void OnBtnSubmitCodeClicked(string inviteCode)
         {
+            inviteCode = inviteCode.Trim();
+            var errors = new Dictionary<string, string>();
+
+            if (string.IsNullOrEmpty(inviteCode))
+            {
+                errors[nameof(_view.InviteCode)] = "Invite code cannot be empty.";
+            }   
+            // dodatkowe walidacje inviteCode, np. format, długość itp. można dodać tutaj
+
+            if (errors.Count > 0)
+            {
+                _view.ShowValidationErrors(errors);
+                return;
+            }
+
             // model wykonuje zapytanie do bazy danych, aby znaleźć kalendarz odpowiadający inviteCode i ustawia go jako aktualny
             _navigationService.NavigateTo<Calendar.CalendarPresenter>();
         }
@@ -59,12 +77,19 @@ namespace DayTracker.Forms.SelectCalendarForm
                 _view.Greeting = $"Error occured: {result.ErrorMsg}";
             }
         }
-        private void LoadUserSharedCalendars() // TODO: funkcja ładuje nazwy kalendarzy udostępnionych użytkownikowi i ich id, aby można było je wybrać w interfejsie
+        private void LoadUserSharedCalendars()
         {
             var result = _model.GetUserSharedCalendars();
             if (result.IsSuccess)
             {
-                // widok.załadujKalendarzeDoComboBoxa(result.Data);
+                if (result.Data!.Count == 0)
+                {
+                    _view.LoadSharedCalendars([new KeyValuePair<int, string>(-1, "No shared calendars available")]);
+                    return;
+                }
+
+                var calendars = result.Data.Select(c => new KeyValuePair<int, string>(c.CalendarId, c.DisplayName)).ToList();
+                _view.LoadSharedCalendars(calendars);
             }
         }
     }

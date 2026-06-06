@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             btnYourCalendar = new Button();
             splitter1 = new Splitter();
             comboBoxSelectCalendar = new ComboBox();
@@ -38,6 +39,8 @@
             label2 = new Label();
             btnSubmitCode = new Button();
             btnSubmitSelectedCalendar = new Button();
+            errorProvider = new ErrorProvider(components);
+            ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
             // btnYourCalendar
@@ -65,12 +68,14 @@
             // comboBoxSelectCalendar
             // 
             comboBoxSelectCalendar.Anchor = AnchorStyles.None;
-            comboBoxSelectCalendar.Font = new Font("Segoe UI", 10.2F);
+            comboBoxSelectCalendar.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 238);
             comboBoxSelectCalendar.FormattingEnabled = true;
+            errorProvider.SetIconAlignment(comboBoxSelectCalendar, ErrorIconAlignment.MiddleLeft);
+            errorProvider.SetIconPadding(comboBoxSelectCalendar, 4);
             comboBoxSelectCalendar.Location = new Point(160, 292);
             comboBoxSelectCalendar.Margin = new Padding(3, 3, 3, 40);
             comboBoxSelectCalendar.Name = "comboBoxSelectCalendar";
-            comboBoxSelectCalendar.Size = new Size(217, 31);
+            comboBoxSelectCalendar.Size = new Size(217, 28);
             comboBoxSelectCalendar.TabIndex = 30;
             // 
             // labelGreeting
@@ -90,11 +95,13 @@
             textBoxInviteCode.Anchor = AnchorStyles.None;
             textBoxInviteCode.BackColor = SystemColors.Window;
             textBoxInviteCode.BorderStyle = BorderStyle.FixedSingle;
-            textBoxInviteCode.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 238);
+            textBoxInviteCode.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 238);
+            errorProvider.SetIconAlignment(textBoxInviteCode, ErrorIconAlignment.MiddleLeft);
+            errorProvider.SetIconPadding(textBoxInviteCode, 4);
             textBoxInviteCode.Location = new Point(160, 400);
             textBoxInviteCode.Margin = new Padding(0, 0, 0, 10);
             textBoxInviteCode.Name = "textBoxInviteCode";
-            textBoxInviteCode.Size = new Size(217, 30);
+            textBoxInviteCode.Size = new Size(217, 27);
             textBoxInviteCode.TabIndex = 33;
             // 
             // label3
@@ -141,7 +148,7 @@
             btnSubmitCode.FlatAppearance.BorderSize = 2;
             btnSubmitCode.FlatStyle = FlatStyle.Flat;
             btnSubmitCode.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 238);
-            btnSubmitCode.Location = new Point(387, 395);
+            btnSubmitCode.Location = new Point(387, 393);
             btnSubmitCode.Margin = new Padding(10, 50, 20, 50);
             btnSubmitCode.Name = "btnSubmitCode";
             btnSubmitCode.Size = new Size(73, 38);
@@ -155,13 +162,18 @@
             btnSubmitSelectedCalendar.FlatAppearance.BorderSize = 2;
             btnSubmitSelectedCalendar.FlatStyle = FlatStyle.Flat;
             btnSubmitSelectedCalendar.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold);
-            btnSubmitSelectedCalendar.Location = new Point(387, 288);
+            btnSubmitSelectedCalendar.Location = new Point(387, 286);
             btnSubmitSelectedCalendar.Margin = new Padding(10, 50, 20, 50);
             btnSubmitSelectedCalendar.Name = "btnSubmitSelectedCalendar";
             btnSubmitSelectedCalendar.Size = new Size(73, 38);
             btnSubmitSelectedCalendar.TabIndex = 38;
             btnSubmitSelectedCalendar.Text = "Select";
             btnSubmitSelectedCalendar.UseVisualStyleBackColor = true;
+            // 
+            // errorProvider
+            // 
+            errorProvider.BlinkStyle = ErrorBlinkStyle.NeverBlink;
+            errorProvider.ContainerControl = this;
             // 
             // SelectCalendarForm
             // 
@@ -181,6 +193,7 @@
             MinimumSize = new Size(620, 500);
             Name = "SelectCalendarForm";
             Size = new Size(620, 500);
+            ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -197,5 +210,6 @@
         private Label label2;
         private Button btnSubmitCode;
         private Button btnSubmitSelectedCalendar;
+        private ErrorProvider errorProvider;
     }
 }
