@@ -19,6 +19,7 @@ namespace DayTracker.LoadedData
         private List<Permission> _permissions;
         private List<Sleep> _sleeps;
         private List<TodoItem> _todoItems;
+        private List<User> _users;
 
         public LoadedDataService(ILoginService loginService, IDatabaseService databaseService)
         {
@@ -32,13 +33,13 @@ namespace DayTracker.LoadedData
         public event Action OnTodoItemsChanged;
         public event Action OnSleepsChanged;
         public event Action OnPermissionsChanged;
+        public event Action OnUsersChanged;
 
         private async Task UpdateDatabase(string entityName, EntityState entityState)
         {
             switch (entityName)
             {
                 case nameof(CalendarEvent):
-                    Console.WriteLine($"------------------------------ 8--");
                     _calendarEvents = await _databaseService.GetType<CalendarEvent>();
                     Console.WriteLine(_calendarEvents.Count);
                     OnCalendarEventsChanged?.Invoke();
@@ -55,17 +56,20 @@ namespace DayTracker.LoadedData
                     _permissions = await _databaseService.GetType<Permission>();
                     OnPermissionsChanged?.Invoke();
                     break;
+                case nameof(User):
+                    _users = await _databaseService.GetUsersAsync(u => true);
+                    OnUsersChanged?.Invoke();
+                    break;
             }
         }
 
         public async Task Initialize()
         {
-            _databaseService.LoadCalendar(4);
-
             _calendarEvents = await _databaseService.GetType<CalendarEvent>();
             _permissions = await _databaseService.GetType<Permission>();
             _sleeps = await _databaseService.GetType<Sleep>();
             _todoItems = await _databaseService.GetType<TodoItem>();
+            _users = await _databaseService.GetUsersAsync(u => true);
         }
 
         public List<CalendarEvent> GetCalendarEvents()
@@ -99,6 +103,11 @@ namespace DayTracker.LoadedData
         public List<TodoItem> GetTodoItems()
         {
             return _todoItems;
+        }
+
+        public List<User> GetUsers()
+        {
+            return _users;
         }
     }
 }

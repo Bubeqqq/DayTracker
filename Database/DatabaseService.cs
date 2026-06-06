@@ -131,6 +131,13 @@ namespace DayTracker.Database
                         OnEntityChanged?.Invoke(nameof(CalendarEvent), entry.State);
                     }
                 }
+                if(entry.Entity is Sleep sleep)
+                {
+                    if (sleep.CalendarId == CurrentCalendarID)
+                    {
+                        OnEntityChanged?.Invoke(nameof(Sleep), entry.State);
+                    }
+                }
                 else
                 {
                     string tableName = entry.Entity.GetType().Name;
