@@ -23,6 +23,22 @@ namespace DayTracker.Forms.SelectCalendarForm
             return OperationResult<string>.Failure("Current user is not set correctly!");
         }
 
+        public void SetCurrentCalendar(int calendarId)
+        {
+            _loadedDataService.LoadCalendar(calendarId);
+        }
+
+        public OperationResult SetCurrentCalendarToUserCalendar()
+        {
+            if (_loadedDataService.GetCurrentUser() is User user)
+            {
+                _loadedDataService.LoadCalendar(user.CalendarId);
+                return OperationResult.Success();   
+            }
+
+            return OperationResult.Failure("Current user is not set correctly!");
+        }
+
         public OperationResult<List<(int CalendarId, string DisplayName)>> GetUserSharedCalendars()
         {
             if (_loadedDataService.GetCurrentUser() is User currentUser)

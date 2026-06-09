@@ -26,15 +26,21 @@ namespace DayTracker.Forms.SelectCalendarForm
 
         private void OnBtnYourCalendarClicked()
         {
-            // model ustawia kalendarz na ten użytwkonika 
-            _navigationService.NavigateTo<Calendar.CalendarPresenter>();
-
+            var result = _model.SetCurrentCalendarToUserCalendar();
+            if (result.IsSuccess)
+            {
+                _navigationService.NavigateTo<Calendar.CalendarPresenter>();
+            }
+            else
+            {
+                throw new NotImplementedException("Błąd obsłużyć trzeba");
+            }
         }
         private void OnBtnSubmitSelectedCalendarClicked(int? calendarId)
         {
             if (calendarId != null && calendarId > 0)
             {
-                // model ustawia kalendarz na ten o id calendarId
+                _model.SetCurrentCalendar(calendarId.Value);
                 _navigationService.NavigateTo<Calendar.CalendarPresenter>();
             }
         }
