@@ -11,6 +11,8 @@ namespace DayTracker.Database
 {
     internal interface IDatabaseService
     {
+        public int CurrentCalendarID { get; set; }
+
         event Action<string, EntityState> OnEntityChanged;
 
         Task<List<T>> GetType<T>() where T : class, ICalendarRecord;
@@ -24,8 +26,6 @@ namespace DayTracker.Database
         Task AddUserAsync(User record);
 
         Task<List<User>> GetUsersAsync(Expression<Func<User, bool>> predicate);
-
-        void LoadCalendar(int CalendarID);
 
         Task<PermissionType> LoadUserPermissions(int UserID, int CalendarID);
     }

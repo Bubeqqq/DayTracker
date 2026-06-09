@@ -19,7 +19,7 @@ namespace DayTracker.Database
 
         DbSet<Permission> Permissions { get; set; }
 
-        private int CurrentCalendarID { get; set; } = -1;
+        public int CurrentCalendarID { get; set; } = -1;
 
         public DatabaseService(DbContextOptions<DatabaseService> options) : base(options)
         {
@@ -87,11 +87,6 @@ namespace DayTracker.Database
                 Type t when t == typeof(Permission) => await Permissions.Where(predicate as Expression<Func<Permission, bool>>).Where(p => p.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
                 _ => throw new InvalidOperationException($"Type {typeof(T).Name} is not supported.")
             };
-        }
-
-        public void LoadCalendar(int CalendarID)
-        {
-            CurrentCalendarID = CalendarID;
         }
 
         public async Task<PermissionType> LoadUserPermissions(int UserID, int CalendarID)
