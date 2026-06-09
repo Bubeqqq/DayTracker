@@ -11,12 +11,12 @@ namespace DayTracker.Forms.LoginForm
         {
             _loginService = loginService;
         }
-        public async Task<OperationResult<bool>> Login(string email, string password)
+        public async Task<OperationResult> Login(string email, string password)
         {
             int result = await _loginService.Login(email, password);
             return result == LoginService.SUCCESS ? 
-                OperationResult<bool>.Success(true) : 
-                OperationResult<bool>.Failure(_loginService.ConvertLoginResultToMessage(result));
+                OperationResult.Success() : 
+                OperationResult.Failure(_loginService.ConvertLoginResultToMessage(result));
         }
     }
 }
