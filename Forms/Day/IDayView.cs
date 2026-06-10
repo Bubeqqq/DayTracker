@@ -1,4 +1,5 @@
-﻿using DayTracker.Forms;
+﻿using DayTracker.Database.Datatypes;
+using DayTracker.Forms;
 using DayTracker.Forms.Day.TaskPreview;
 using DayTracker.UserControls.TestTask_usunac;
 using System;
@@ -15,9 +16,9 @@ namespace DayTracker.Forms.Day
         int LeftMargin { get; }
         int TotalWidth { get;}
         event EventHandler SizeChanged;
-        event EventHandler<TaskClickedEventArgs> TaskClicked;
-        event EventHandler<TaskClickedEventArgs> DeleteClicked;
-        void CreateAndPlaceTaskControl(TestTask task, int x, int y, int taskWidth, int height);
+        event EventHandler<CalendarEventClickedEventArgs> CalendarEventClicked;
+        event EventHandler<CalendarEventClickedEventArgs> DeleteClicked;
+        void CreateAndPlaceTaskControl(CalendarEvent calendarEvent, int x, int y, int taskWidth, int height);
         public bool YesNoMessage(string message);
         void ModifyControl(int index, int x, int y, int taskWidth, int height);
 

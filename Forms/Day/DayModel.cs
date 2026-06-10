@@ -1,35 +1,47 @@
-﻿using DayTracker.Navigation;
+﻿using DayTracker.Database.Datatypes;
+using DayTracker.LoadedData;
+using DayTracker.Navigation;
+using DayTracker.UserControls.TestTask_usunac;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DayTracker.UserControls.TestTask_usunac;
 namespace DayTracker.Forms.Day
 {
     internal class DayModel:IDayModel
     {
+        private readonly ILoadedDataService _loadedDataService;
         public INavigationService NavigationService { get; set; }
-        public DayModel(INavigationService navigationService)
+        public DayModel(INavigationService navigationService, ILoadedDataService loadedDataService)
         {
+            _loadedDataService = loadedDataService;
             NavigationService = navigationService;
         }
-        public List<List<TestTask>> CalculateColumns(List<TestTask> tasks)
+        public List<CalendarEvent> GetEventsForDay(DateTime date)
         {
-            var sortedTasks = tasks.OrderBy(t => t.Date).ThenBy(t => t.Date.Add(t.Duration)).ToList();
+            date = date.Date;
+            List<CalendarEvent> events = _loadedDataService.GetCalendarEvents();
+            
+
+            return events.Where(e => e.StartTime < date.AddDays(1) && e.StartTime.Add(e.Duration) > date).ToList();
+        }
+        public List<List<CalendarEvent>> CalculateColumns(List<CalendarEvent> events)
+        {
+            var sortedEvents = events.OrderBy(e => e.StartTime).ThenBy(e => e.StartTime.Add(e.Duration)).ToList();
 
 
-            List<List<TestTask>> columns = new List<List<TestTask>>();
+            List<List<CalendarEvent>> columns = new List<List<CalendarEvent>>();
 
-            foreach (var task in sortedTasks)
+            foreach (var calendarEvent in sortedEvents)
             {
                 bool placed = false;
 
                 foreach (var column in columns)
                 {
-                    if (column.Last().Date.Add(column.Last().Duration) <= task.Date)
+                    if (column.Last().StartTime.Add(column.Last().Duration) <= calendarEvent.StartTime)
                     {
-                        column.Add(task);
+                        column.Add(calendarEvent);
                         placed = true;
                         break;
                     }
@@ -37,7 +49,7 @@ namespace DayTracker.Forms.Day
 
                 if (!placed)
                 {
-                    columns.Add(new List<TestTask> { task });
+                    columns.Add(new List<CalendarEvent> { calendarEvent });
                 }
             }
             return columns;

@@ -1,22 +1,23 @@
-﻿using DayTracker.Forms;
+﻿using DayTracker.Database.Datatypes;
+using DayTracker.Forms;
+using DayTracker.UserControls.TestTask_usunac;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DayTracker.UserControls.TestTask_usunac;
 
 namespace DayTracker.Forms.TaskControl
 {
-    internal class TaskPresenter:IPresenter<TestTask>
+    internal class TaskPresenter:IPresenter<CalendarEvent>
     {
         private readonly ITaskModel _model;
         private readonly ITaskView _view;
         public IModel Model => _model;
         public IView View => _view;
-        private TestTask defaultTask;
-        private TestTask _task;
+        private CalendarEvent defaultTask;
+        private CalendarEvent _task;
         public TaskPresenter(ITaskView view,ITaskModel model) {
             _view=view;
             _model=model;
@@ -26,32 +27,36 @@ namespace DayTracker.Forms.TaskControl
         }
         private void Initialize()
         {
-            TestTask defaultTask = new TestTask(1, "Title", DateTime.Now , "Description", new TimeSpan(1,1, 1, 0));
+            CalendarEvent defaultCalendarEvent = new CalendarEvent();
+            defaultCalendarEvent.Title = "Title";
+            defaultCalendarEvent.StartTime = DateTime.Now;
+            //defaultCalendarEvent.Description = "Description";
+            defaultCalendarEvent.Duration = new TimeSpan(1, 1, 1, 0);
             if (_task != null)
             {
                 SetTaskFields(_task);
             }
             else
             {
-                SetTaskFields(defaultTask);
+                SetTaskFields(defaultCalendarEvent);
             }
         }
 
-        private void SetTaskFields(TestTask task)
+        private void SetTaskFields(CalendarEvent calendarEvent)
         {
-            
-            _view.SetTaskInfoFields(task.Title, task.Description);
 
-            DateTime startDate = task.Date;
+            _view.SetTaskInfoFields(calendarEvent.Title, "Description"); //calendarEvent.Description);
+
+            DateTime startDate = calendarEvent.StartTime;
             _view.SetStartDate(startDate.Hour.ToString(),startDate.Minute.ToString(),startDate.Day.ToString(),startDate.Month.ToString(),startDate.Year.ToString());
 
-            TimeSpan duration= task.Duration;
+            TimeSpan duration= calendarEvent.Duration;
             _view.SetDuration(duration.Days.ToString(), duration.Hours.ToString(), duration.Minutes.ToString());
 
-            DateTime endDate = task.Date.Add(duration);
+            DateTime endDate = calendarEvent.StartTime.Add(duration);
             _view.SetEndDate(endDate.Hour.ToString(), endDate.Minute.ToString(), endDate.Day.ToString(), endDate.Month.ToString(), endDate.Year.ToString());
         }
-        public void LoadArgs(TestTask args)
+        public void LoadArgs(CalendarEvent args)
         {            
             _task =args;
             Initialize();

@@ -1,4 +1,5 @@
-﻿using DayTracker.Forms.Day.TaskPreview;
+﻿using DayTracker.Database.Datatypes;
+using DayTracker.Forms.Day.TaskPreview;
 using DayTracker.UserControls.TestTask_usunac;
 using System;
 using System.Collections.Generic;
@@ -12,18 +13,18 @@ using System.Windows.Forms;
 
 namespace DayTracker.Forms.Day
 {
-    public partial class TaskPreviewUserControl : UserControl//TODO dodać funkcję pokazującą labelDidntStartToday i ustawiającą odpowiedni tekst
+    public partial class CalendarEventPreviewUserControl : UserControl//TODO dodać funkcję pokazującą labelDidntStartToday i ustawiającą odpowiedni tekst
     {
-        public TestTask Task { get; }
+        public CalendarEvent CalendarEvent { get; }
         public Size MaxLabelSize { get { return labelDescription.MaximumSize; } set { labelDescription.MaximumSize = value; } }
-        public event EventHandler<TaskClickedEventArgs> TaskClicked;
-        public event EventHandler<TaskClickedEventArgs> DeleteClicked;
-        public TaskPreviewUserControl(TestTask task)
+        public event EventHandler<CalendarEventClickedEventArgs> CalendarEventClicked;
+        public event EventHandler<CalendarEventClickedEventArgs> DeleteClicked;
+        public CalendarEventPreviewUserControl(CalendarEvent calendarEvent)
         {
             InitializeComponent();
-            Task=task;
-            labelTitle.Text = task.Title;
-            labelDescription.Text = task.Description;
+            CalendarEvent = calendarEvent;
+            labelTitle.Text = CalendarEvent.Title;
+            //labelDescription.Text = CalendarEvent.Description;
 
         }
         public void UpdateLocation(int x, int y, int taskWidth, int height)
@@ -33,9 +34,9 @@ namespace DayTracker.Forms.Day
             this.Height= height;
         }
         
-        private void Task_Click(object sender, EventArgs e)
+        private void CalendarEvent_Click(object sender, EventArgs e)
         {
-            TaskClicked?.Invoke(this,new TaskClickedEventArgs(Task));
+            CalendarEventClicked?.Invoke(this,new CalendarEventClickedEventArgs(CalendarEvent));
         }                                    // Prawdopodobnie będzie trzeba utworzyc zdarzenie i przy tworzeniu tej kontrolki podpiac je w Day Presenter
 
         private void TaskUserControl_BackColorChanged(object sender, EventArgs e)
@@ -46,7 +47,7 @@ namespace DayTracker.Forms.Day
 
         private void labelDelete_Click(object sender, EventArgs e)
         {
-            DeleteClicked?.Invoke(this, new TaskClickedEventArgs(Task));
+            DeleteClicked?.Invoke(this, new CalendarEventClickedEventArgs(CalendarEvent));
         }
     }
 }

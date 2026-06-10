@@ -1,6 +1,6 @@
 ﻿namespace DayTracker.Forms.Day
 {
-    partial class TaskPreviewUserControl
+    partial class CalendarEventPreviewUserControl
     {
         /// <summary> 
         /// Wymagana zmienna projektanta.
@@ -43,7 +43,7 @@
             labelTitle.Size = new Size(48, 25);
             labelTitle.TabIndex = 0;
             labelTitle.Text = "Title";
-            labelTitle.Click += Task_Click;
+            labelTitle.Click += CalendarEvent_Click;
             // 
             // labelDescription
             // 
@@ -54,7 +54,7 @@
             labelDescription.Size = new Size(187, 45);
             labelDescription.TabIndex = 1;
             labelDescription.Text = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
-            labelDescription.Click += Task_Click;
+            labelDescription.Click += CalendarEvent_Click;
             // 
             // labelDelete
             // 
@@ -80,7 +80,7 @@
             labelDidntStartToday.TabIndex = 6;
             labelDidntStartToday.Text = "This Event started on:";
             labelDidntStartToday.Visible = false;
-            labelDidntStartToday.Click += Task_Click;
+            labelDidntStartToday.Click += CalendarEvent_Click;
             // 
             // TaskPreviewUserControl
             // 
@@ -95,7 +95,7 @@
             Name = "TaskPreviewUserControl";
             Size = new Size(190, 115);
             BackColorChanged += TaskUserControl_BackColorChanged;
-            Click += Task_Click;
+            Click += CalendarEvent_Click;
             ResumeLayout(false);
             PerformLayout();
         }

@@ -1,18 +1,22 @@
-﻿using DayTracker.Navigation;
+﻿using DayTracker.Database.Datatypes;
+using DayTracker.LoadedData;
+using DayTracker.Navigation;
+using DayTracker.UserControls.TestTask_usunac;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DayTracker.UserControls.TestTask_usunac;
 
 namespace DayTracker.Forms.Calendar
 {
     internal class CalendarModel:ICalendarModel
     {
         public INavigationService NavigationService { get; set; }
-        public CalendarModel(INavigationService navigationService) 
+        private readonly ILoadedDataService _loadedDataService;
+        public CalendarModel(INavigationService navigationService, ILoadedDataService loadedDataService)
         {
+            _loadedDataService = loadedDataService;       
             NavigationService = navigationService;
         }
         public int CalculateOffset(DateTime date)
@@ -30,17 +34,18 @@ namespace DayTracker.Forms.Calendar
             offset -= 1;
             return offset; 
         }
-        public List<string> GetStringTaskList(List<TestTask> tasks, DateTime date) 
+        public List<string> GetStringTaskList(DateTime date) 
         {
             if (date == null)
             {
                 throw new ArgumentNullException("Date can't be null");
             }
-            List<TestTask> dailyTasks = tasks
-                        .Where(t => t.Date.Date == date.Date)
+            List<CalendarEvent> events=_loadedDataService.GetCalendarEvents();
+            List<CalendarEvent> dailyEvents = events
+                        .Where(e => e.StartTime == date.Date)
                         .ToList();
-            List<string> tasksStr = dailyTasks.ConvertAll(t => $"- {t.ToString()}");
-            return tasksStr;
+            return dailyEvents.ConvertAll(t => $"- {t.Title}");
+            
         }
     }
 }

@@ -13,6 +13,6 @@ namespace DayTracker.Forms.Calendar
     {
         INavigationService NavigationService { get; set; }
         int CalculateOffset(DateTime date);
-        List<string> GetStringTaskList(List<TestTask> tasks, DateTime date);
+        List<string> GetStringTaskList(DateTime date);
     }
 }

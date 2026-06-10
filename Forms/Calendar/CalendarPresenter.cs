@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 namespace DayTracker.Forms.Calendar
 {
     internal class CalendarPresenter:IPresenter//TODO to musi jakos pobrać liste taskow dla danego miesiąca
@@ -24,29 +23,9 @@ namespace DayTracker.Forms.Calendar
             _view.SelectedDateChanged += OnSelectedDateChanged;
             _view.NextButtonClicked += NextButtonClicked;
             _view.PreviousButtonClicked += PreviousButtonClicked;
-            TestTask task = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
-            TestTask task7 = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
-            TestTask task8 = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
-            TestTask task9 = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
-            TestTask task3 = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
-            TestTask task4 = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
-            TestTask task5 = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
-            TestTask task6 = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(1, 5, 0));
-            TestTask task2 = new TestTask(1, "test2", new DateTime(2026, 5, 30), "XD", new TimeSpan(2, 5, 0));
-            List<TestTask> tasks = new List<TestTask>();
-            tasks.Add(task);
-            tasks.Add(task7);
-            tasks.Add(task8);
-            tasks.Add(task9);
-            tasks.Add(task3);
-            tasks.Add(task4);
-            tasks.Add(task5);
-            tasks.Add(task6);
-
-            tasks.Add(task2);
-            GenerateMonth(tasks);
+            
         }
-        private void GenerateMonth(List<TestTask> allTasks)
+        private void GenerateMonth()
         {
             try
             {
@@ -60,14 +39,14 @@ namespace DayTracker.Forms.Calendar
                 {
                     DateTime currentDate = new DateTime(date.Year, date.Month, day);
 
-                    List<string> tasks = _model.GetStringTaskList(allTasks, currentDate);
+                    List<string> events = _model.GetStringTaskList(currentDate);
 
 
                     int position = offset + (day - 1);
                     int column = position % 7;
                     int row = position / 7;
 
-                    _view.CreateAndAddDayCell(currentDate, tasks, column, row);
+                    _view.CreateAndAddDayCell(currentDate, events, column, row);
 
                 }
 
@@ -84,12 +63,8 @@ namespace DayTracker.Forms.Calendar
             _model.NavigationService.NavigateTo<DayPresenter, DateTime>(e.Date);
         }
         private void OnSelectedDateChanged(object sender, EventArgs e) {
-            TestTask task = new TestTask(1, "test1", new DateTime(2026, 5, 5), "XD", new TimeSpan(2, 5, 0));
-            TestTask task2 = new TestTask(1, "test2", new DateTime(2026, 4, 30), "XD", new TimeSpan(2, 4, 0));
-            List<TestTask> tasks = new List<TestTask>();
-            tasks.Add(task);
-            tasks.Add(task2);
-            GenerateMonth(tasks);
+            
+            GenerateMonth();
         }
         private void NextButtonClicked(object sender, EventArgs e) {
             _view.AddMonthToDate(1);

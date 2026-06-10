@@ -1,4 +1,7 @@
-﻿using DayTracker.Forms.Day;
+﻿using DayTracker.Database.Datatypes;
+using DayTracker.Forms.Day;
+using DayTracker.Forms.Day.TaskPreview;
+using DayTracker.UserControls.TestTask_usunac;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,8 +11,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using DayTracker.Forms.Day.TaskPreview;
-using DayTracker.UserControls.TestTask_usunac;
 namespace DayTracker.Forms.Day
 {
     public partial class DayUserControl : UserControl,IDayView
@@ -28,8 +29,8 @@ namespace DayTracker.Forms.Day
         public int LeftMargin { get; }
         public int TotalWidth { get { return this.ClientSize.Width; } }
         public event EventHandler SizeChanged;
-        public event EventHandler<TaskClickedEventArgs> TaskClicked;
-        public event EventHandler<TaskClickedEventArgs> DeleteClicked;
+        public event EventHandler<CalendarEventClickedEventArgs> CalendarEventClicked;
+        public event EventHandler<CalendarEventClickedEventArgs> DeleteClicked;
         public DayUserControl()
         {
             InitializeComponent();
@@ -41,23 +42,23 @@ namespace DayTracker.Forms.Day
         }
         // Algorytm grupujący zadania w kolumny, by uniknąć nachodzenia
 
-        public void CreateAndPlaceTaskControl(TestTask task, int x, int y, int taskWidth, int height)
+        public void CreateAndPlaceTaskControl(CalendarEvent calendarEvent, int x, int y, int taskWidth, int height)
         {
-            TaskPreviewUserControl control = new TaskPreviewUserControl(task);
+            CalendarEventPreviewUserControl control = new CalendarEventPreviewUserControl(calendarEvent);
             control.Location = new Point(x, y);
             control.Width = taskWidth;
             control.Height = height;
             control.BackColor = Color.Yellow;
             control.MaxLabelSize = new Size(taskWidth - 20, 0);
             control.DeleteClicked += DeleteClicked;
-            control.TaskClicked += TaskClicked;
+            control.CalendarEventClicked += CalendarEventClicked;
             this.Controls.Add(control);
 
 
         }
         public void ModifyControl(int index,int x,int y, int taskWidth, int height)
         {
-            TaskPreviewUserControl control = (TaskPreviewUserControl)this.Controls[index];
+            CalendarEventPreviewUserControl control = (CalendarEventPreviewUserControl)this.Controls[index];
             control.UpdateLocation(x,y,taskWidth,height);
         }
         public bool YesNoMessage(string message)

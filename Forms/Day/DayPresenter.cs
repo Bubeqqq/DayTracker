@@ -1,12 +1,14 @@
-﻿using DayTracker.Forms;
+﻿using DayTracker.Database.Datatypes;
+using DayTracker.Forms;
+using DayTracker.Forms.Day.TaskPreview;
+using DayTracker.Forms.TaskControl;
+using DayTracker.UserControls.TestTask_usunac;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DayTracker.Forms.Day.TaskPreview;
-using DayTracker.UserControls.TestTask_usunac;
-using DayTracker.Forms.TaskControl;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace DayTracker.Forms.Day
 {
@@ -16,60 +18,46 @@ namespace DayTracker.Forms.Day
         private readonly IDayModel _model;
         public IModel Model => _model;
         public IView View => _view;
-        private List<TestTask> tasks;//wyjebac
         private DateTime _date;
+        private List<CalendarEvent> _eventList;
         public DayPresenter(DayUserControl view, DayModel model) {
             _view = view;
             _model = model;
             _view.SizeChanged += OnSizeChanged;
-            _view.TaskClicked += OnTaskClicked;
+            _view.CalendarEventClicked += OnCalendarEventClicked;
             _view.DeleteClicked += OnDeleteClicked;
-            TestTask task = new TestTask(1, "test1", new DateTime(2026, 5, 25), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new TimeSpan(1,1,0));
-            TestTask task2 = new TestTask(1, "test2", new DateTime(2026, 5, 25), "XD",new TimeSpan(2, 5, 0));
-            TestTask task3 = new TestTask(1, "test1", new DateTime(2026, 5, 25), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new TimeSpan(1, 1, 0));
-            TestTask task4 = new TestTask(1, "test2", new DateTime(2026, 5, 25), "XD", new TimeSpan(2, 5, 0));
-            TestTask task5 = new TestTask(1, "test1", new DateTime(2026, 5, 25), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new TimeSpan(1, 1, 0));
-            TestTask task6 = new TestTask(1, "test2", new DateTime(2026, 5, 25), "XD", new TimeSpan(2, 5, 0));
-            TestTask task7 = new TestTask(1, "test1", new DateTime(2026, 5, 25), "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", new TimeSpan(1, 1, 0));
-            TestTask task8 = new TestTask(1, "test2", new DateTime(2026, 5, 25), "XD", new TimeSpan(2, 5, 0));
-            tasks = new List<TestTask>();
-            tasks.Add(task);
-            tasks.Add(task2);
-            tasks.Add(task3);
-            tasks.Add(task4);
-            tasks.Add(task5);
-            tasks.Add(task6);
-            tasks.Add(task7);
-            tasks.Add(task8);
-            LayoutTasks(tasks);
+            
+            
         }
         public void LoadArgs(DateTime args)
         {
             _date = args;
+            _eventList=_model.GetEventsForDay(_date);
+            LayoutEvents(_eventList);
         }
-        private void LayoutTasks(List<TestTask> tasks)
+        private void LayoutEvents(List<CalendarEvent> events)
         {
 
-            List<List<TestTask>> columns = _model.CalculateColumns(tasks);
+            List<List<CalendarEvent>> columns = _model.CalculateColumns(events);
 
             int columnsCount = columns.Count;
 
-            int taskWidth = CalculateTaskWidth(columnsCount, _view.TotalWidth, _view.LeftMargin);
+            int eventWidth = CalculateEventWidth(columnsCount, _view.TotalWidth, _view.LeftMargin);
 
             for (int columnIndex = 0; columnIndex < columnsCount; columnIndex++)
             {
-                foreach (var task in columns[columnIndex])
+                foreach (var calendarEvent in columns[columnIndex])
                 {
 
-                    int x = _model.CalculateX(_view.LeftMargin, columnIndex, taskWidth);
+                    int x = _model.CalculateX(_view.LeftMargin, columnIndex, eventWidth);
 
-                    int y = _model.CalculateY(task.Date, _view.PixelsPerHour);
-                    int height = _model.CalculateHeight(task.Duration,_view.PixelsPerHour);
-                    _view.CreateAndPlaceTaskControl(task, x, y, taskWidth, height);
+                    int y = _model.CalculateY(calendarEvent.StartTime, _view.PixelsPerHour);
+                    int height = _model.CalculateHeight(calendarEvent.Duration,_view.PixelsPerHour);
+                    _view.CreateAndPlaceTaskControl(calendarEvent, x, y, eventWidth, height);
                 }
             }
         }
-        private int CalculateTaskWidth(int columnsCount,int totalWidth, int leftMargin)
+        private int CalculateEventWidth(int columnsCount,int totalWidth, int leftMargin)
         {
             int availableWidth = _view.TotalWidth - _view.LeftMargin;
 
@@ -81,39 +69,39 @@ namespace DayTracker.Forms.Day
             int taskWidth = availableWidth / columnsCount;
             return taskWidth;
         }
-        private void UpdateTasks(List<TestTask> tasks)
+        private void UpdateEvents(List<CalendarEvent> events)
         {
-            List<List<TestTask>> columns = _model.CalculateColumns(tasks);
+            List<List<CalendarEvent>> columns = _model.CalculateColumns(events);
 
             int columnsCount = columns.Count;
-            int taskWidth = CalculateTaskWidth(columnsCount, _view.TotalWidth, _view.LeftMargin);
+            int eventWidth = CalculateEventWidth(columnsCount, _view.TotalWidth, _view.LeftMargin);
 
             int index = 0;
             for (int columnIndex = 0; columnIndex < columnsCount; columnIndex++)
             {
-                foreach (var task in columns[columnIndex])
+                foreach (var calendarEvent in columns[columnIndex])
                 {
-                    int x = _model.CalculateX(_view.LeftMargin,columnIndex , taskWidth);
-                    int y = _model.CalculateY(task.Date, _view.PixelsPerHour);
-                    int height = _model.CalculateHeight(task.Duration, _view.PixelsPerHour);
+                    int x = _model.CalculateX(_view.LeftMargin,columnIndex , eventWidth);
+                    int y = _model.CalculateY(calendarEvent.StartTime, _view.PixelsPerHour);
+                    int height = _model.CalculateHeight(calendarEvent.Duration, _view.PixelsPerHour);
                     
-                    _view.ModifyControl(index, x, y, taskWidth, height);
+                    _view.ModifyControl(index, x, y, eventWidth, height);
                     index++;
                 }
             }
         }
         private void OnSizeChanged(object sender, EventArgs e)
         {
-            UpdateTasks(tasks);
+            UpdateEvents(_eventList);
 
         }
 
-        private void OnTaskClicked(object sender, TaskClickedEventArgs e)
+        private void OnCalendarEventClicked(object sender, CalendarEventClickedEventArgs e)
         {
             
-            _model.NavigationService.NavigateTo<TaskPresenter, TestTask>(e.Task);
+            _model.NavigationService.NavigateTo<TaskPresenter, CalendarEvent>(e.CalendarEvent);
         }
-        private void OnDeleteClicked(object sender, TaskClickedEventArgs e)
+        private void OnDeleteClicked(object sender, CalendarEventClickedEventArgs e)
         {
             bool yesDecision=_view.YesNoMessage("Are you sure you want to delete this task?");
         }
