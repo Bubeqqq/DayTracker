@@ -19,6 +19,14 @@ namespace DayTracker.Database
 
         Task<List<T>> GetType<T>(Expression<Func<T, bool>> predicate) where T : class, ICalendarRecord;
 
+        Task RemoveByType<T>(int index) where T : class, ICalendarRecord;
+
+        Task RemoveByType<T>(T record) where T : class, ICalendarRecord;
+
+        Task UpdateByType<T>(int index, Action<T> update) where T : class, ICalendarRecord;
+
+        Task UpdateByType<T>(T record, Action<T> update) where T : class, ICalendarRecord;
+
         Task EnsureCreated();
 
         Task AddAsync<T>(T record) where T : class, ICalendarRecord;

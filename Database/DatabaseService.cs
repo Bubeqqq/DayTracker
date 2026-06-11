@@ -1,5 +1,6 @@
 ﻿using DayTracker.Database.Datatypes;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,21 +31,12 @@ namespace DayTracker.Database
 
         public async Task AddAsync<T>(T record) where T : class, ICalendarRecord
         {
-            switch (typeof(T))
+            if (record == null)
             {
-                case Type t when t == typeof(TodoItem):
-                    await TodoItems.AddAsync(record as TodoItem);
-                    break;
-                case Type t when t == typeof(CalendarEvent):
-                    await CalendarEvents.AddAsync(record as CalendarEvent);
-                    break;
-                case Type t when t == typeof(Sleep):
-                    await Sleeps.AddAsync(record as Sleep);
-                    break;
-                case Type t when t == typeof(Permission):
-                    await Permissions.AddAsync(record as Permission);
-                    break;
-            };
+                return;
+            }
+
+            await Set<T>().AddAsync(record);
 
             await SaveChangesAsync();
         }
@@ -141,6 +133,71 @@ namespace DayTracker.Database
             }
 
             return result;
+        }
+
+        async Task IDatabaseService.RemoveByType<T>(int index)
+        {
+            var record = await Set<T>().FindAsync(index);
+
+            if (record != null)
+            {
+                Remove(record);
+
+                await SaveChangesAsync();
+            }
+        }
+
+        async Task IDatabaseService.RemoveByType<T>(T record)
+        {
+            if (record == null)
+            {
+                return;
+            }
+
+            Remove(record);
+
+            await SaveChangesAsync();
+        }
+
+        async Task IDatabaseService.UpdateByType<T>(int index, Action<T> update)
+        {
+            object foundRecord = null;
+
+            switch (typeof(T))
+            {
+                case Type t when t == typeof(TodoItem):
+                    foundRecord = await TodoItems.FindAsync(index);
+                    break;
+                case Type t when t == typeof(CalendarEvent):
+                    foundRecord = await CalendarEvents.FindAsync(index);
+                    break;
+                case Type t when t == typeof(Sleep):
+                    foundRecord = await Sleeps.FindAsync(index);
+                    break;
+                case Type t when t == typeof(Permission):
+                    foundRecord = await Permissions.FindAsync(index);
+                    break;
+            }
+
+            if (foundRecord != null)
+            {
+                update((T)foundRecord);
+                await SaveChangesAsync();
+            }
+        }
+
+        async Task IDatabaseService.UpdateByType<T>(T record, Action<T> update)
+        {
+            if (record == null)
+            {
+                return;
+            }
+
+            update(record);
+
+            Update(record);
+
+            await SaveChangesAsync();
         }
     }
 }
