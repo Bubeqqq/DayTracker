@@ -1,4 +1,6 @@
-﻿using DayTracker.Forms.Calendar;
+﻿using DayTracker.Database.Datatypes;
+using DayTracker.Forms.Calendar;
+using DayTracker.Forms.TaskControl;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -30,6 +32,7 @@ namespace DayTracker.Forms.Calendar
         public event EventHandler SelectedDateChanged;
         public event EventHandler NextButtonClicked;
         public event EventHandler PreviousButtonClicked;
+        public event EventHandler AddEventButtonClicked;
         public CalendarUserControl()
         {
             InitializeComponent();
@@ -98,6 +101,11 @@ namespace DayTracker.Forms.Calendar
         {
             base.OnResize(e);
             Refresh();
+        }
+
+        private void buttonAddEvent_Click(object sender, EventArgs e)
+        {
+            AddEventButtonClicked?.Invoke(this, e);
         }
     }
 

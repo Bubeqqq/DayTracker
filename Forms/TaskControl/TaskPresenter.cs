@@ -18,10 +18,13 @@ namespace DayTracker.Forms.TaskControl
         public IView View => _view;
         private CalendarEvent defaultTask;
         private CalendarEvent _task;
+        private bool _editMode;
         public TaskPresenter(ITaskView view,ITaskModel model) {
             _view=view;
             _model=model;
             _view.FieldValidation += OnFieldValidation;
+            _view.ConfirmClicked +=OnConfirmClicked;
+            _view.SetCheckedListBoxItems(_model.GetDefaultCategories());
             Initialize();
 
         }
@@ -32,12 +35,15 @@ namespace DayTracker.Forms.TaskControl
             defaultCalendarEvent.StartTime = DateTime.Now;
             //defaultCalendarEvent.Description = "Description";
             defaultCalendarEvent.Duration = new TimeSpan(1, 1, 1, 0);
+            _model.SetAllCategoriesToFalse(defaultCalendarEvent);
             if (_task != null)
             {
+                _editMode = true;
                 SetTaskFields(_task);
             }
             else
             {
+                _editMode = false;
                 SetTaskFields(defaultCalendarEvent);
             }
         }
@@ -55,6 +61,18 @@ namespace DayTracker.Forms.TaskControl
 
             DateTime endDate = calendarEvent.StartTime.Add(duration);
             _view.SetEndDate(endDate.Hour.ToString(), endDate.Minute.ToString(), endDate.Day.ToString(), endDate.Month.ToString(), endDate.Year.ToString());
+            SetCategories(calendarEvent);
+        }
+        private void SetCategories(CalendarEvent calendarEvent)
+        {
+            Dictionary<string, bool> categories = _model.GetDefaultCategories();
+            categories["IsHard"] = calendarEvent.IsHard;
+            categories["IsOutdoor"] = calendarEvent.IsOutdoor;
+            categories["IsSport"] = calendarEvent.IsSport;
+            categories["IsWork"] = calendarEvent.IsWork;
+            categories["IsRelax"] = calendarEvent.IsRelax;
+            categories["IsEducation"] = calendarEvent.IsEducation;            
+            _view.SetCheckedListBoxItems(categories);
         }
         public void LoadArgs(CalendarEvent args)
         {            
@@ -271,7 +289,36 @@ namespace DayTracker.Forms.TaskControl
             DateTime newStartDate = endDate.Subtract(duration);
             _view.SetStartDate(newStartDate.Hour.ToString(), newStartDate.Minute.ToString(), newStartDate.Day.ToString(), newStartDate.Month.ToString(), newStartDate.Year.ToString());
         }
-      
+       
+      private async void OnConfirmClicked(object sender, EventArgs e)
+        {
+            if (_model.TryGetDate(_view.StartMinute, _view.StartHour, _view.StartDay, _view.StartMonth, _view.StartYear, out DateTime startTime) &&
+                _model.TryGetDuration(_view.DurationMinutes, _view.DurationHours, _view.DurationDays, out TimeSpan duration)&&
+                !string.IsNullOrEmpty(_view.Title))
+            {
+                CalendarEvent calendarEvent = new CalendarEvent();
+                calendarEvent.Title = _view.Title;
+                //calendarEvent.Description = _view.Descritpion;
+                
+                calendarEvent.StartTime= startTime;
+                calendarEvent.Duration= duration;
+                List<string> checkedCategories = _view.GetCheckedItems();
+                _model.SetEventCategories(checkedCategories, calendarEvent);
+                if (_editMode)
+                {
+                    calendarEvent.Id = _task.Id;
+                    calendarEvent.CalendarId = _task.CalendarId;
+                    //_model.Modify();
+                }
+                else
+                {
+                    _model.AddCalendarEvent(calendarEvent);
+                }
+
+            }
+
+            
+        }
         
     }
 }

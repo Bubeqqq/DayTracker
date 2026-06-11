@@ -1,4 +1,9 @@
-﻿using DayTracker.Navigation;
+﻿using DayTracker.Database;
+using DayTracker.Database.Datatypes;
+using DayTracker.Forms.Calendar;
+using DayTracker.Forms.Day;
+using DayTracker.LoadedData;
+using DayTracker.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +15,44 @@ namespace DayTracker.Forms.TaskControl
     internal class TaskModel:ITaskModel
     {
         public INavigationService NavigationService { get; set; }
-        public TaskModel() { }
+        private readonly ILoadedDataService _loadedDataService;
+        private readonly IDatabaseService _databaseService;
+        public TaskModel(INavigationService navigationService, ILoadedDataService loadedDataService ,IDatabaseService databaseService)
+        {
+            _loadedDataService = loadedDataService;
+            NavigationService = navigationService;
+            _databaseService = databaseService;
+        }
+        public Dictionary<string, bool> GetDefaultCategories()
+        {
+            Dictionary<string, bool> categories = new Dictionary<string, bool> { { "IsHard", false }, { "IsOutdoor", false },
+                { "IsSport", false }, { "IsWork", false }, { "IsRelax", false }, { "IsEducation", false } };
+            return categories;
+        }
+        public void SetAllCategoriesToFalse(CalendarEvent calendarEvent)
+        {
+            calendarEvent.IsHard = false;
+            calendarEvent.IsOutdoor = false;
+            calendarEvent.IsSport = false;
+            calendarEvent.IsWork = false;
+            calendarEvent.IsRelax = false;
+            calendarEvent.IsEducation = false;
+        }
+        public void SetEventCategories(List<string> checkedCategories,CalendarEvent calendarEvent)
+        {
+            Dictionary<string, bool> categories = GetDefaultCategories();
+            SetAllCategoriesToFalse(calendarEvent);
+            foreach (string checkedCategory in checkedCategories)
+            {
+                categories[checkedCategory] = true;
+            }
+            calendarEvent.IsHard = categories["IsHard"];
+            calendarEvent.IsOutdoor = categories["IsOutdoor"];
+            calendarEvent.IsSport = categories["IsSport"];
+            calendarEvent.IsWork = categories["IsWork"];
+            calendarEvent.IsRelax = categories["IsRelax"];
+            calendarEvent.IsEducation = categories["IsEducation"];
+        }
         public bool ValidateMinute(string minuteStr)
         {
             return !int.TryParse(minuteStr, out int minute) || minute < 0 || minute >= 60;
@@ -84,7 +126,15 @@ namespace DayTracker.Forms.TaskControl
             }
         }
 
+        public async void AddCalendarEvent(CalendarEvent calendarEvent)
+        {
+            calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
+            calendarEvent.StartTime=calendarEvent.StartTime.ToUniversalTime();
+            //MessageBox.Show(calendarEvent.StartTime.ToUniversalTime);
+            await _databaseService.AddAsync(calendarEvent);
 
+             //NavigationService.NavigateTo<DayPresenter,DateTime >(calendarEvent.StartTime);
+        }
 
     }
 }

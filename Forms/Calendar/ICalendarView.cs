@@ -14,6 +14,7 @@ namespace DayTracker.Forms.Calendar
         event EventHandler SelectedDateChanged;
         event EventHandler NextButtonClicked;
         event EventHandler PreviousButtonClicked;
+        event EventHandler AddEventButtonClicked;
         void CreateAndAddDayCell(DateTime date, List<string> tasks, int column, int row);
         void SuspendAndClearCalendar();
         public void ResumeCalendarLayout();

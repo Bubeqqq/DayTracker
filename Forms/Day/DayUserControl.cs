@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace DayTracker.Forms.Day
 {
-    public partial class DayUserControl : UserControl,IDayView
+    public partial class DayUserControl : UserControl, IDayView
     {
 
         protected override CreateParams CreateParams
@@ -29,6 +29,7 @@ namespace DayTracker.Forms.Day
         public int LeftMargin { get; }
         public int TotalWidth { get { return this.ClientSize.Width; } }
         public event EventHandler SizeChanged;
+        public event EventHandler AddClicked;
         public event EventHandler<CalendarEventClickedEventArgs> CalendarEventClicked;
         public event EventHandler<CalendarEventClickedEventArgs> DeleteClicked;
         public DayUserControl()
@@ -56,10 +57,10 @@ namespace DayTracker.Forms.Day
 
 
         }
-        public void ModifyControl(int index,int x,int y, int taskWidth, int height)
+        public void ModifyControl(int index, int x, int y, int taskWidth, int height)
         {
             CalendarEventPreviewUserControl control = (CalendarEventPreviewUserControl)this.Controls[index];
-            control.UpdateLocation(x,y,taskWidth,height);
+            control.UpdateLocation(x, y, taskWidth, height);
         }
         public bool YesNoMessage(string message)
         {
@@ -81,7 +82,7 @@ namespace DayTracker.Forms.Day
 
             for (int i = 0; i <= 24; i++)
             {
-                int y = i * PixelsPerHour;
+                int y = i * PixelsPerHour+buttonAddEvent.Height;
 
                 string timeText = $"{i:00}:00";
                 g.DrawString(timeText, timeFont, textBrush, 5, y);
@@ -93,7 +94,12 @@ namespace DayTracker.Forms.Day
 
         private void DayUserControl_ClientSizeChanged(object sender, EventArgs e)
         {
-          SizeChanged?.Invoke(this, EventArgs.Empty);
+            SizeChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void buttonAddEvent_Click(object sender, EventArgs e)
+        {
+            AddClicked?.Invoke(this, EventArgs.Empty);
         }
     }
 }

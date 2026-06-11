@@ -26,34 +26,39 @@ namespace DayTracker.Forms.Day
             _view.SizeChanged += OnSizeChanged;
             _view.CalendarEventClicked += OnCalendarEventClicked;
             _view.DeleteClicked += OnDeleteClicked;
-            
+            _view.AddClicked +=OnAddClicked;
             
         }
         public void LoadArgs(DateTime args)
         {
             _date = args;
             _eventList=_model.GetEventsForDay(_date);
-            LayoutEvents(_eventList);
+            
+                LayoutEvents(_eventList);
+            
+            
         }
         private void LayoutEvents(List<CalendarEvent> events)
         {
-
-            List<List<CalendarEvent>> columns = _model.CalculateColumns(events);
-
-            int columnsCount = columns.Count;
-
-            int eventWidth = CalculateEventWidth(columnsCount, _view.TotalWidth, _view.LeftMargin);
-
-            for (int columnIndex = 0; columnIndex < columnsCount; columnIndex++)
+            if (_eventList.Count != 0)
             {
-                foreach (var calendarEvent in columns[columnIndex])
+                List<List<CalendarEvent>> columns = _model.CalculateColumns(events);
+
+                int columnsCount = columns.Count;
+
+                int eventWidth = CalculateEventWidth(columnsCount, _view.TotalWidth, _view.LeftMargin);
+
+                for (int columnIndex = 0; columnIndex < columnsCount; columnIndex++)
                 {
+                    foreach (var calendarEvent in columns[columnIndex])
+                    {
 
-                    int x = _model.CalculateX(_view.LeftMargin, columnIndex, eventWidth);
+                        int x = _model.CalculateX(_view.LeftMargin, columnIndex, eventWidth);
 
-                    int y = _model.CalculateY(calendarEvent.StartTime, _view.PixelsPerHour);
-                    int height = _model.CalculateHeight(calendarEvent.Duration,_view.PixelsPerHour);
-                    _view.CreateAndPlaceTaskControl(calendarEvent, x, y, eventWidth, height);
+                        int y = _model.CalculateY(calendarEvent.StartTime, _view.PixelsPerHour);
+                        int height = _model.CalculateHeight(calendarEvent.Duration, _view.PixelsPerHour);
+                        _view.CreateAndPlaceTaskControl(calendarEvent, x, y, eventWidth, height);
+                    }
                 }
             }
         }
@@ -61,7 +66,7 @@ namespace DayTracker.Forms.Day
         {
             int availableWidth = _view.TotalWidth - _view.LeftMargin;
 
-            if (columnsCount == 0 || availableWidth <= 0)
+            if(availableWidth <= 0)
             {
                 throw new ArgumentException();
             }
@@ -71,24 +76,32 @@ namespace DayTracker.Forms.Day
         }
         private void UpdateEvents(List<CalendarEvent> events)
         {
-            List<List<CalendarEvent>> columns = _model.CalculateColumns(events);
-
-            int columnsCount = columns.Count;
-            int eventWidth = CalculateEventWidth(columnsCount, _view.TotalWidth, _view.LeftMargin);
-
-            int index = 0;
-            for (int columnIndex = 0; columnIndex < columnsCount; columnIndex++)
+            if (_eventList.Count != 0)
             {
-                foreach (var calendarEvent in columns[columnIndex])
+                List<List<CalendarEvent>> columns = _model.CalculateColumns(events);
+
+                int columnsCount = columns.Count;
+                int eventWidth = CalculateEventWidth(columnsCount, _view.TotalWidth, _view.LeftMargin);
+
+                int index = 0;
+                for (int columnIndex = 0; columnIndex < columnsCount; columnIndex++)
                 {
-                    int x = _model.CalculateX(_view.LeftMargin,columnIndex , eventWidth);
-                    int y = _model.CalculateY(calendarEvent.StartTime, _view.PixelsPerHour);
-                    int height = _model.CalculateHeight(calendarEvent.Duration, _view.PixelsPerHour);
-                    
-                    _view.ModifyControl(index, x, y, eventWidth, height);
-                    index++;
+                    foreach (var calendarEvent in columns[columnIndex])
+                    {
+                        int x = _model.CalculateX(_view.LeftMargin, columnIndex, eventWidth);
+                        int y = _model.CalculateY(calendarEvent.StartTime, _view.PixelsPerHour);
+                        int height = _model.CalculateHeight(calendarEvent.Duration, _view.PixelsPerHour);
+
+                        _view.ModifyControl(index, x, y, eventWidth, height);
+                        index++;
+                    }
                 }
             }
+        }
+        private void OnAddClicked(object sender, EventArgs e)
+        {
+            CalendarEvent calendarEvent = _model.CreateDefualutCalendarEvent(_date);
+            _model.NavigationService.NavigateTo<TaskPresenter, CalendarEvent>(calendarEvent);
         }
         private void OnSizeChanged(object sender, EventArgs e)
         {

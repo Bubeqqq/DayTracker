@@ -15,6 +15,7 @@ namespace DayTracker.Forms.Day
         int PixelsPerHour { get; }
         int LeftMargin { get; }
         int TotalWidth { get;}
+        event EventHandler AddClicked;
         event EventHandler SizeChanged;
         event EventHandler<CalendarEventClickedEventArgs> CalendarEventClicked;
         event EventHandler<CalendarEventClickedEventArgs> DeleteClicked;

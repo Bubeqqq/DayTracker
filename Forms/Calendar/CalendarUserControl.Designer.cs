@@ -40,6 +40,7 @@
             dateTimePicker1 = new DateTimePicker();
             buttonNextMonth = new Button();
             buttonPreviousMonth = new Button();
+            buttonAddEvent = new Button();
             tableLayoutPanelDaysOfWeek.SuspendLayout();
             SuspendLayout();
             // 
@@ -191,10 +192,21 @@
             buttonPreviousMonth.UseVisualStyleBackColor = true;
             buttonPreviousMonth.Click += buttonPreviousMonth_Click;
             // 
+            // buttonAddEvent
+            // 
+            buttonAddEvent.Location = new Point(260, 3);
+            buttonAddEvent.Name = "buttonAddEvent";
+            buttonAddEvent.Size = new Size(75, 23);
+            buttonAddEvent.TabIndex = 5;
+            buttonAddEvent.Text = "Add Event";
+            buttonAddEvent.UseVisualStyleBackColor = true;
+            buttonAddEvent.Click += buttonAddEvent_Click;
+            // 
             // CalendarUserControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(buttonAddEvent);
             Controls.Add(tableLayoutPanelCalendar);
             Controls.Add(tableLayoutPanelDaysOfWeek);
             Controls.Add(buttonNextMonth);
@@ -221,5 +233,6 @@
         private DateTimePicker dateTimePicker1;
         private Button buttonNextMonth;
         private Button buttonPreviousMonth;
+        private Button buttonAddEvent;
     }
 }

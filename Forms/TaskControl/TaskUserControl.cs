@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+//using DayTracker.UserControls.ToDoControl;
 
 
 namespace DayTracker.Forms.TaskControl
@@ -25,22 +25,23 @@ namespace DayTracker.Forms.TaskControl
                 return cp;
             }
         }
-        public string Title { get { return textBoxTitle.Text; }  }
-        public string Descritpion { get { return textBoxDescription.Text; }  }
+        public string Title { get { return textBoxTitle.Text; } }
+        public string Descritpion { get { return textBoxDescription.Text; } }
         public string StartMinute { get { return textBoxStartMinute.Text; } }
         public string StartHour { get { return textBoxStartHour.Text; } }
         public string StartDay { get { return textBoxStartDay.Text; } set { textBoxEndDay.Text = value; } }
         public string StartMonth { get { return textBoxStartMonth.Text; } }
         public string StartYear { get { return textBoxStartYear.Text; } }
-        public string DurationMinutes { get {  return textBoxDurationMinutes.Text; } }
+        public string DurationMinutes { get { return textBoxDurationMinutes.Text; } }
         public string DurationHours { get { return textBoxDurationHours.Text; } }
         public string DurationDays { get { return textBoxDurationDays.Text; } }
-        public string EndMinute { get { return textBoxEndMinute.Text; } } 
+        public string EndMinute { get { return textBoxEndMinute.Text; } }
         public string EndHour { get { return textBoxEndHour.Text; } }
-        public string EndDay { get { return textBoxEndDay.Text; } set{ textBoxEndDay.Text = value; } }
+        public string EndDay { get { return textBoxEndDay.Text; } set { textBoxEndDay.Text = value; } }
         public string EndMonth { get { return textBoxEndMonth.Text; } }
         public string EndYear { get { return textBoxEndYear.Text; } }
         public event EventHandler<FieldValidationEventArgs> FieldValidation;
+        public event EventHandler ConfirmClicked;
         private string _originalValue;
         public TaskUserControl()
         {
@@ -50,11 +51,11 @@ namespace DayTracker.Forms.TaskControl
         }
         public void SetTaskInfoFields(string title, string description)
         {
-            
+
             textBoxTitle.Text = title;
             textBoxDescription.Text = description;
 
-            
+
         }
         public void SetStartDate(string hour, string minute, string day, string month, string year)
         {
@@ -72,12 +73,24 @@ namespace DayTracker.Forms.TaskControl
             textBoxEndMonth.Text = month;
             textBoxEndYear.Text = year;
         }
-        public void SetDuration(string days,string hours, string minutes )
+        public void SetDuration(string days, string hours, string minutes)
         {
             textBoxDurationDays.Text = days;
-            textBoxDurationHours .Text = hours;
+            textBoxDurationHours.Text = hours;
             textBoxDurationMinutes.Text = minutes;
 
+        }
+        public void SetCheckedListBoxItems(Dictionary<string, bool> categories)
+        {
+            checkedListBoxCategories.Items.Clear();
+            foreach (var category in categories)
+            {
+                checkedListBoxCategories.Items.Add(category.Key, category.Value);
+            }
+        }
+        public List<string> GetCheckedItems()
+        {
+            return checkedListBoxCategories.CheckedItems.Cast<string>().ToList();
         }
         private void AssignTagsToTextBoxes()
         {
@@ -101,7 +114,7 @@ namespace DayTracker.Forms.TaskControl
             textBoxDurationHours.Tag = TaskField.DurationHours;
             textBoxDurationMinutes.Tag = TaskField.DurationMinutes;
         }
-        
+
         private void ChangeAllTextBoxCursorsToArrow()
         {
             textBoxTitle.Cursor = Cursors.Arrow;
@@ -148,9 +161,9 @@ namespace DayTracker.Forms.TaskControl
                 textBox.Cursor = Cursors.Arrow;
                 LoseFocus();
             }
-            
+
         }
-        
+
         private void ValidateEdit(TextBox textBox)
         {
             if (textBox != null && textBox.Tag is TaskField fieldType)
@@ -281,9 +294,14 @@ namespace DayTracker.Forms.TaskControl
             TextBox textBox = sender as TextBox;
             if (textBox != null)
             {
-                int newWidth = textBox.MinimumSize.Width* textBox.Text.Length;
+                int newWidth = textBox.MinimumSize.Width * textBox.Text.Length;
                 textBox.Width = newWidth;
             }
+        }
+
+        private void buttonConfirm_Click(object sender, EventArgs e)
+        {
+            ConfirmClicked?.Invoke(this, EventArgs.Empty);
         }
     }
 }

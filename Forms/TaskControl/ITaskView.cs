@@ -9,7 +9,10 @@ namespace DayTracker.Forms.TaskControl
 {
     internal interface ITaskView:IView
     {
+        event EventHandler ConfirmClicked;
         event EventHandler<FieldValidationEventArgs> FieldValidation;
+        string Title { get ; }
+        string Descritpion { get; }
         string StartMinute { get; }
         string StartHour { get; }
         string StartDay { get; set; }
@@ -27,7 +30,7 @@ namespace DayTracker.Forms.TaskControl
         void SetStartDate(string hour, string minute, string day, string month, string year);
         void SetEndDate(string hour, string minute, string day, string month, string year);
         void SetDuration(string days, string hours, string minutes);
-
-
+        void SetCheckedListBoxItems(Dictionary<string, bool> categories);
+        List<string> GetCheckedItems();
     }
 }

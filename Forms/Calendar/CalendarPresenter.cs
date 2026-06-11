@@ -1,5 +1,7 @@
-﻿using DayTracker.Forms;
+﻿using DayTracker.Database.Datatypes;
+using DayTracker.Forms;
 using DayTracker.Forms.Day;
+using DayTracker.Forms.TaskControl;
 using DayTracker.UserControls.TestTask_usunac;
 using System;
 using System.Collections.Generic;
@@ -23,7 +25,8 @@ namespace DayTracker.Forms.Calendar
             _view.SelectedDateChanged += OnSelectedDateChanged;
             _view.NextButtonClicked += NextButtonClicked;
             _view.PreviousButtonClicked += PreviousButtonClicked;
-            
+            _view.AddEventButtonClicked += OnAddEventButtonClicked;
+            GenerateMonth();
         }
         private void GenerateMonth()
         {
@@ -73,6 +76,10 @@ namespace DayTracker.Forms.Calendar
         private void PreviousButtonClicked(object sender, EventArgs e)
         {
             _view.AddMonthToDate(-1);
+        }
+        private void OnAddEventButtonClicked(object sender, EventArgs e)
+        {
+            _model.NavigationService.NavigateTo<TaskPresenter, CalendarEvent>(null);
         }
     }
 }

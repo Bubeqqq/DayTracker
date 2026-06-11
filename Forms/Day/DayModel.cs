@@ -75,5 +75,21 @@ namespace DayTracker.Forms.Day
         {
             return leftMargin + columnIndex * taskWidth;
         }
+        public CalendarEvent CreateDefualutCalendarEvent(DateTime date)
+        {
+            CalendarEvent calendarEvent = new CalendarEvent();
+
+            calendarEvent.Title = "Title";
+            calendarEvent.StartTime = date.Date;
+            //calendarEvent.Description = "Description";
+            calendarEvent.Duration = new TimeSpan(1, 1, 1, 0);
+            calendarEvent.IsHard = false;
+            calendarEvent.IsOutdoor = false;
+            calendarEvent.IsSport = false;
+            calendarEvent.IsWork = false;
+            calendarEvent.IsRelax = false;
+            calendarEvent.IsEducation = false;
+            return calendarEvent;
+        }
     }
 }

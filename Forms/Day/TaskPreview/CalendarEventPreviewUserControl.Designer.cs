@@ -37,6 +37,7 @@
             // labelTitle
             // 
             labelTitle.AutoSize = true;
+            labelTitle.Dock = DockStyle.Top;
             labelTitle.Font = new Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, 238);
             labelTitle.Location = new Point(0, 0);
             labelTitle.Name = "labelTitle";
@@ -48,6 +49,7 @@
             // labelDescription
             // 
             labelDescription.AutoSize = true;
+            labelDescription.Dock = DockStyle.Top;
             labelDescription.Location = new Point(0, 25);
             labelDescription.MaximumSize = new Size(190, 90);
             labelDescription.Name = "labelDescription";
@@ -58,13 +60,13 @@
             // 
             // labelDelete
             // 
-            labelDelete.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelDelete.AutoSize = true;
             labelDelete.BackColor = Color.White;
             labelDelete.Cursor = Cursors.Hand;
+            labelDelete.Dock = DockStyle.Right;
             labelDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 238);
             labelDelete.ForeColor = Color.Red;
-            labelDelete.Location = new Point(172, 6);
+            labelDelete.Location = new Point(175, 70);
             labelDelete.Name = "labelDelete";
             labelDelete.Size = new Size(15, 15);
             labelDelete.TabIndex = 4;
@@ -74,7 +76,8 @@
             // labelDidntStartToday
             // 
             labelDidntStartToday.AutoSize = true;
-            labelDidntStartToday.Location = new Point(47, 25);
+            labelDidntStartToday.Dock = DockStyle.Top;
+            labelDidntStartToday.Location = new Point(0, 70);
             labelDidntStartToday.Name = "labelDidntStartToday";
             labelDidntStartToday.Size = new Size(120, 15);
             labelDidntStartToday.TabIndex = 6;
@@ -82,7 +85,7 @@
             labelDidntStartToday.Visible = false;
             labelDidntStartToday.Click += CalendarEvent_Click;
             // 
-            // TaskPreviewUserControl
+            // CalendarEventPreviewUserControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -92,7 +95,7 @@
             Controls.Add(labelDelete);
             Controls.Add(labelDescription);
             Controls.Add(labelTitle);
-            Name = "TaskPreviewUserControl";
+            Name = "CalendarEventPreviewUserControl";
             Size = new Size(190, 115);
             BackColorChanged += TaskUserControl_BackColorChanged;
             Click += CalendarEvent_Click;
