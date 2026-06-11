@@ -23,9 +23,9 @@ namespace DayTracker.Database
 
         Task RemoveByType<T>(T record) where T : class, ICalendarRecord;
 
-        Task UpdateByType<T>(int index, Action<T> update) where T : class, ICalendarRecord;
+        Task<T> UpdateByType<T>(int index, Action<T> update) where T : class, ICalendarRecord;
 
-        Task UpdateByType<T>(T record, Action<T> update) where T : class, ICalendarRecord;
+        Task<T> UpdateByType<T>(T record, Action<T> update) where T : class, ICalendarRecord;
 
         Task EnsureCreated();
 

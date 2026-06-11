@@ -159,9 +159,9 @@ namespace DayTracker.Database
             await SaveChangesAsync();
         }
 
-        async Task IDatabaseService.UpdateByType<T>(int index, Action<T> update)
+        async Task<T> IDatabaseService.UpdateByType<T>(int index, Action<T> update)
         {
-            object foundRecord = null;
+            object? foundRecord = null;
 
             switch (typeof(T))
             {
@@ -183,14 +183,17 @@ namespace DayTracker.Database
             {
                 update((T)foundRecord);
                 await SaveChangesAsync();
+                return (T)foundRecord;
             }
+
+            throw new ArgumentNullException($"{index} not found.");
         }
 
-        async Task IDatabaseService.UpdateByType<T>(T record, Action<T> update)
+        async Task<T> IDatabaseService.UpdateByType<T>(T record, Action<T> update)
         {
             if (record == null)
             {
-                return;
+                throw new ArgumentNullException($"{nameof(record)} cannot be null.");
             }
 
             update(record);
@@ -198,6 +201,7 @@ namespace DayTracker.Database
             Update(record);
 
             await SaveChangesAsync();
+            return record;
         }
     }
 }
