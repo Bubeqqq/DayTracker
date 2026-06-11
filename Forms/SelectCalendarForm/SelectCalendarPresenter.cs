@@ -18,15 +18,15 @@ namespace DayTracker.Forms.SelectCalendarForm
             _model = model;
             _navigationService = navigationService;
 
-            _view.BtnYourCalendarClicked += OnBtnYourCalendarClicked;
+            _view.BtnYourCalendarClicked += async () => await OnBtnYourCalendarClicked();
             _view.BtnSubmitSelectedCalendarClicked += OnBtnSubmitSelectedCalendarClicked;
             _view.BtnSubmitCodeClicked += OnBtnSubmitCodeClicked;
             _view.FormLoading += OnFormLoading;
         }
 
-        private void OnBtnYourCalendarClicked()
+        private async Task OnBtnYourCalendarClicked()
         {
-            var result = _model.SetCurrentCalendarToUserCalendar();
+            var result = await _model.SetCurrentCalendarToUserCalendar();
             if (result.IsSuccess)
             {
                 _navigationService.NavigateTo<Calendar.CalendarPresenter>();

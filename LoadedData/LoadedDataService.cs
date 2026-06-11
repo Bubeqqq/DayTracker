@@ -110,9 +110,10 @@ namespace DayTracker.LoadedData
             return _users;
         }
 
-        public void LoadCalendar(int CalendarID)
+        public async Task LoadCalendar(int CalendarID)
         {
             _databaseService.CurrentCalendarID = CalendarID;
+            await Initialize();
         }
     }
 }

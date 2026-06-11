@@ -36,6 +36,19 @@ namespace DayTracker.Database
                 return;
             }
 
+            if (record is CalendarEvent calendarRecord)
+            {
+                calendarRecord.CalendarId = CurrentCalendarID;
+            }
+            else if (record is Sleep sleepRecord)
+            {
+                sleepRecord.CalendarId = CurrentCalendarID;
+            }
+            else if(record is Permission permissionRecord)
+            {
+                permissionRecord.CalendarId = CurrentCalendarID;
+            }
+
             await Set<T>().AddAsync(record);
 
             await SaveChangesAsync();
@@ -118,7 +131,7 @@ namespace DayTracker.Database
                         OnEntityChanged?.Invoke(nameof(CalendarEvent), entry.State);
                     }
                 }
-                if(entry.Entity is Sleep sleep)
+                else if (entry.Entity is Sleep sleep)
                 {
                     if (sleep.CalendarId == CurrentCalendarID)
                     {

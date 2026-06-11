@@ -59,6 +59,7 @@ namespace DayTracker
 
             await serviceProvider.GetRequiredService<ILoadedDataService>().Initialize();
 
+
             var mainForm = serviceProvider.GetRequiredService<MainFormPresenter>();
             mainForm.Initialize();
 

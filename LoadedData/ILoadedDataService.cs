@@ -26,7 +26,7 @@ namespace DayTracker.LoadedData
 
         PermissionType GetCurrentPermisions();
 
-        void LoadCalendar(int CalendarID);
+        Task LoadCalendar(int CalendarID);
 
         Task Initialize();
     }

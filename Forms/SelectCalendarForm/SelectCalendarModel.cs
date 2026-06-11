@@ -28,11 +28,11 @@ namespace DayTracker.Forms.SelectCalendarForm
             _loadedDataService.LoadCalendar(calendarId);
         }
 
-        public OperationResult SetCurrentCalendarToUserCalendar()
+        public async Task<OperationResult> SetCurrentCalendarToUserCalendar()
         {
             if (_loadedDataService.GetCurrentUser() is User user)
             {
-                _loadedDataService.LoadCalendar(user.CalendarId);
+                await _loadedDataService.LoadCalendar(user.CalendarId);
                 return OperationResult.Success();   
             }
 

@@ -6,7 +6,7 @@ namespace DayTracker.Forms.SelectCalendarForm
     {
         OperationResult<string> GetUserFirstName();
         OperationResult<List<(int CalendarId, string DisplayName)>> GetUserSharedCalendars();
-        OperationResult SetCurrentCalendarToUserCalendar();
+        Task<OperationResult> SetCurrentCalendarToUserCalendar();
         void SetCurrentCalendar(int calendarId);
     }
 }
