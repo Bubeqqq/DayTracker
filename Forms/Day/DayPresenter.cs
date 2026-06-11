@@ -35,7 +35,7 @@ namespace DayTracker.Forms.Day
             _date = args;
             _eventList=_model.GetEventsForDay(_date);
             
-                LayoutEvents(_eventList);
+            LayoutEvents(_eventList);
             
             
         }
@@ -61,6 +61,10 @@ namespace DayTracker.Forms.Day
                         if (_date.Date > calendarEvent.StartTime)
                         {
                             _view.CreateAndPlaceTaskControl(calendarEvent, x, y, eventWidth, height, calendarEvent.StartTime.ToShortDateString());
+                        }
+                        else
+                        {
+                            _view.CreateAndPlaceTaskControl(calendarEvent, x, y, eventWidth, height);
                         }
                     }
                 }
@@ -90,6 +94,7 @@ namespace DayTracker.Forms.Day
                 int index = 0;
                 for (int columnIndex = 0; columnIndex < columnsCount; columnIndex++)
                 {
+                    
                     foreach (var calendarEvent in columns[columnIndex])
                     {
                         int x = _model.CalculateX(_view.LeftMargin, columnIndex, eventWidth);

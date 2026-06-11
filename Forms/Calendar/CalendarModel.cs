@@ -19,6 +19,7 @@ namespace DayTracker.Forms.Calendar
         {
             _loadedDataService = loadedDataService;       
             NavigationService = navigationService;
+            
         }
         public int CalculateOffset(DateTime date)
         {
@@ -42,16 +43,10 @@ namespace DayTracker.Forms.Calendar
         public List<string> GetStringTaskList(DateTime date, List<CalendarEvent> events) 
         {
             
-            if (date == null)
-            {
-                
-                throw new ArgumentNullException("Date can't be null");
-            }
-            
-            
+                   
            
             List<CalendarEvent> dailyEvents = events
-                        .Where(e => e.StartTime == date.Date)
+                        .Where(e => e.StartTime.Date == date.ToUniversalTime().Date)
                         .ToList();
             return dailyEvents.ConvertAll(t => $"- {t.Title}");
             

@@ -64,10 +64,12 @@ namespace DayTracker.Forms.Day
             {
                 throw new ArgumentNullException("date can't be null");
             }
-            if(date.Date> startTime) {
+            if (date.Date > startTime)
+            {
                 return 0;
             }
-            return Convert.ToInt32(date.Hour * pixelPerHour + date.Minute * pixelPerHour / 60.0);
+
+            return Convert.ToInt32(startTime.Hour * pixelPerHour + startTime.Minute * pixelPerHour / 60.0);
             
         }
         public int CalculateHeight(DateTime startTime, TimeSpan duration, int pixelPerHour, DateTime date)
@@ -84,7 +86,7 @@ namespace DayTracker.Forms.Day
             {
                 throw new ArgumentNullException("date can't be null");
             }
-            if (date.Date > startTime)
+            if (date.Date.ToUniversalTime() > startTime)
             {
                 TimeSpan newDuration = duration - (date.Date - startTime);
                 return Convert.ToInt32(newDuration.TotalMinutes * pixelPerHour / 60.0);

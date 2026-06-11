@@ -52,7 +52,6 @@ namespace DayTracker.Forms.Calendar
                     
                     List<string> events = _model.GetStringTaskList(currentDate,_events);
 
-
                     int position = offset + (day - 1);
                     int column = position % 7;
                     int row = position / 7;

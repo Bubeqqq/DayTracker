@@ -78,6 +78,7 @@
             labelDidntStartToday.AutoSize = true;
             labelDidntStartToday.Dock = DockStyle.Top;
             labelDidntStartToday.Location = new Point(0, 70);
+            labelDidntStartToday.MaximumSize = new Size(120, 30);
             labelDidntStartToday.Name = "labelDidntStartToday";
             labelDidntStartToday.Size = new Size(120, 15);
             labelDidntStartToday.TabIndex = 6;
