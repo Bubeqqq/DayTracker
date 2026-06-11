@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace DayTracker.Forms.Day
@@ -52,12 +53,15 @@ namespace DayTracker.Forms.Day
                 {
                     foreach (var calendarEvent in columns[columnIndex])
                     {
-
+                        
                         int x = _model.CalculateX(_view.LeftMargin, columnIndex, eventWidth);
-
-                        int y = _model.CalculateY(calendarEvent.StartTime, _view.PixelsPerHour);
-                        int height = _model.CalculateHeight(calendarEvent.Duration, _view.PixelsPerHour);
-                        _view.CreateAndPlaceTaskControl(calendarEvent, x, y, eventWidth, height);
+                        
+                        int y = _model.CalculateY(calendarEvent.StartTime, _view.PixelsPerHour,_date);
+                        int height = _model.CalculateHeight(calendarEvent.StartTime, calendarEvent.Duration, _view.PixelsPerHour, _date);
+                        if (_date.Date > calendarEvent.StartTime)
+                        {
+                            _view.CreateAndPlaceTaskControl(calendarEvent, x, y, eventWidth, height, calendarEvent.StartTime.ToShortDateString());
+                        }
                     }
                 }
             }
@@ -89,8 +93,8 @@ namespace DayTracker.Forms.Day
                     foreach (var calendarEvent in columns[columnIndex])
                     {
                         int x = _model.CalculateX(_view.LeftMargin, columnIndex, eventWidth);
-                        int y = _model.CalculateY(calendarEvent.StartTime, _view.PixelsPerHour);
-                        int height = _model.CalculateHeight(calendarEvent.Duration, _view.PixelsPerHour);
+                        int y = _model.CalculateY(calendarEvent.StartTime, _view.PixelsPerHour, _date);
+                        int height = _model.CalculateHeight(calendarEvent.StartTime, calendarEvent.Duration, _view.PixelsPerHour,_date);
 
                         _view.ModifyControl(index, x, y, eventWidth, height);
                         index++;
@@ -117,6 +121,12 @@ namespace DayTracker.Forms.Day
         private void OnDeleteClicked(object sender, CalendarEventClickedEventArgs e)
         {
             bool yesDecision=_view.YesNoMessage("Are you sure you want to delete this task?");
+            //if(yesDecision)
+            //{
+            //    _model.DeleteEvent(e.CalendarEvent);
+            //    _eventList.Remove(e.CalendarEvent);
+            //    UpdateEvents(_eventList);
+            //}
         }
     }
 }

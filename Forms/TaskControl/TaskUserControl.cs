@@ -41,7 +41,7 @@ namespace DayTracker.Forms.TaskControl
         public string EndMonth { get { return textBoxEndMonth.Text; } }
         public string EndYear { get { return textBoxEndYear.Text; } }
         public event EventHandler<FieldValidationEventArgs> FieldValidation;
-        public event EventHandler ConfirmClicked;
+        public event Action? ConfirmClicked;
         private string _originalValue;
         public TaskUserControl()
         {
@@ -301,7 +301,7 @@ namespace DayTracker.Forms.TaskControl
 
         private void buttonConfirm_Click(object sender, EventArgs e)
         {
-            ConfirmClicked?.Invoke(this, EventArgs.Empty);
+            ConfirmClicked?.Invoke();
         }
     }
 }

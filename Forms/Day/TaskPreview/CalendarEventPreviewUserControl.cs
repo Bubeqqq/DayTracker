@@ -16,6 +16,7 @@ namespace DayTracker.Forms.Day
     public partial class CalendarEventPreviewUserControl : UserControl//TODO dodać funkcję pokazującą labelDidntStartToday i ustawiającą odpowiedni tekst
     {
         public CalendarEvent CalendarEvent { get; }
+        public string LabelDidntStartToday { get { return labelDidntStartToday.Text; } set { labelDidntStartToday.Text = value; } }
         public Size MaxLabelSize { get { return labelDescription.MaximumSize; } set { labelDescription.MaximumSize = value; } }
         public event EventHandler<CalendarEventClickedEventArgs> CalendarEventClicked;
         public event EventHandler<CalendarEventClickedEventArgs> DeleteClicked;
@@ -33,7 +34,10 @@ namespace DayTracker.Forms.Day
             this.Width = taskWidth;
             this.Height= height;
         }
-        
+        public void LabelDidntStartTodayVisible(bool visible)
+        {
+            labelDidntStartToday.Visible = visible;
+        }
         private void CalendarEvent_Click(object sender, EventArgs e)
         {
             CalendarEventClicked?.Invoke(this,new CalendarEventClickedEventArgs(CalendarEvent));

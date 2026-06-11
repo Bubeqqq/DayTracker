@@ -19,9 +19,9 @@ namespace DayTracker.Forms.Day
         event EventHandler SizeChanged;
         event EventHandler<CalendarEventClickedEventArgs> CalendarEventClicked;
         event EventHandler<CalendarEventClickedEventArgs> DeleteClicked;
-        void CreateAndPlaceTaskControl(CalendarEvent calendarEvent, int x, int y, int taskWidth, int height);
+        void CreateAndPlaceTaskControl(CalendarEvent calendarEvent, int x, int y, int taskWidth, int height, string? startedOn = null);
         public bool YesNoMessage(string message);
-        void ModifyControl(int index, int x, int y, int taskWidth, int height);
+        void ModifyControl(int index, int x, int y, int taskWidth, int height, string? startedOn = null);
 
     }
 }

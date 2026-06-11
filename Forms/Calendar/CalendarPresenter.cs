@@ -17,22 +17,30 @@ namespace DayTracker.Forms.Calendar
         private readonly ICalendarModel _model;
         public IModel Model => _model;
         public IView View => _view;
+        private List<CalendarEvent> _events;
         public CalendarPresenter(ICalendarView calendarView,CalendarModel calendarModel)
         {
+
             _view = calendarView;
             _model = calendarModel;
+            _model.NavigationService.ShowBar();
             _view.DayClicked += OnDayClicked;
             _view.SelectedDateChanged += OnSelectedDateChanged;
             _view.NextButtonClicked += NextButtonClicked;
             _view.PreviousButtonClicked += PreviousButtonClicked;
             _view.AddEventButtonClicked += OnAddEventButtonClicked;
+
+            _events = _model.GetCalendarEvents();
+            
             GenerateMonth();
         }
         private void GenerateMonth()
         {
             try
             {
+
                 _view.SuspendAndClearCalendar();
+                
                 DateTime date = _view.SelectedDate;
                 int daysInMonth = DateTime.DaysInMonth(date.Year, date.Month);
                 int offset = _model.CalculateOffset(date);
@@ -41,8 +49,8 @@ namespace DayTracker.Forms.Calendar
                 for (int day = 1; day <= daysInMonth; day++)
                 {
                     DateTime currentDate = new DateTime(date.Year, date.Month, day);
-
-                    List<string> events = _model.GetStringTaskList(currentDate);
+                    
+                    List<string> events = _model.GetStringTaskList(currentDate,_events);
 
 
                     int position = offset + (day - 1);

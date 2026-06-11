@@ -660,9 +660,9 @@ namespace DayTracker.Forms.TaskControl
             checkedListBoxCategories.Dock = DockStyle.Top;
             checkedListBoxCategories.FormattingEnabled = true;
             checkedListBoxCategories.Location = new Point(0, 277);
-            checkedListBoxCategories.MinimumSize = new Size(0, 200);
+            checkedListBoxCategories.MinimumSize = new Size(0, 132);
             checkedListBoxCategories.Name = "checkedListBoxCategories";
-            checkedListBoxCategories.Size = new Size(738, 184);
+            checkedListBoxCategories.Size = new Size(738, 130);
             checkedListBoxCategories.TabIndex = 27;
             // 
             // buttonConfirm
@@ -670,9 +670,9 @@ namespace DayTracker.Forms.TaskControl
             buttonConfirm.BackColor = Color.Aquamarine;
             buttonConfirm.Dock = DockStyle.Fill;
             buttonConfirm.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 238);
-            buttonConfirm.Location = new Point(0, 461);
+            buttonConfirm.Location = new Point(0, 407);
             buttonConfirm.Name = "buttonConfirm";
-            buttonConfirm.Size = new Size(738, 203);
+            buttonConfirm.Size = new Size(738, 257);
             buttonConfirm.TabIndex = 29;
             buttonConfirm.Text = "Confirm";
             buttonConfirm.UseVisualStyleBackColor = false;

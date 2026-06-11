@@ -13,6 +13,7 @@ namespace DayTracker.Forms.Calendar
     internal class CalendarModel:ICalendarModel
     {
         public INavigationService NavigationService { get; set; }
+
         private readonly ILoadedDataService _loadedDataService;
         public CalendarModel(INavigationService navigationService, ILoadedDataService loadedDataService)
         {
@@ -34,13 +35,21 @@ namespace DayTracker.Forms.Calendar
             offset -= 1;
             return offset; 
         }
-        public List<string> GetStringTaskList(DateTime date) 
+        public List<CalendarEvent> GetCalendarEvents()
         {
+            return _loadedDataService.GetCalendarEvents();
+        }
+        public List<string> GetStringTaskList(DateTime date, List<CalendarEvent> events) 
+        {
+            
             if (date == null)
             {
+                
                 throw new ArgumentNullException("Date can't be null");
             }
-            List<CalendarEvent> events=_loadedDataService.GetCalendarEvents();
+            
+            
+           
             List<CalendarEvent> dailyEvents = events
                         .Where(e => e.StartTime == date.Date)
                         .ToList();

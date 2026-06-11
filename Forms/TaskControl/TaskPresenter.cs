@@ -36,7 +36,7 @@ namespace DayTracker.Forms.TaskControl
             //defaultCalendarEvent.Description = "Description";
             defaultCalendarEvent.Duration = new TimeSpan(1, 1, 1, 0);
             _model.SetAllCategoriesToFalse(defaultCalendarEvent);
-            if (_task != null)
+            if (_task != null&& _task.Id!=null && _task.CalendarId != null)
             {
                 _editMode = true;
                 SetTaskFields(_task);
@@ -290,7 +290,7 @@ namespace DayTracker.Forms.TaskControl
             _view.SetStartDate(newStartDate.Hour.ToString(), newStartDate.Minute.ToString(), newStartDate.Day.ToString(), newStartDate.Month.ToString(), newStartDate.Year.ToString());
         }
        
-      private async void OnConfirmClicked(object sender, EventArgs e)
+      private async void OnConfirmClicked()
         {
             if (_model.TryGetDate(_view.StartMinute, _view.StartHour, _view.StartDay, _view.StartMonth, _view.StartYear, out DateTime startTime) &&
                 _model.TryGetDuration(_view.DurationMinutes, _view.DurationHours, _view.DurationDays, out TimeSpan duration)&&
@@ -312,9 +312,10 @@ namespace DayTracker.Forms.TaskControl
                 }
                 else
                 {
-                    _model.AddCalendarEvent(calendarEvent);
+                    await _model.AddCalendarEvent(calendarEvent);
+                    
                 }
-
+                
             }
 
             

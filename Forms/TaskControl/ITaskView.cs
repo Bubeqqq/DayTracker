@@ -9,7 +9,7 @@ namespace DayTracker.Forms.TaskControl
 {
     internal interface ITaskView:IView
     {
-        event EventHandler ConfirmClicked;
+        event Action? ConfirmClicked;
         event EventHandler<FieldValidationEventArgs> FieldValidation;
         string Title { get ; }
         string Descritpion { get; }

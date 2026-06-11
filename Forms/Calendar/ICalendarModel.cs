@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DayTracker.UserControls.TestTask_usunac;
+using DayTracker.Database.Datatypes;
 
 namespace DayTracker.Forms.Calendar
 {
@@ -13,6 +13,7 @@ namespace DayTracker.Forms.Calendar
     {
         INavigationService NavigationService { get; set; }
         int CalculateOffset(DateTime date);
-        List<string> GetStringTaskList(DateTime date);
+        List<string> GetStringTaskList(DateTime date, List<CalendarEvent> events);
+            List<CalendarEvent> GetCalendarEvents();
     }
 }

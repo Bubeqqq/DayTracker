@@ -20,6 +20,6 @@ namespace DayTracker.Forms.TaskControl
         bool TryGetDuration(string minutesStr, string hoursStr, string daysStr, out TimeSpan duration, string secondsStr = "0");
         void SetEventCategories(List<string> checkedCategories, CalendarEvent calendarEvent);
         void SetAllCategoriesToFalse(CalendarEvent calendarEvent);
-        void AddCalendarEvent(CalendarEvent calendarEvent);
+        Task AddCalendarEvent(CalendarEvent calendarEvent);
     }
 }

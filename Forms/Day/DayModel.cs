@@ -54,20 +54,40 @@ namespace DayTracker.Forms.Day
             }
             return columns;
         }
-        public int CalculateY(DateTime date,int pixelPerHour)
+        public int CalculateY(DateTime startTime, int pixelPerHour, DateTime date)
         {
+            if (startTime == null)
+            {
+                throw new ArgumentNullException("StartTime can't be null");
+            }
             if (date == null)
             {
-                throw new ArgumentNullException("Date can't be null");
+                throw new ArgumentNullException("date can't be null");
+            }
+            if(date.Date> startTime) {
+                return 0;
             }
             return Convert.ToInt32(date.Hour * pixelPerHour + date.Minute * pixelPerHour / 60.0);
             
         }
-        public int CalculateHeight(TimeSpan duration, int pixelPerHour)
+        public int CalculateHeight(DateTime startTime, TimeSpan duration, int pixelPerHour, DateTime date)
         {
             if (duration == null)
             {
                 throw new ArgumentNullException("duration can't be null");
+            }
+            if (startTime == null)
+            {
+                throw new ArgumentNullException("StartTime can't be null");
+            }
+            if (date == null)
+            {
+                throw new ArgumentNullException("date can't be null");
+            }
+            if (date.Date > startTime)
+            {
+                TimeSpan newDuration = duration - (date.Date - startTime);
+                return Convert.ToInt32(newDuration.TotalMinutes * pixelPerHour / 60.0);
             }
             return Convert.ToInt32(duration.TotalMinutes * pixelPerHour / 60.0);
         }

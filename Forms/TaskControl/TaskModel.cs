@@ -17,6 +17,7 @@ namespace DayTracker.Forms.TaskControl
         public INavigationService NavigationService { get; set; }
         private readonly ILoadedDataService _loadedDataService;
         private readonly IDatabaseService _databaseService;
+        private bool _isSaving = false;
         public TaskModel(INavigationService navigationService, ILoadedDataService loadedDataService ,IDatabaseService databaseService)
         {
             _loadedDataService = loadedDataService;
@@ -126,14 +127,24 @@ namespace DayTracker.Forms.TaskControl
             }
         }
 
-        public async void AddCalendarEvent(CalendarEvent calendarEvent)
+        public async Task AddCalendarEvent(CalendarEvent calendarEvent)
         {
-            calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
+            if (_isSaving) { return; } 
+            _isSaving = true;
+            try
+            {
+                calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
             calendarEvent.StartTime=calendarEvent.StartTime.ToUniversalTime();
-            //MessageBox.Show(calendarEvent.StartTime.ToUniversalTime);
+            
             await _databaseService.AddAsync(calendarEvent);
 
-             //NavigationService.NavigateTo<DayPresenter,DateTime >(calendarEvent.StartTime);
+             NavigationService.NavigateTo<DayPresenter,DateTime>(calendarEvent.StartTime);
+            }
+            finally
+            {
+                _isSaving = false; 
+                
+            }
         }
 
     }

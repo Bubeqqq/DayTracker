@@ -43,7 +43,7 @@ namespace DayTracker.Forms.Day
         }
         // Algorytm grupujący zadania w kolumny, by uniknąć nachodzenia
 
-        public void CreateAndPlaceTaskControl(CalendarEvent calendarEvent, int x, int y, int taskWidth, int height)
+        public void CreateAndPlaceTaskControl(CalendarEvent calendarEvent, int x, int y, int taskWidth, int height,string? startedOn=null)
         {
             CalendarEventPreviewUserControl control = new CalendarEventPreviewUserControl(calendarEvent);
             control.Location = new Point(x, y);
@@ -53,13 +53,23 @@ namespace DayTracker.Forms.Day
             control.MaxLabelSize = new Size(taskWidth - 20, 0);
             control.DeleteClicked += DeleteClicked;
             control.CalendarEventClicked += CalendarEventClicked;
+            if (startedOn != null)
+            {
+                control.LabelDidntStartToday= $"(This event started on {startedOn})";
+                control.LabelDidntStartTodayVisible(true);
+            }
             this.Controls.Add(control);
 
 
         }
-        public void ModifyControl(int index, int x, int y, int taskWidth, int height)
+        public void ModifyControl(int index, int x, int y, int taskWidth, int height, string? startedOn = null)
         {
             CalendarEventPreviewUserControl control = (CalendarEventPreviewUserControl)this.Controls[index];
+            if (startedOn != null)
+            {
+                control.LabelDidntStartToday = $"(This event started on {startedOn})";
+                control.LabelDidntStartTodayVisible(true);
+            }
             control.UpdateLocation(x, y, taskWidth, height);
         }
         public bool YesNoMessage(string message)
