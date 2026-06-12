@@ -137,7 +137,7 @@ namespace DayTracker.Forms.TaskControl
             _isSaving = true;
             try
             {
-                calendarEvent.Id = null;
+                calendarEvent.Id = -1;
                 calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
             calendarEvent.StartTime=calendarEvent.StartTime.ToUniversalTime().AddHours((DateTime.Now-DateTime.Now.ToUniversalTime()).Hours);
             
@@ -154,8 +154,9 @@ namespace DayTracker.Forms.TaskControl
         public async Task ModifyCalendarEvent(CalendarEvent calendarEvent)
         {
             calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
-            calendarEvent.StartTime = calendarEvent.StartTime.ToUniversalTime().AddHours((DateTime.Now - DateTime.Now.ToUniversalTime()).Hours);
-            await _databaseService.UpdateByType<CalendarEvent>((int)calendarEvent.Id, (e)=>e= calendarEvent);
+            //calendarEvent.StartTime = calendarEvent.StartTime.ToUniversalTime().AddHours((DateTime.Now - DateTime.Now.ToUniversalTime()).Hours);
+            MessageBox.Show($"{calendarEvent.Id}");
+            await _databaseService.UpdateByType<CalendarEvent>(calendarEvent.Id, (e)=>e= calendarEvent);
         }
         public async Task DeleteToDoItem(TodoItem todoItem)
         {

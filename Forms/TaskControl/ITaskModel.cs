@@ -22,5 +22,6 @@ namespace DayTracker.Forms.TaskControl
         void SetEventCategories(List<string> checkedCategories, CalendarEvent calendarEvent);
         void SetAllCategoriesToFalse(CalendarEvent calendarEvent);
         Task AddCalendarEvent(CalendarEvent calendarEvent);
+        Task ModifyCalendarEvent(CalendarEvent calendarEvent);
     }
 }

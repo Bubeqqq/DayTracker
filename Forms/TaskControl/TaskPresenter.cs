@@ -30,9 +30,9 @@ namespace DayTracker.Forms.TaskControl
         }
         private void Initialize()
         {
-            
-            
-            if (_task != null&& _task.Id == null)
+
+            _view.SetToDoList("");
+            if (_task != null&& _task.Id == -1)
             {
                 _editMode = false;
                 SetTaskFields(_task);
@@ -334,8 +334,9 @@ namespace DayTracker.Forms.TaskControl
                             //model.DeleteToDo();
                         }
                     }
-                    calendarEvent.Id = _task.Id;             
-                    //_model.Modify();
+                    calendarEvent.Id = _task.Id;   
+                    
+                    await _model.ModifyCalendarEvent(calendarEvent);
                 }
                 else
                 {
