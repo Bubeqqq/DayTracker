@@ -1,24 +1,18 @@
 ﻿using DayTracker.Database;
 using DayTracker.Database.Datatypes;
-using DayTracker.Forms.Calendar;
 using DayTracker.Forms.Day;
 using DayTracker.LoadedData;
 using DayTracker.Navigation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DayTracker.Forms.TaskControl
 {
-    internal class TaskModel:ITaskModel
+    internal class TaskModel : ITaskModel
     {
         public INavigationService NavigationService { get; set; }
         private readonly ILoadedDataService _loadedDataService;
         private readonly IDatabaseService _databaseService;
         private bool _isSaving = false;
-        public TaskModel(INavigationService navigationService, ILoadedDataService loadedDataService ,IDatabaseService databaseService)
+        public TaskModel(INavigationService navigationService, ILoadedDataService loadedDataService, IDatabaseService databaseService)
         {
             _loadedDataService = loadedDataService;
             NavigationService = navigationService;
@@ -43,7 +37,7 @@ namespace DayTracker.Forms.TaskControl
             calendarEvent.IsRelax = false;
             calendarEvent.IsEducation = false;
         }
-        public void SetEventCategories(List<string> checkedCategories,CalendarEvent calendarEvent)
+        public void SetEventCategories(List<string> checkedCategories, CalendarEvent calendarEvent)
         {
             Dictionary<string, bool> categories = GetDefaultCategories();
             SetAllCategoriesToFalse(calendarEvent);
@@ -68,7 +62,7 @@ namespace DayTracker.Forms.TaskControl
         }
         public bool ValidateDay(string dayStr)
         {
-            return!int.TryParse(dayStr, out int day) || day < 1;
+            return !int.TryParse(dayStr, out int day) || day < 1;
         }
         public bool ValidateDurationDays(string daysStr)
         {
@@ -82,17 +76,17 @@ namespace DayTracker.Forms.TaskControl
         {
             return !int.TryParse(yearStr, out int year) || year < 2000 || year > 2100;
         }
-        public bool TryCalculateDaysInMonth(string monthStr, string yearStr,out int daysInMonth)
+        public bool TryCalculateDaysInMonth(string monthStr, string yearStr, out int daysInMonth)
         {
             if (!int.TryParse(monthStr, out int month) || !int.TryParse(yearStr, out int year))
             {
                 daysInMonth = default;
                 return false;
             }
-            daysInMonth=DateTime.DaysInMonth(year, month);
+            daysInMonth = DateTime.DaysInMonth(year, month);
             return true;
         }
-        public bool TryGetDate(string minuteStr,string hourStr,string dayStr,string monthStr,string yearStr,out DateTime newDate, string secondsStr = "0")
+        public bool TryGetDate(string minuteStr, string hourStr, string dayStr, string monthStr, string yearStr, out DateTime newDate, string secondsStr = "0")
         {
             try
             {
@@ -112,9 +106,9 @@ namespace DayTracker.Forms.TaskControl
                 return false;
             }
         }
-        public bool TryGetDuration(string minutesStr, string hoursStr, string daysStr, out TimeSpan duration,string secondsStr="0")
+        public bool TryGetDuration(string minutesStr, string hoursStr, string daysStr, out TimeSpan duration, string secondsStr = "0")
         {
-            
+
             try
             {
                 int seconds = int.Parse(secondsStr);
@@ -133,35 +127,66 @@ namespace DayTracker.Forms.TaskControl
 
         public async Task AddCalendarEvent(CalendarEvent calendarEvent)
         {
-            if (_isSaving) { return; } //To chyba nic nie robi
-            _isSaving = true;
-            try
-            {
-                calendarEvent.Id = -1;
-                calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
-            calendarEvent.StartTime=calendarEvent.StartTime.ToUniversalTime().AddHours((DateTime.Now-DateTime.Now.ToUniversalTime()).Hours);
-            
+
+            DateTime comeBackDate = calendarEvent.StartTime;
+            calendarEvent.Id = -1;
+            calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
+            calendarEvent.StartTime = calendarEvent.StartTime.ToUniversalTime().AddHours((DateTime.Now - DateTime.Now.ToUniversalTime()).Hours);
+
             await _databaseService.AddAsync(calendarEvent);
 
-             NavigationService.NavigateTo<DayPresenter,DateTime>(calendarEvent.StartTime);
-            }
-            finally
-            {
-                _isSaving = false; 
-                
-            }
+            NavigationService.NavigateTo<DayPresenter, DateTime>(comeBackDate.Date);
+
+
+        }
+        public async Task<TodoItem> AddToDoItem(TodoItem todoItem)
+        {
+
+
+            return await _databaseService.AddAsync(todoItem);
+
+
+
         }
         public async Task ModifyCalendarEvent(CalendarEvent calendarEvent)
         {
             calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
-            //calendarEvent.StartTime = calendarEvent.StartTime.ToUniversalTime().AddHours((DateTime.Now - DateTime.Now.ToUniversalTime()).Hours);
-            MessageBox.Show($"{calendarEvent.Id}");
-            await _databaseService.UpdateByType<CalendarEvent>(calendarEvent.Id, (e)=>e= calendarEvent);
+            DateTime comeBackDate = calendarEvent.StartTime;
+            calendarEvent.StartTime = calendarEvent.StartTime.ToUniversalTime().AddHours((DateTime.Now - DateTime.Now.ToUniversalTime()).Hours);
+            await _databaseService.UpdateByType<CalendarEvent>(calendarEvent.Id, (e) =>
+            {
+                e.Title = calendarEvent.Title;
+                e.Description = calendarEvent.Description;
+                e.CalendarId = calendarEvent.CalendarId;
+
+                e.TodoId = calendarEvent.TodoId;
+
+                e.StartTime = calendarEvent.StartTime;
+                e.Duration = calendarEvent.Duration;
+
+                e.IsHard = calendarEvent.IsHard;
+                e.IsOutdoor = calendarEvent.IsOutdoor;
+                e.IsSport = calendarEvent.IsSport;
+                e.IsWork = calendarEvent.IsWork;
+                e.IsRelax = calendarEvent.IsRelax;
+                e.IsEducation = calendarEvent.IsEducation;
+
+            });
+            NavigationService.NavigateTo<DayPresenter, DateTime>(comeBackDate.Date);
+
+        }
+        public async Task<TodoItem> ModifyToDoItem(TodoItem todoItem)
+        {
+            return await _databaseService.UpdateByType<TodoItem>(todoItem.Id, (e) =>
+            {
+                e.Description = todoItem.Description;
+            });
         }
         public async Task DeleteToDoItem(TodoItem todoItem)
         {
-            await _databaseService.RemoveByType(todoItem);
+            await _databaseService.RemoveByType<TodoItem>(todoItem.Id);
         }
+
 
     }
 }

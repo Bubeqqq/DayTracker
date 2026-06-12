@@ -314,14 +314,21 @@ namespace DayTracker.Forms.TaskControl
                     {
                         if (calendarEvent.Todo != null)
                         {
-                            calendarEvent.Todo.Description = toDoDescription;
-                            //model.ModifyToDo();
+                            TodoItem toDoItem = calendarEvent.Todo;
+                            toDoItem.Description = toDoDescription;
+
+                            toDoItem=await _model.ModifyToDoItem(toDoItem);
+                            calendarEvent.Todo = toDoItem;
+                            calendarEvent.TodoId = calendarEvent.Todo.Id;
+
                         }
                         else
                         {
-                            calendarEvent.Todo = new TodoItem(toDoDescription);
-                            //model.AddToDo();
+                            TodoItem toDoItem = new TodoItem(toDoDescription);
+                            toDoItem = await _model.AddToDoItem(toDoItem);
+                            calendarEvent.Todo = toDoItem;
                             calendarEvent.TodoId = calendarEvent.Todo.Id;
+                           
                         }
 
                     }
@@ -329,9 +336,10 @@ namespace DayTracker.Forms.TaskControl
                     {
                         if (calendarEvent.Todo != null)
                         {
+                            await _model.DeleteToDoItem(calendarEvent.Todo);
                             calendarEvent.Todo= null;
                             calendarEvent.TodoId = null;
-                            //model.DeleteToDo();
+                            
                         }
                     }
                     calendarEvent.Id = _task.Id;   
@@ -342,8 +350,9 @@ namespace DayTracker.Forms.TaskControl
                 {
                     if (!string.IsNullOrEmpty(toDoDescription))
                     {
-                        calendarEvent.Todo= new TodoItem(toDoDescription);
-                        //model.AddToDo();
+                        TodoItem toDoItem=new TodoItem(toDoDescription);
+                        toDoItem=await _model.AddToDoItem(toDoItem);
+                        calendarEvent.Todo = toDoItem;
                         calendarEvent.TodoId = calendarEvent.Todo.Id;
                     }
                     await _model.AddCalendarEvent(calendarEvent);
