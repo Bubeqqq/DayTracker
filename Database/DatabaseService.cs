@@ -29,11 +29,11 @@ namespace DayTracker.Database
 
         public event Action<string, EntityState> OnEntityChanged;
 
-        public async Task AddAsync<T>(T record) where T : class, ICalendarRecord
+        public async Task<T> AddAsync<T>(T record) where T : class, ICalendarRecord
         {
             if (record == null)
             {
-                return;
+                return null;
             }
 
             if (record is CalendarEvent calendarRecord)
@@ -52,6 +52,8 @@ namespace DayTracker.Database
             await Set<T>().AddAsync(record);
 
             await SaveChangesAsync();
+
+            return record;
         }
 
         public async Task AddUserAsync(User record)
