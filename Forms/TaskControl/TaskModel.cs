@@ -133,7 +133,7 @@ namespace DayTracker.Forms.TaskControl
 
         public async Task AddCalendarEvent(CalendarEvent calendarEvent)
         {
-            if (_isSaving) { return; } 
+            if (_isSaving) { return; } //To chyba nic nie robi
             _isSaving = true;
             try
             {
@@ -150,6 +150,16 @@ namespace DayTracker.Forms.TaskControl
                 _isSaving = false; 
                 
             }
+        }
+        public async Task ModifyCalendarEvent(CalendarEvent calendarEvent)
+        {
+            calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
+            calendarEvent.StartTime = calendarEvent.StartTime.ToUniversalTime().AddHours((DateTime.Now - DateTime.Now.ToUniversalTime()).Hours);
+            await _databaseService.UpdateByType<CalendarEvent>((int)calendarEvent.Id, (e)=>e= calendarEvent);
+        }
+        public async Task DeleteToDoItem(TodoItem todoItem)
+        {
+            await _databaseService.RemoveByType(todoItem);
         }
 
     }

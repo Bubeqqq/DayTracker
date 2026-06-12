@@ -33,8 +33,7 @@ namespace DayTracker.Forms.Day
         public event EventHandler AddClicked;
         public event EventHandler<CalendarEventClickedEventArgs> CalendarEventClicked;
         public event EventHandler<CalendarEventClickedEventArgs> DeleteClicked;
-        private Color[] colors;
-        private int colorIndex;
+
         public DayUserControl()
         {
             
@@ -43,31 +42,18 @@ namespace DayTracker.Forms.Day
             PixelsPerHour = 60;
             this.DoubleBuffered = true;
             this.ResizeRedraw = true;
-            colorIndex = 0;
-            colors = new Color[]
 
-    {
-        
-        Color.FromArgb(200, 200, 200),
-        Color.FromArgb(180, 180, 180),
-        Color.FromArgb(160, 160, 160),
-        Color.FromArgb(140, 140, 140),
-        Color.FromArgb(120, 120, 120),
-        Color.FromArgb(100, 100, 100),
-        Color.FromArgb(80, 80, 80),
-        
-    };
+            
         }
         // Algorytm grupujący zadania w kolumny, by uniknąć nachodzenia
 
-        public void CreateAndPlaceTaskControl(CalendarEvent calendarEvent, int x, int y, int taskWidth, int height,string? startedOn=null)
+        public void CreateAndPlaceTaskControl(CalendarEvent calendarEvent, int x, int y, int taskWidth, int height, Color color,string? startedOn=null)
         {
             CalendarEventPreviewUserControl control = new CalendarEventPreviewUserControl(calendarEvent);
             control.Location = new Point(x, y);
             control.Width = taskWidth;
             control.Height = height;
-            control.BackColor = colors[colorIndex%colors.Length];
-            colorIndex++;
+            control.BackColor = color;
             control.MaxLabelSize = new Size(taskWidth - 20, 0);
             control.DeleteClicked += DeleteClicked;
             control.CalendarEventClicked += CalendarEventClicked;
@@ -80,10 +66,11 @@ namespace DayTracker.Forms.Day
 
 
         }
-        public void ModifyControl(int index, int x, int y, int taskWidth, int height, string? startedOn = null)
+        public void ModifyControl(int index, int x, int y, int taskWidth, int height, Color color,string? startedOn = null)
         {
 
             CalendarEventPreviewUserControl control = (CalendarEventPreviewUserControl)this.Controls[index+1];
+            control.BackColor = color;
             if (startedOn != null)
             {
                 control.LabelDidntStartToday = $"(This event started on {startedOn})";

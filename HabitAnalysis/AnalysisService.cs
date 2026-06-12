@@ -33,13 +33,7 @@ namespace DayTracker.HabitAnalysis
             DateTime dzisiaj = DateTime.Today;
 
             // --- 1. MOCK: ZADANIA TODO ---
-            var todoItems = new List<TodoItem>
-{
-    new TodoItem(1, "Skończyć projekt WinForms", "Dodać wykresy"),
-    new TodoItem(2, "Zrobić zakupy", "Mleko, chleb, jajka"),
-    new TodoItem(3, "Trening siłowy", "Klatka i triceps"),
-    new TodoItem(4, "Napisać raport", "Raport miesięczny")
-};
+            
 
             // --- 2. MOCK: SEN ---
             var sleepRecords = new List<Sleep>

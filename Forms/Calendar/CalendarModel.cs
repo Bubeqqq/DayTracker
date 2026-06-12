@@ -15,11 +15,14 @@ namespace DayTracker.Forms.Calendar
         public INavigationService NavigationService { get; set; }
 
         private readonly ILoadedDataService _loadedDataService;
+        
         public CalendarModel(INavigationService navigationService, ILoadedDataService loadedDataService)
         {
             _loadedDataService = loadedDataService;       
             NavigationService = navigationService;
+
             
+
         }
         public int CalculateOffset(DateTime date)
         {

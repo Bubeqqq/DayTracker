@@ -18,5 +18,6 @@ namespace DayTracker.Forms.Day
         int CalculateHeight(DateTime startTime, TimeSpan duration, int pixelPerHour, DateTime date);
         int CalculateX(int leftMargin, int columnIndex, int taskWidth);
         CalendarEvent CreateDefualutCalendarEvent(DateTime date);
+        Color GetEventColor(CalendarEvent calendarEvent);
     }
 }

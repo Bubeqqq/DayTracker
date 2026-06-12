@@ -60,11 +60,11 @@ namespace DayTracker.Forms.Day
                         int height = _model.CalculateHeight(calendarEvent.StartTime, calendarEvent.Duration, _view.PixelsPerHour, _date);
                         if (_date.Date > calendarEvent.StartTime)
                         {
-                            _view.CreateAndPlaceTaskControl(calendarEvent, x, y, eventWidth, height, calendarEvent.StartTime.ToShortDateString());
+                            _view.CreateAndPlaceTaskControl(calendarEvent, x, y, eventWidth, height, _model.GetEventColor(calendarEvent),calendarEvent.StartTime.ToShortDateString());
                         }
                         else
                         {
-                            _view.CreateAndPlaceTaskControl(calendarEvent, x, y, eventWidth, height);
+                            _view.CreateAndPlaceTaskControl(calendarEvent, x, y, eventWidth, height, _model.GetEventColor(calendarEvent));
                         }
                     }
                 }
@@ -101,7 +101,7 @@ namespace DayTracker.Forms.Day
                         int y = _model.CalculateY(calendarEvent.StartTime, _view.PixelsPerHour, _date) + _view.TopMargin;
                         int height = _model.CalculateHeight(calendarEvent.StartTime, calendarEvent.Duration, _view.PixelsPerHour,_date);
 
-                        _view.ModifyControl(index, x, y, eventWidth, height);
+                        _view.ModifyControl(index, x, y, eventWidth, height, _model.GetEventColor(calendarEvent));
                         index++;
                     }
                 }

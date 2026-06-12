@@ -26,6 +26,8 @@ namespace DayTracker.Forms.TaskControl
         string EndDay { get; set; }
         string EndMonth { get; } 
         string EndYear { get; }
+        string GetToDoList();
+        void SetToDoList(string str);
         void SetTaskInfoFields(string title, string description);
         void SetStartDate(string hour, string minute, string day, string month, string year);
         void SetEndDate(string hour, string minute, string day, string month, string year);

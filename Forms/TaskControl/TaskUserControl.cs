@@ -49,6 +49,14 @@ namespace DayTracker.Forms.TaskControl
             AssignTagsToTextBoxes();
             ChangeAllTextBoxCursorsToArrow();
         }
+        public string GetToDoList()
+        {
+            return toDoList.GetTODOList();
+        }
+        public void SetToDoList(string str)
+        {
+            toDoList.SetTODOList(str);
+        }
         public void SetTaskInfoFields(string title, string description)
         {
 

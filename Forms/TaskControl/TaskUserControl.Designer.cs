@@ -68,6 +68,7 @@ namespace DayTracker.Forms.TaskControl
             label5 = new Label();
             checkedListBoxCategories = new CheckedListBox();
             buttonConfirm = new Button();
+            toDoList = new DayTracker.UserControls.ToDoList();
             panelStart.SuspendLayout();
             panelEnd.SuspendLayout();
             panelDuration.SuspendLayout();
@@ -83,7 +84,7 @@ namespace DayTracker.Forms.TaskControl
             textBoxTitle.Multiline = true;
             textBoxTitle.Name = "textBoxTitle";
             textBoxTitle.ReadOnly = true;
-            textBoxTitle.Size = new Size(738, 60);
+            textBoxTitle.Size = new Size(470, 60);
             textBoxTitle.TabIndex = 7;
             textBoxTitle.TabStop = false;
             textBoxTitle.Text = "Title";
@@ -102,7 +103,7 @@ namespace DayTracker.Forms.TaskControl
             textBoxDescription.Multiline = true;
             textBoxDescription.Name = "textBoxDescription";
             textBoxDescription.ReadOnly = true;
-            textBoxDescription.Size = new Size(738, 85);
+            textBoxDescription.Size = new Size(470, 85);
             textBoxDescription.TabIndex = 8;
             textBoxDescription.TabStop = false;
             textBoxDescription.Text = "Description";
@@ -141,7 +142,7 @@ namespace DayTracker.Forms.TaskControl
             panelStart.Location = new Point(0, 145);
             panelStart.MinimumSize = new Size(450, 44);
             panelStart.Name = "panelStart";
-            panelStart.Size = new Size(738, 44);
+            panelStart.Size = new Size(470, 44);
             panelStart.TabIndex = 18;
             // 
             // label1
@@ -152,7 +153,7 @@ namespace DayTracker.Forms.TaskControl
             label1.Location = new Point(399, 0);
             label1.MinimumSize = new Size(18, 0);
             label1.Name = "label1";
-            label1.Size = new Size(339, 44);
+            label1.Size = new Size(71, 44);
             label1.TabIndex = 25;
             label1.Text = "📅";
             label1.TextAlign = ContentAlignment.MiddleLeft;
@@ -334,7 +335,7 @@ namespace DayTracker.Forms.TaskControl
             panelEnd.Location = new Point(0, 233);
             panelEnd.MinimumSize = new Size(450, 44);
             panelEnd.Name = "panelEnd";
-            panelEnd.Size = new Size(738, 44);
+            panelEnd.Size = new Size(470, 44);
             panelEnd.TabIndex = 25;
             // 
             // label2
@@ -345,7 +346,7 @@ namespace DayTracker.Forms.TaskControl
             label2.Location = new Point(389, 0);
             label2.MinimumSize = new Size(18, 0);
             label2.Name = "label2";
-            label2.Size = new Size(349, 44);
+            label2.Size = new Size(81, 44);
             label2.TabIndex = 25;
             label2.Text = "📅";
             label2.TextAlign = ContentAlignment.MiddleLeft;
@@ -537,7 +538,7 @@ namespace DayTracker.Forms.TaskControl
             panelDuration.Location = new Point(0, 189);
             panelDuration.MinimumSize = new Size(450, 44);
             panelDuration.Name = "panelDuration";
-            panelDuration.Size = new Size(738, 44);
+            panelDuration.Size = new Size(470, 44);
             panelDuration.TabIndex = 26;
             // 
             // labelDurationMinutes
@@ -549,7 +550,7 @@ namespace DayTracker.Forms.TaskControl
             labelDurationMinutes.Margin = new Padding(0);
             labelDurationMinutes.MinimumSize = new Size(95, 44);
             labelDurationMinutes.Name = "labelDurationMinutes";
-            labelDurationMinutes.Size = new Size(404, 44);
+            labelDurationMinutes.Size = new Size(136, 44);
             labelDurationMinutes.TabIndex = 21;
             labelDurationMinutes.Text = "minutes⏰";
             // 
@@ -662,7 +663,7 @@ namespace DayTracker.Forms.TaskControl
             checkedListBoxCategories.Location = new Point(0, 277);
             checkedListBoxCategories.MinimumSize = new Size(0, 132);
             checkedListBoxCategories.Name = "checkedListBoxCategories";
-            checkedListBoxCategories.Size = new Size(738, 130);
+            checkedListBoxCategories.Size = new Size(470, 130);
             checkedListBoxCategories.TabIndex = 27;
             // 
             // buttonConfirm
@@ -672,11 +673,20 @@ namespace DayTracker.Forms.TaskControl
             buttonConfirm.Font = new Font("Segoe UI Semibold", 18F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 238);
             buttonConfirm.Location = new Point(0, 407);
             buttonConfirm.Name = "buttonConfirm";
-            buttonConfirm.Size = new Size(738, 257);
+            buttonConfirm.Size = new Size(470, 273);
             buttonConfirm.TabIndex = 29;
             buttonConfirm.Text = "Confirm";
             buttonConfirm.UseVisualStyleBackColor = false;
             buttonConfirm.Click += buttonConfirm_Click;
+            // 
+            // toDoList
+            // 
+            toDoList.Dock = DockStyle.Right;
+            toDoList.Location = new Point(470, 0);
+            toDoList.Margin = new Padding(3, 2, 3, 2);
+            toDoList.Name = "toDoList";
+            toDoList.Size = new Size(237, 680);
+            toDoList.TabIndex = 30;
             // 
             // TaskUserControl
             // 
@@ -689,8 +699,9 @@ namespace DayTracker.Forms.TaskControl
             Controls.Add(panelStart);
             Controls.Add(textBoxDescription);
             Controls.Add(textBoxTitle);
+            Controls.Add(toDoList);
             Name = "TaskUserControl";
-            Size = new Size(738, 664);
+            Size = new Size(707, 680);
             panelStart.ResumeLayout(false);
             panelStart.PerformLayout();
             panelEnd.ResumeLayout(false);
@@ -736,8 +747,9 @@ namespace DayTracker.Forms.TaskControl
         private TextBox textBoxEndHour;
         private Label label1;
         private Label label2;
-        private UserControls.ToDoList toDoList1;
+        //private UserControls.ToDoList toDoList1;
         private CheckedListBox checkedListBoxCategories;
         private Button buttonConfirm;
+        private UserControls.ToDoList toDoList;
     }
 }

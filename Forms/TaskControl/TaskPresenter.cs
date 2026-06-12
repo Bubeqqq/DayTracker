@@ -23,7 +23,7 @@ namespace DayTracker.Forms.TaskControl
             _view=view;
             _model=model;
             _view.FieldValidation += OnFieldValidation;
-            _view.ConfirmClicked +=OnConfirmClicked;
+            _view.ConfirmClicked += async ()=>await OnConfirmClicked();
             _view.SetCheckedListBoxItems(_model.GetDefaultCategories());
             Initialize();
 
@@ -64,6 +64,10 @@ namespace DayTracker.Forms.TaskControl
             DateTime endDate = calendarEvent.StartTime.Add(duration);
             _view.SetEndDate(endDate.Hour.ToString(), endDate.Minute.ToString(), endDate.Day.ToString(), endDate.Month.ToString(), endDate.Year.ToString());
             SetCategories(calendarEvent);
+            if (calendarEvent.Todo != null)
+            {
+                _view.SetToDoList(calendarEvent.Todo.Description);
+            }
         }
         private void SetCategories(CalendarEvent calendarEvent)
         {
@@ -292,22 +296,55 @@ namespace DayTracker.Forms.TaskControl
             _view.SetStartDate(newStartDate.Hour.ToString(), newStartDate.Minute.ToString(), newStartDate.Day.ToString(), newStartDate.Month.ToString(), newStartDate.Year.ToString());
         }
        
-      private async void OnConfirmClicked()
+      private async Task OnConfirmClicked()
         {
             if (_model.TryGetDate(_view.StartMinute, _view.StartHour, _view.StartDay, _view.StartMonth, _view.StartYear, out DateTime startTime) &&
                 _model.TryGetDuration(_view.DurationMinutes, _view.DurationHours, _view.DurationDays, out TimeSpan duration)&&
                 !string.IsNullOrEmpty(_view.Title))
             {
+
                 CalendarEvent calendarEvent = new CalendarEvent(_view.Title, _view.Descritpion,_model.GetCalendarId(), startTime, duration);
+                string toDoDescription = _view.GetToDoList();
+                
                 List<string> checkedCategories = _view.GetCheckedItems();
                 _model.SetEventCategories(checkedCategories, calendarEvent);
                 if (_editMode)
                 {
+                    if (!string.IsNullOrEmpty(toDoDescription))
+                    {
+                        if (calendarEvent.Todo != null)
+                        {
+                            calendarEvent.Todo.Description = toDoDescription;
+                            //model.ModifyToDo();
+                        }
+                        else
+                        {
+                            calendarEvent.Todo = new TodoItem(toDoDescription);
+                            //model.AddToDo();
+                            calendarEvent.TodoId = calendarEvent.Todo.Id;
+                        }
+
+                    }
+                    else
+                    {
+                        if (calendarEvent.Todo != null)
+                        {
+                            calendarEvent.Todo= null;
+                            calendarEvent.TodoId = null;
+                            //model.DeleteToDo();
+                        }
+                    }
                     calendarEvent.Id = _task.Id;             
                     //_model.Modify();
                 }
                 else
                 {
+                    if (!string.IsNullOrEmpty(toDoDescription))
+                    {
+                        calendarEvent.Todo= new TodoItem(toDoDescription);
+                        //model.AddToDo();
+                        calendarEvent.TodoId = calendarEvent.Todo.Id;
+                    }
                     await _model.AddCalendarEvent(calendarEvent);
                     
                 }
