@@ -39,14 +39,20 @@ namespace DayTracker.Database
             if (record is CalendarEvent calendarRecord)
             {
                 calendarRecord.CalendarId = CurrentCalendarID;
+                calendarRecord.Id = 0;
             }
             else if (record is Sleep sleepRecord)
             {
                 sleepRecord.CalendarId = CurrentCalendarID;
+                sleepRecord.Id = 0;
             }
             else if(record is Permission permissionRecord)
             {
                 permissionRecord.CalendarId = CurrentCalendarID;
+                permissionRecord.Id = 0;
+            }else if(record is TodoItem todoRecord)
+            {
+                todoRecord.Id = 0;
             }
 
             await Set<T>().AddAsync(record);
@@ -58,6 +64,8 @@ namespace DayTracker.Database
 
         public async Task AddUserAsync(User record)
         {
+            record.Id = 0;
+
             await Users.AddAsync(record);
             await SaveChangesAsync();
         }
