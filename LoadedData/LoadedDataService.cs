@@ -26,7 +26,12 @@ namespace DayTracker.LoadedData
             _loginService = loginService;
             _databaseService = databaseService;
 
-            _databaseService.OnEntityChanged += async (e, o) => await UpdateDatabase(e, o);
+            //_databaseService.OnEntityChanged += async (e, o) => await UpdateDatabase(e, o);
+
+            _databaseService.OnEntityChanged += (e, o) =>
+            {
+                _ = UpdateDatabase(e, o);
+            };
         }
 
         public event Action OnCalendarEventsChanged;
