@@ -29,33 +29,43 @@ namespace DayTracker.Database
 
         public event Action<string, EntityState> OnEntityChanged;
 
-        public async Task AddAsync<T>(T record) where T : class, ICalendarRecord
+        public async Task<T> AddAsync<T>(T record) where T : class, ICalendarRecord
         {
             if (record == null)
             {
-                return;
+                return null;
             }
 
             if (record is CalendarEvent calendarRecord)
             {
                 calendarRecord.CalendarId = CurrentCalendarID;
+                calendarRecord.Id = 0;
             }
             else if (record is Sleep sleepRecord)
             {
                 sleepRecord.CalendarId = CurrentCalendarID;
+                sleepRecord.Id = 0;
             }
             else if(record is Permission permissionRecord)
             {
                 permissionRecord.CalendarId = CurrentCalendarID;
+                permissionRecord.Id = 0;
+            }else if(record is TodoItem todoRecord)
+            {
+                todoRecord.Id = 0;
             }
 
             await Set<T>().AddAsync(record);
 
             await SaveChangesAsync();
+
+            return record;
         }
 
         public async Task AddUserAsync(User record)
         {
+            record.Id = 0;
+
             await Users.AddAsync(record);
             await SaveChangesAsync();
         }

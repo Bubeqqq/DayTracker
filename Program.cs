@@ -12,6 +12,7 @@ using DayTracker.LoginServices;
 using DayTracker.HabitAnalysis;
 using System.Threading.Tasks;
 using DayTracker.LoadedData;
+using DayTracker.Database.Datatypes;
 
 namespace DayTracker
 {
@@ -58,7 +59,6 @@ namespace DayTracker
             }
 
             await serviceProvider.GetRequiredService<ILoadedDataService>().Initialize();
-
 
             var mainForm = serviceProvider.GetRequiredService<MainFormPresenter>();
             mainForm.Initialize();

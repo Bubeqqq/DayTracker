@@ -29,7 +29,7 @@ namespace DayTracker.Database
 
         Task EnsureCreated();
 
-        Task AddAsync<T>(T record) where T : class, ICalendarRecord;
+        Task<T> AddAsync<T>(T record) where T : class, ICalendarRecord;
 
         Task AddUserAsync(User record);
 
