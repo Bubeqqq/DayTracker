@@ -8,9 +8,10 @@ namespace DayTracker.Database.Datatypes
 {
     public class CalendarEvent : ICalendarRecord
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         public string Title { get; set; }
+        public string Description { get; set; }
 
         public int CalendarId { get; set; }
 
@@ -28,6 +29,26 @@ namespace DayTracker.Database.Datatypes
         public bool IsWork { get; set; }
         public bool IsRelax { get; set; }
         public bool IsEducation { get; set; }
-
+        //To musi być konstruktor prywatny, aby Entity Framework mógł tworzyć instancje klasy CalendarEvent podczas odczytu danych z bazy danych.
+        private CalendarEvent() { }
+        public CalendarEvent(string title, string description, int calendarId, DateTime startTime, TimeSpan duration, int? todoId = null, TodoItem? todo = null,
+            bool isHard=false, bool isOutdoor = false, bool isSport = false, bool isWork = false, bool isRelax = false, bool isEducation = false, int? id=null)
+        {
+            
+            Title = title;
+            Description = description;
+            CalendarId = calendarId;            
+            StartTime = startTime;
+            Duration = duration;
+            IsHard = isHard;
+            IsOutdoor = isOutdoor;
+            IsSport = isSport;
+            IsWork = isWork;
+            IsRelax = isRelax;
+            IsEducation = isEducation;
+            TodoId = todoId;
+            Todo = todo;
+            Id = id;
+        }
     }
 }

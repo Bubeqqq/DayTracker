@@ -23,10 +23,6 @@ namespace DayTracker.Forms.Calendar
         }
         public int CalculateOffset(DateTime date)
         {
-            if(date == null)
-            {
-                throw new ArgumentNullException("Date can't be null");
-            }
             DateTime firstDayOfMonth = new DateTime(date.Year, date.Month, 1);
             int offset = (int)firstDayOfMonth.DayOfWeek;
             if (offset == 0)
@@ -42,11 +38,9 @@ namespace DayTracker.Forms.Calendar
         }
         public List<string> GetStringTaskList(DateTime date, List<CalendarEvent> events) 
         {
-            
-                   
-           
+  
             List<CalendarEvent> dailyEvents = events
-                        .Where(e => e.StartTime.Date == date.ToUniversalTime().Date)
+                        .Where(e => e.StartTime.Date == date.Date)
                         .ToList();
             return dailyEvents.ConvertAll(t => $"- {t.Title}");
             

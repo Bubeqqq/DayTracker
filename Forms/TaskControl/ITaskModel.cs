@@ -5,6 +5,7 @@ namespace DayTracker.Forms.TaskControl
 {
     internal interface ITaskModel : IModel
     {
+        int GetCalendarId();
         Dictionary<string, bool> GetDefaultCategories();
         bool ValidateMinute(string minuteStr);
 

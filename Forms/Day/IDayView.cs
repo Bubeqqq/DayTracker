@@ -12,6 +12,7 @@ namespace DayTracker.Forms.Day
 {
     internal interface IDayView: IView
     {
+        int TopMargin { get; }
         int PixelsPerHour { get; }
         int LeftMargin { get; }
         int TotalWidth { get;}

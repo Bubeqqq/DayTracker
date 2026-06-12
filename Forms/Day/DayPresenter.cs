@@ -98,7 +98,7 @@ namespace DayTracker.Forms.Day
                     foreach (var calendarEvent in columns[columnIndex])
                     {
                         int x = _model.CalculateX(_view.LeftMargin, columnIndex, eventWidth);
-                        int y = _model.CalculateY(calendarEvent.StartTime, _view.PixelsPerHour, _date);
+                        int y = _model.CalculateY(calendarEvent.StartTime, _view.PixelsPerHour, _date) + _view.TopMargin;
                         int height = _model.CalculateHeight(calendarEvent.StartTime, calendarEvent.Duration, _view.PixelsPerHour,_date);
 
                         _view.ModifyControl(index, x, y, eventWidth, height);

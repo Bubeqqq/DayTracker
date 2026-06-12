@@ -30,20 +30,22 @@ namespace DayTracker.Forms.TaskControl
         }
         private void Initialize()
         {
-            CalendarEvent defaultCalendarEvent = new CalendarEvent();
-            defaultCalendarEvent.Title = "Title";
-            defaultCalendarEvent.StartTime = DateTime.Now;
-            //defaultCalendarEvent.Description = "Description";
-            defaultCalendarEvent.Duration = new TimeSpan(1, 1, 1, 0);
-            _model.SetAllCategoriesToFalse(defaultCalendarEvent);
-            if (_task != null&& _task.Id!=null && _task.CalendarId != null)
+            
+            
+            if (_task != null&& _task.Id == null)
+            {
+                _editMode = false;
+                SetTaskFields(_task);
+            }else if (_task != null)
             {
                 _editMode = true;
                 SetTaskFields(_task);
             }
+
             else
             {
                 _editMode = false;
+                CalendarEvent defaultCalendarEvent = new CalendarEvent("Title", "Description", _model.GetCalendarId(), DateTime.Now, new TimeSpan(1, 1, 1, 0));
                 SetTaskFields(defaultCalendarEvent);
             }
         }
@@ -51,7 +53,7 @@ namespace DayTracker.Forms.TaskControl
         private void SetTaskFields(CalendarEvent calendarEvent)
         {
 
-            _view.SetTaskInfoFields(calendarEvent.Title, "Description"); //calendarEvent.Description);
+            _view.SetTaskInfoFields(calendarEvent.Title, calendarEvent.Description);
 
             DateTime startDate = calendarEvent.StartTime;
             _view.SetStartDate(startDate.Hour.ToString(),startDate.Minute.ToString(),startDate.Day.ToString(),startDate.Month.ToString(),startDate.Year.ToString());
@@ -296,18 +298,12 @@ namespace DayTracker.Forms.TaskControl
                 _model.TryGetDuration(_view.DurationMinutes, _view.DurationHours, _view.DurationDays, out TimeSpan duration)&&
                 !string.IsNullOrEmpty(_view.Title))
             {
-                CalendarEvent calendarEvent = new CalendarEvent();
-                calendarEvent.Title = _view.Title;
-                //calendarEvent.Description = _view.Descritpion;
-                
-                calendarEvent.StartTime= startTime;
-                calendarEvent.Duration= duration;
+                CalendarEvent calendarEvent = new CalendarEvent(_view.Title, _view.Descritpion,_model.GetCalendarId(), startTime, duration);
                 List<string> checkedCategories = _view.GetCheckedItems();
                 _model.SetEventCategories(checkedCategories, calendarEvent);
                 if (_editMode)
                 {
-                    calendarEvent.Id = _task.Id;
-                    calendarEvent.CalendarId = _task.CalendarId;
+                    calendarEvent.Id = _task.Id;             
                     //_model.Modify();
                 }
                 else
