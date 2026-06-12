@@ -1,4 +1,5 @@
-﻿using DayTracker.Database.Datatypes;
+﻿using DayTracker.Database;
+using DayTracker.Database.Datatypes;
 using DayTracker.LoadedData;
 using DayTracker.Navigation;
 using DayTracker.UserControls.TestTask_usunac;
@@ -12,11 +13,13 @@ namespace DayTracker.Forms.Day
     internal class DayModel:IDayModel
     {
         private readonly ILoadedDataService _loadedDataService;
+        private readonly IDatabaseService _databaseService;
         public INavigationService NavigationService { get; set; }
-        public DayModel(INavigationService navigationService, ILoadedDataService loadedDataService)
+        public DayModel(INavigationService navigationService, ILoadedDataService loadedDataService, IDatabaseService databaseService)
         {
             _loadedDataService = loadedDataService;
             NavigationService = navigationService;
+            _databaseService = databaseService;
         }
         public List<CalendarEvent> GetEventsForDay(DateTime date)
         {
@@ -56,14 +59,7 @@ namespace DayTracker.Forms.Day
         }
         public int CalculateY(DateTime startTime, int pixelPerHour, DateTime date)
         {
-            if (startTime == null)
-            {
-                throw new ArgumentNullException("StartTime can't be null");
-            }
-            if (date == null)
-            {
-                throw new ArgumentNullException("date can't be null");
-            }
+
             if (date.Date > startTime)
             {
                 return 0;
@@ -74,21 +70,14 @@ namespace DayTracker.Forms.Day
         }
         public int CalculateHeight(DateTime startTime, TimeSpan duration, int pixelPerHour, DateTime date)
         {
-            if (duration == null)
-            {
-                throw new ArgumentNullException("duration can't be null");
-            }
-            if (startTime == null)
-            {
-                throw new ArgumentNullException("StartTime can't be null");
-            }
-            if (date == null)
-            {
-                throw new ArgumentNullException("date can't be null");
-            }
             if (date.Date.ToUniversalTime() > startTime)
             {
                 TimeSpan newDuration = duration - (date.Date - startTime);
+                return Convert.ToInt32(newDuration.TotalMinutes * pixelPerHour / 60.0);
+            }else
+            if (startTime.Add(duration) > date.Date.AddDays(1))
+            {
+                TimeSpan newDuration = date.Date.AddDays(1) - startTime;
                 return Convert.ToInt32(newDuration.TotalMinutes * pixelPerHour / 60.0);
             }
             return Convert.ToInt32(duration.TotalMinutes * pixelPerHour / 60.0);
@@ -99,18 +88,8 @@ namespace DayTracker.Forms.Day
         }
         public CalendarEvent CreateDefualutCalendarEvent(DateTime date)
         {
-            CalendarEvent calendarEvent = new CalendarEvent();
+            CalendarEvent calendarEvent = new CalendarEvent("Title", "Description", _databaseService.CurrentCalendarID, date.Date, new TimeSpan(1, 1, 1, 0));
 
-            calendarEvent.Title = "Title";
-            calendarEvent.StartTime = date.Date;
-            //calendarEvent.Description = "Description";
-            calendarEvent.Duration = new TimeSpan(1, 1, 1, 0);
-            calendarEvent.IsHard = false;
-            calendarEvent.IsOutdoor = false;
-            calendarEvent.IsSport = false;
-            calendarEvent.IsWork = false;
-            calendarEvent.IsRelax = false;
-            calendarEvent.IsEducation = false;
             return calendarEvent;
         }
     }

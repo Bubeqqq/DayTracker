@@ -28,6 +28,7 @@ namespace DayTracker.Forms.Day
         public int PixelsPerHour { get; }
         public int LeftMargin { get; }
         public int TotalWidth { get { return this.ClientSize.Width; } }
+        public int TopMargin { get { return buttonAddEvent.Height; } }
         public event EventHandler SizeChanged;
         public event EventHandler AddClicked;
         public event EventHandler<CalendarEventClickedEventArgs> CalendarEventClicked;
@@ -36,6 +37,7 @@ namespace DayTracker.Forms.Day
         private int colorIndex;
         public DayUserControl()
         {
+            
             InitializeComponent();
             LeftMargin = 50;
             PixelsPerHour = 60;
@@ -112,7 +114,7 @@ namespace DayTracker.Forms.Day
                 int y = i * PixelsPerHour+buttonAddEvent.Height;
 
                 string timeText = $"{i:00}:00";
-                g.DrawString(timeText, timeFont, textBrush, 5, y);
+                g.DrawString(timeText, timeFont, textBrush, 5, y-4);//Czemu -4? Nie mam pojęcia ale wygląda git!!!
 
                 g.DrawLine(linePen, LeftMargin, y, this.Width - this.AutoScrollPosition.X, y);
             }

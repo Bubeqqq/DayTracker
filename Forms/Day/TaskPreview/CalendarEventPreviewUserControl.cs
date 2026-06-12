@@ -25,7 +25,7 @@ namespace DayTracker.Forms.Day
             InitializeComponent();
             CalendarEvent = calendarEvent;
             labelTitle.Text = CalendarEvent.Title;
-            //labelDescription.Text = CalendarEvent.Description;
+            labelDescription.Text = CalendarEvent.Description;
 
         }
         public void UpdateLocation(int x, int y, int taskWidth, int height)

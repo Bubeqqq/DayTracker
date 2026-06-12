@@ -62,23 +62,32 @@ namespace DayTracker.HabitAnalysis
             var calendarEvents = new List<CalendarEvent>
 {
     // Praca (część połączona z zadaniami Todo)
-    new CalendarEvent { Id = 1, StartTime = dzisiaj.AddDays(-2).AddHours(9), Duration = TimeSpan.FromHours(8), IsWork = true, TodoId = 1 },
-    new CalendarEvent { Id = 2, StartTime = dzisiaj.AddDays(-1).AddHours(10), Duration = TimeSpan.FromHours(6), IsWork = true },
-    new CalendarEvent { Id = 3, StartTime = dzisiaj.AddHours(8), Duration = TimeSpan.FromHours(4), IsWork = true, TodoId = 4 },
+    new CalendarEvent("","",-1,dzisiaj.AddDays(-2).AddHours(9),TimeSpan.FromHours(8),isWork:true,todoId:1,id:1),
+    //new CalendarEvent { Id = 1, StartTime = dzisiaj.AddDays(-2).AddHours(9), Duration = TimeSpan.FromHours(8), IsWork = true, TodoId = 1 },
+    new CalendarEvent("","",-1,dzisiaj.AddDays(-1).AddHours(10),TimeSpan.FromHours(6),isWork:true,id:2),
+    //new CalendarEvent { Id = 2, StartTime = dzisiaj.AddDays(-1).AddHours(10), Duration = TimeSpan.FromHours(6), IsWork = true },
+    new CalendarEvent("","",-1,dzisiaj.AddHours(8),TimeSpan.FromHours(4),isWork:true,todoId:4,id:3),
+    //new CalendarEvent { Id = 3, StartTime = dzisiaj.AddHours(8), Duration = TimeSpan.FromHours(4), IsWork = true, TodoId = 4 },
     
     // Edukacja
-    new CalendarEvent { Id = 4, StartTime = dzisiaj.AddDays(-2).AddHours(18), Duration = TimeSpan.FromHours(2), IsEducation = true },
+    new CalendarEvent("","",-1,dzisiaj.AddDays(-2).AddHours(18),TimeSpan.FromHours(2),isEducation:true,id:4),
+    //new CalendarEvent { Id = 4, StartTime = dzisiaj.AddDays(-2).AddHours(18), Duration = TimeSpan.FromHours(2), IsEducation = true },
     
     // Sport i czas na zewnątrz
-    new CalendarEvent { Id = 5, StartTime = dzisiaj.AddDays(-1).AddHours(17), Duration = TimeSpan.FromHours(1.5), IsSport = true, IsOutdoor = true },
-    new CalendarEvent { Id = 6, StartTime = dzisiaj.AddHours(16), Duration = TimeSpan.FromHours(1.5), IsSport = true, TodoId = 3 },
+    new CalendarEvent("","",-1,dzisiaj.AddDays(-1).AddHours(17),TimeSpan.FromHours(1.5),isSport:true,isOutdoor:true,id:5),
+    //new CalendarEvent { Id = 5, StartTime = dzisiaj.AddDays(-1).AddHours(17), Duration = TimeSpan.FromHours(1.5), IsSport = true, IsOutdoor = true },
+    new CalendarEvent("","",-1,dzisiaj.AddHours(16),TimeSpan.FromHours(1.5),isSport:true,todoId:3,id:6),
+    //new CalendarEvent { Id = 6, StartTime = dzisiaj.AddHours(16), Duration = TimeSpan.FromHours(1.5), IsSport = true, TodoId = 3 },
     
     // Relaks
-    new CalendarEvent { Id = 7, StartTime = dzisiaj.AddDays(-1).AddHours(20), Duration = TimeSpan.FromHours(2), IsRelax = true },
-    new CalendarEvent { Id = 8, StartTime = dzisiaj.AddHours(19), Duration = TimeSpan.FromHours(3), IsRelax = true },
+    new CalendarEvent("","",-1,dzisiaj.AddDays(-1).AddHours(20),TimeSpan.FromHours(2),isRelax:true,id:7),
+    //new CalendarEvent { Id = 7, StartTime = dzisiaj.AddDays(-1).AddHours(20), Duration = TimeSpan.FromHours(2), IsRelax = true },
+    new CalendarEvent("","",-1,dzisiaj.AddHours(19),TimeSpan.FromHours(3),isRelax:true,id:8),
+    //new CalendarEvent { Id = 8, StartTime = dzisiaj.AddHours(19), Duration = TimeSpan.FromHours(3), IsRelax = true },
     
     // ANOMALIA 3: Zagięcie czasoprzestrzeni (Ten dzień ma zarejestrowane 8h pracy + 26h snu z rekordu wyżej)
-    new CalendarEvent { Id = 9, StartTime = dzisiaj.AddDays(-3).AddHours(10), Duration = TimeSpan.FromHours(8), IsWork = true }
+    new CalendarEvent("","",-1,dzisiaj.AddDays(-3).AddHours(10),TimeSpan.FromHours(8),isWork:true,id:9),
+    //new CalendarEvent { Id = 9, StartTime = dzisiaj.AddDays(-3).AddHours(10), Duration = TimeSpan.FromHours(8), IsWork = true }
 };
 
             foreach (var s in sleepRecords)

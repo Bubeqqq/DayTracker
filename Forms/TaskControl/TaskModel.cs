@@ -24,6 +24,10 @@ namespace DayTracker.Forms.TaskControl
             NavigationService = navigationService;
             _databaseService = databaseService;
         }
+        public int GetCalendarId()
+        {
+            return _databaseService.CurrentCalendarID;
+        }
         public Dictionary<string, bool> GetDefaultCategories()
         {
             Dictionary<string, bool> categories = new Dictionary<string, bool> { { "IsHard", false }, { "IsOutdoor", false },
@@ -133,8 +137,9 @@ namespace DayTracker.Forms.TaskControl
             _isSaving = true;
             try
             {
+                calendarEvent.Id = null;
                 calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
-            calendarEvent.StartTime=calendarEvent.StartTime.ToUniversalTime();
+            calendarEvent.StartTime=calendarEvent.StartTime.ToUniversalTime().AddHours((DateTime.Now-DateTime.Now.ToUniversalTime()).Hours);
             
             await _databaseService.AddAsync(calendarEvent);
 
