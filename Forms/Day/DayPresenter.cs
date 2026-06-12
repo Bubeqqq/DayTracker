@@ -126,12 +126,12 @@ namespace DayTracker.Forms.Day
         private void OnDeleteClicked(object sender, CalendarEventClickedEventArgs e)
         {
             bool yesDecision=_view.YesNoMessage("Are you sure you want to delete this task?");
-            //if(yesDecision)
-            //{
-            //    _model.DeleteEvent(e.CalendarEvent);
-            //    _eventList.Remove(e.CalendarEvent);
-            //    UpdateEvents(_eventList);
-            //}
+            if (yesDecision)
+            {
+                _model.DeleteCalendarEvent(e.CalendarEvent);
+                _eventList.Remove(e.CalendarEvent);
+                UpdateEvents(_eventList);
+            }
         }
     }
 }

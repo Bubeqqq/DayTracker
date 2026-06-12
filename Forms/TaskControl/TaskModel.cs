@@ -132,7 +132,7 @@ namespace DayTracker.Forms.TaskControl
             calendarEvent.Id = -1;
             calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
             calendarEvent.StartTime = calendarEvent.StartTime.ToUniversalTime().AddHours((DateTime.Now - DateTime.Now.ToUniversalTime()).Hours);
-
+            MessageBox.Show("Adding Event: " + calendarEvent.Title);
             await _databaseService.AddAsync(calendarEvent);
 
             NavigationService.NavigateTo<DayPresenter, DateTime>(comeBackDate.Date);
@@ -142,7 +142,7 @@ namespace DayTracker.Forms.TaskControl
         public async Task<TodoItem> AddToDoItem(TodoItem todoItem)
         {
 
-
+            MessageBox.Show("Adding ToDoItem: " + todoItem.Description);
             return await _databaseService.AddAsync(todoItem);
 
 
@@ -153,6 +153,7 @@ namespace DayTracker.Forms.TaskControl
             calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
             DateTime comeBackDate = calendarEvent.StartTime;
             calendarEvent.StartTime = calendarEvent.StartTime.ToUniversalTime().AddHours((DateTime.Now - DateTime.Now.ToUniversalTime()).Hours);
+            MessageBox.Show("Modyfying Event: " + calendarEvent.Title);
             await _databaseService.UpdateByType<CalendarEvent>(calendarEvent.Id, (e) =>
             {
                 e.Title = calendarEvent.Title;
@@ -172,11 +173,13 @@ namespace DayTracker.Forms.TaskControl
                 e.IsEducation = calendarEvent.IsEducation;
 
             });
+
             NavigationService.NavigateTo<DayPresenter, DateTime>(comeBackDate.Date);
 
         }
         public async Task<TodoItem> ModifyToDoItem(TodoItem todoItem)
         {
+            MessageBox.Show("Modify ToDoItem: " + todoItem.Description);
             return await _databaseService.UpdateByType<TodoItem>(todoItem.Id, (e) =>
             {
                 e.Description = todoItem.Description;

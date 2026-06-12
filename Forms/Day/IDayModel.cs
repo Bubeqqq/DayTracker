@@ -14,6 +14,7 @@ namespace DayTracker.Forms.Day
         INavigationService NavigationService { get; set; }
         List<List<CalendarEvent>> CalculateColumns(List<CalendarEvent> tasks);
         List<CalendarEvent> GetEventsForDay(DateTime date);
+        Task DeleteCalendarEvent(CalendarEvent calendarEvent);
         int CalculateY(DateTime startTime, int pixelPerHour,DateTime date);
         int CalculateHeight(DateTime startTime, TimeSpan duration, int pixelPerHour, DateTime date);
         int CalculateX(int leftMargin, int columnIndex, int taskWidth);

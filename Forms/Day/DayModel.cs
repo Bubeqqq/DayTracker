@@ -162,6 +162,17 @@ namespace DayTracker.Forms.Day
             }
             return false;
         }
-        
+        public async Task DeleteCalendarEvent(CalendarEvent calendarEvent)
+        {
+            if (calendarEvent.Todo != null)
+            {
+                await DeleteToDoItem(calendarEvent.Todo);
+            }
+            await _databaseService.RemoveByType<CalendarEvent>(calendarEvent.Id);
+        }
+        private async Task DeleteToDoItem(TodoItem todoItem)
+        {
+            await _databaseService.RemoveByType<TodoItem>(todoItem.Id);
+        }
     }
 }
