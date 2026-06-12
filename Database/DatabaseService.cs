@@ -22,6 +22,8 @@ namespace DayTracker.Database
 
         public int CurrentCalendarID { get; set; } = -1;
 
+        private readonly SemaphoreSlim _dbLock = new SemaphoreSlim(1, 1);
+
         public DatabaseService(DbContextOptions<DatabaseService> options) : base(options)
         {
 
@@ -36,38 +38,52 @@ namespace DayTracker.Database
                 return null;
             }
 
-            if (record is CalendarEvent calendarRecord)
+            await _dbLock.WaitAsync();
+            try
             {
-                calendarRecord.CalendarId = CurrentCalendarID;
-                calendarRecord.Id = 0;
-            }
-            else if (record is Sleep sleepRecord)
-            {
-                sleepRecord.CalendarId = CurrentCalendarID;
-                sleepRecord.Id = 0;
-            }
-            else if(record is Permission permissionRecord)
-            {
-                permissionRecord.CalendarId = CurrentCalendarID;
-                permissionRecord.Id = 0;
-            }else if(record is TodoItem todoRecord)
-            {
-                todoRecord.Id = 0;
-            }
 
-            await Set<T>().AddAsync(record);
+                if (record is CalendarEvent calendarRecord)
+                {
+                    calendarRecord.CalendarId = CurrentCalendarID;
+                    calendarRecord.Id = 0;
+                }
+                else if (record is Sleep sleepRecord)
+                {
+                    sleepRecord.CalendarId = CurrentCalendarID;
+                    sleepRecord.Id = 0;
+                }
+                else if (record is Permission permissionRecord)
+                {
+                    permissionRecord.CalendarId = CurrentCalendarID;
+                    permissionRecord.Id = 0;
+                }
+                else if (record is TodoItem todoRecord)
+                {
+                    todoRecord.Id = 0;
+                }
 
-            await SaveChangesAsync();
+                await Set<T>().AddAsync(record);
 
-            return record;
+                await SaveChangesAsync();
+
+                return record;
+            }
+            finally
+            {
+                _dbLock.Release();
+            }
         }
 
         public async Task AddUserAsync(User record)
         {
+            await _dbLock.WaitAsync();
+
             record.Id = 0;
 
             await Users.AddAsync(record);
             await SaveChangesAsync();
+
+            _dbLock.Release();
         }
 
         public async Task<List<User>> GetUsersAsync(Expression<Func<User, bool>> predicate)
@@ -123,43 +139,55 @@ namespace DayTracker.Database
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            var modifiedEntries = ChangeTracker.Entries()
-                .Where(e => e.State == EntityState.Added ||
-                            e.State == EntityState.Modified ||
-                            e.State == EntityState.Deleted)
-                .ToList();
+            await _dbLock.WaitAsync();
 
-            var result = await base.SaveChangesAsync(cancellationToken);
-
-            foreach (var entry in modifiedEntries)
+            try
             {
 
-                if (entry.Entity is CalendarEvent calendarEvent)
-                {
-                    if (calendarEvent.CalendarId == CurrentCalendarID)
-                    {
-                        OnEntityChanged?.Invoke(nameof(CalendarEvent), entry.State);
-                    }
-                }
-                else if (entry.Entity is Sleep sleep)
-                {
-                    if (sleep.CalendarId == CurrentCalendarID)
-                    {
-                        OnEntityChanged?.Invoke(nameof(Sleep), entry.State);
-                    }
-                }
-                else
-                {
-                    string tableName = entry.Entity.GetType().Name;
-                    OnEntityChanged?.Invoke(tableName, entry.State);
-                }
-            }
+                var modifiedEntries = ChangeTracker.Entries()
+                    .Where(e => e.State == EntityState.Added ||
+                                e.State == EntityState.Modified ||
+                                e.State == EntityState.Deleted)
+                    .ToList();
 
-            return result;
+                var result = await base.SaveChangesAsync(cancellationToken);
+
+                foreach (var entry in modifiedEntries)
+                {
+
+                    if (entry.Entity is CalendarEvent calendarEvent)
+                    {
+                        if (calendarEvent.CalendarId == CurrentCalendarID)
+                        {
+                            OnEntityChanged?.Invoke(nameof(CalendarEvent), entry.State);
+                        }
+                    }
+                    else if (entry.Entity is Sleep sleep)
+                    {
+                        if (sleep.CalendarId == CurrentCalendarID)
+                        {
+                            OnEntityChanged?.Invoke(nameof(Sleep), entry.State);
+                        }
+                    }
+                    else
+                    {
+                        string tableName = entry.Entity.GetType().Name;
+                        OnEntityChanged?.Invoke(tableName, entry.State);
+                    }
+                }
+
+                return result;
+            }
+            finally
+            {
+                _dbLock.Release();
+            }
         }
 
         async Task IDatabaseService.RemoveByType<T>(int index)
         {
+            await _dbLock.WaitAsync();
+
             var record = await Set<T>().FindAsync(index);
 
             if (record != null)
@@ -168,6 +196,8 @@ namespace DayTracker.Database
 
                 await SaveChangesAsync();
             }
+
+            _dbLock.Release();
         }
 
         async Task IDatabaseService.RemoveByType<T>(T record)
@@ -184,29 +214,36 @@ namespace DayTracker.Database
 
         async Task<T> IDatabaseService.UpdateByType<T>(int index, Action<T> update)
         {
-            object? foundRecord = null;
-
-            switch (typeof(T))
+            try
             {
-                case Type t when t == typeof(TodoItem):
-                    foundRecord = await TodoItems.FindAsync(index);
-                    break;
-                case Type t when t == typeof(CalendarEvent):
-                    foundRecord = await CalendarEvents.FindAsync(index);
-                    break;
-                case Type t when t == typeof(Sleep):
-                    foundRecord = await Sleeps.FindAsync(index);
-                    break;
-                case Type t when t == typeof(Permission):
-                    foundRecord = await Permissions.FindAsync(index);
-                    break;
-            }
 
-            if (foundRecord != null)
+                object? foundRecord = null;
+
+                switch (typeof(T))
+                {
+                    case Type t when t == typeof(TodoItem):
+                        foundRecord = await TodoItems.FindAsync(index);
+                        break;
+                    case Type t when t == typeof(CalendarEvent):
+                        foundRecord = await CalendarEvents.FindAsync(index);
+                        break;
+                    case Type t when t == typeof(Sleep):
+                        foundRecord = await Sleeps.FindAsync(index);
+                        break;
+                    case Type t when t == typeof(Permission):
+                        foundRecord = await Permissions.FindAsync(index);
+                        break;
+                }
+
+                if (foundRecord != null)
+                {
+                    update((T)foundRecord);
+                    await SaveChangesAsync();
+                    return (T)foundRecord;
+                }
+            }finally
             {
-                update((T)foundRecord);
-                await SaveChangesAsync();
-                return (T)foundRecord;
+                _dbLock.Release();
             }
 
             throw new ArgumentNullException($"{index} not found.");
