@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DayTracker.Database.Datatypes;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,5 +22,26 @@ namespace DayTracker.Forms.MainForm
 
         void ShowBar();
         void HideBar(bool absolute);
+
+        void ExitApp();
+
+        //settings
+
+        public event Action OnLogoutRequested;
+        public event Action OnExitRequested;
+
+        public event Action OnClearListRequested;
+        public event Action OnCalendarResetRequested;
+
+        public event Action<bool> OnBarVisibilityChanged;
+
+        public event Action<string, string, string> OnPermissionChanged;
+        public event Action<string, string> OnUserAdded;
+        public event Action<string> OnUserRemoved;
+
+
+        event Action OnSettingsOpened;
+        void LoadPermissions(List<SimplePermission> permissions);
+
     }
 }

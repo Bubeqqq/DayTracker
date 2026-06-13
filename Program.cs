@@ -63,14 +63,23 @@ namespace DayTracker
             var mainForm = serviceProvider.GetRequiredService<MainFormPresenter>();
             mainForm.Initialize();
 
-            if (mainForm.View is Form mainFormWindow)
+            Thread winFormsThread = new Thread(() =>
             {
-                Application.Run(mainFormWindow);
-            }
-            else
-            {
-                MessageBox.Show("G³ówny widok aplikacji nie jest oknem typu Form!");
-            }
+                if (mainForm.View is Form mainFormWindow)
+                {
+                    Application.Run(mainFormWindow);
+                }
+                else
+                {
+                    MessageBox.Show("G³ówny widok aplikacji nie jest oknem typu Form!");
+                }
+            });
+
+            winFormsThread.SetApartmentState(ApartmentState.STA);
+            winFormsThread.Start();
+            winFormsThread.Join();
+
+           
         }
 
         private static void ConfigureService<T>(ServiceCollection services)

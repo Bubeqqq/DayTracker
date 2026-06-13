@@ -28,40 +28,39 @@
         /// </summary>
         private void InitializeComponent()
         {
-            tableLayoutPanel1 = new TableLayoutPanel();
+            tableLayoutPanel = new TableLayoutPanel();
             backButton = new Button();
             forwardButton = new Button();
-            tableLayoutPanel1.SuspendLayout();
+            SettingButton = new Button();
+            tableLayoutPanel.SuspendLayout();
             SuspendLayout();
             // 
-            // tableLayoutPanel1
+            // tableLayoutPanel
             // 
-            tableLayoutPanel1.ColumnCount = 3;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
-            tableLayoutPanel1.Controls.Add(backButton, 0, 0);
-            tableLayoutPanel1.Controls.Add(forwardButton, 1, 0);
-            tableLayoutPanel1.Dock = DockStyle.Fill;
-            tableLayoutPanel1.Location = new Point(0, 0);
-            tableLayoutPanel1.Margin = new Padding(3, 2, 3, 2);
-            tableLayoutPanel1.Name = "tableLayoutPanel1";
-            tableLayoutPanel1.RowCount = 1;
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 15F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 15F));
-            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, 15F));
-            tableLayoutPanel1.Size = new Size(915, 112);
-            tableLayoutPanel1.TabIndex = 0;
-            tableLayoutPanel1.MouseEnter += UserBarControl_MouseEnter;
-            tableLayoutPanel1.MouseLeave += UserBarControl_MouseLeave;
+            tableLayoutPanel.ColumnCount = 4;
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 10F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 80F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 35F));
+            tableLayoutPanel.Controls.Add(backButton, 0, 0);
+            tableLayoutPanel.Controls.Add(forwardButton, 1, 0);
+            tableLayoutPanel.Controls.Add(SettingButton, 3, 0);
+            tableLayoutPanel.Dock = DockStyle.Fill;
+            tableLayoutPanel.Location = new Point(0, 0);
+            tableLayoutPanel.Name = "tableLayoutPanel";
+            tableLayoutPanel.RowCount = 1;
+            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 20F));
+            tableLayoutPanel.Size = new Size(1046, 404);
+            tableLayoutPanel.TabIndex = 0;
+            tableLayoutPanel.MouseEnter += UserBarControl_MouseEnter;
+            tableLayoutPanel.MouseLeave += UserBarControl_MouseLeave;
             // 
             // backButton
             // 
-            backButton.Dock = DockStyle.Fill;
-            backButton.Location = new Point(3, 2);
-            backButton.Margin = new Padding(3, 2, 3, 2);
+            backButton.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            backButton.Location = new Point(3, 184);
             backButton.Name = "backButton";
-            backButton.Size = new Size(85, 108);
+            backButton.Size = new Size(95, 35);
             backButton.TabIndex = 0;
             backButton.Text = "BACK";
             backButton.UseVisualStyleBackColor = true;
@@ -69,34 +68,45 @@
             // 
             // forwardButton
             // 
-            forwardButton.Dock = DockStyle.Fill;
-            forwardButton.Location = new Point(94, 2);
-            forwardButton.Margin = new Padding(3, 2, 3, 2);
+            forwardButton.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            forwardButton.Location = new Point(104, 184);
             forwardButton.Name = "forwardButton";
-            forwardButton.Size = new Size(85, 108);
+            forwardButton.Size = new Size(95, 35);
             forwardButton.TabIndex = 1;
             forwardButton.Text = "FORWARD";
             forwardButton.UseVisualStyleBackColor = true;
             forwardButton.Click += forwardButton_Click;
             // 
+            // SettingButton
+            // 
+            SettingButton.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            SettingButton.Font = new Font("Segoe UI", 10.6F, FontStyle.Bold);
+            SettingButton.Location = new Point(1013, 184);
+            SettingButton.Name = "SettingButton";
+            SettingButton.Size = new Size(30, 35);
+            SettingButton.TabIndex = 2;
+            SettingButton.Text = "⚙️";
+            SettingButton.UseVisualStyleBackColor = true;
+            SettingButton.Click += SettingButton_Click;
+            // 
             // UserBarControl
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(tableLayoutPanel1);
-            Margin = new Padding(3, 2, 3, 2);
+            Controls.Add(tableLayoutPanel);
             Name = "UserBarControl";
-            Size = new Size(915, 112);
+            Size = new Size(1046, 404);
             MouseEnter += UserBarControl_MouseEnter;
             MouseLeave += UserBarControl_MouseLeave;
-            tableLayoutPanel1.ResumeLayout(false);
+            tableLayoutPanel.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
-        private TableLayoutPanel tableLayoutPanel1;
+        private TableLayoutPanel tableLayoutPanel;
         private Button backButton;
         private Button forwardButton;
+        private Button SettingButton;
     }
 }

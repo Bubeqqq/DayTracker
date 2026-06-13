@@ -41,6 +41,27 @@ namespace DayTracker.Forms.MainForm
 
             _view.OnMouseEnterUserBar += () => _navigationService.MouseEnterUserBar();
             _view.OnMouseLeaveUserBar += () => _navigationService.MouseLeaveUserBar();
+
+            _model.OnAppExitRequest += () => _view.ExitApp();
+        
+            //settings
+
+            _view.OnLogoutRequested += () => _model.Logout();
+            _view.OnExitRequested += () => _model.Exit();
+            _view.OnClearListRequested += async () => await _model.ClearList();
+            _view.OnCalendarResetRequested += async () => await _model.ResetCalendar();
+            _view.OnBarVisibilityChanged += (visible) => _model.ChangeBarVisibility(visible);
+            _view.OnPermissionChanged += async (email, role, old) => await _model.ChangePermission(email, role, old);
+            _view.OnUserAdded += async (email, role) => await _model.AddUser(email, role);
+            _view.OnUserRemoved += async (email) => await _model.RemoveUser(email);
+
+
+
+            _view.OnSettingsOpened += () =>
+            {
+                var permissions = _model.GetPermissionsList();
+                _view.LoadPermissions(permissions);
+            };
         }
 
         public IModel Model => _model;
