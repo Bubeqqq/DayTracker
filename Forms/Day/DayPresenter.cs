@@ -71,11 +71,11 @@ namespace DayTracker.Forms.Day
 
                         int x = _model.CalculateX(_view.LeftMargin, columnIndex, eventWidth);
 
-                        int y = _model.CalculateY(calendarEvent.StartTime, _view.PixelsPerHour, _date) + _view.TopMargin;
-                        int height = _model.CalculateHeight(calendarEvent.StartTime, calendarEvent.Duration, _view.PixelsPerHour, _date);
-                        if (_date.Date > calendarEvent.StartTime)
+                        int y = _model.CalculateY(calendarEvent.GetLocalStartTime(), _view.PixelsPerHour, _date) + _view.TopMargin;
+                        int height = _model.CalculateHeight(calendarEvent.GetLocalStartTime(), calendarEvent.Duration, _view.PixelsPerHour, _date);
+                        if (_date.Date > calendarEvent.GetLocalStartTime())
                         {
-                            _view.CreateAndPlaceTaskControl(calendarEvent, x, y, eventWidth, height, _model.GetEventColor(calendarEvent), calendarEvent.StartTime.ToShortDateString());
+                            _view.CreateAndPlaceTaskControl(calendarEvent, x, y, eventWidth, height, _model.GetEventColor(calendarEvent), calendarEvent.GetLocalStartTime().ToShortDateString());
                         }
                         else
                         {
@@ -113,8 +113,8 @@ namespace DayTracker.Forms.Day
                     foreach (var calendarEvent in columns[columnIndex])
                     {
                         int x = _model.CalculateX(_view.LeftMargin, columnIndex, eventWidth);
-                        int y = _model.CalculateY(calendarEvent.StartTime, _view.PixelsPerHour, _date) + _view.TopMargin;
-                        int height = _model.CalculateHeight(calendarEvent.StartTime, calendarEvent.Duration, _view.PixelsPerHour, _date);
+                        int y = _model.CalculateY(calendarEvent.GetLocalStartTime(), _view.PixelsPerHour, _date) + _view.TopMargin;
+                        int height = _model.CalculateHeight(calendarEvent.GetLocalStartTime(), calendarEvent.Duration, _view.PixelsPerHour, _date);
 
                         _view.ModifyControl(index, x, y, eventWidth, height, _model.GetEventColor(calendarEvent));
                         index++;

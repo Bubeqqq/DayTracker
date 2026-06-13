@@ -43,7 +43,7 @@ namespace DayTracker.Forms.Calendar
         {
   
             List<CalendarEvent> dailyEvents = events
-                        .Where(e => e.StartTime.Date == date.Date)
+                        .Where(e => e.GetLocalStartTime().Date == date.Date)
                         .ToList();
             return dailyEvents.ConvertAll(t => $"- {t.Title}");
             
