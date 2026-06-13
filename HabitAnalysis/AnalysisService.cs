@@ -86,7 +86,7 @@ namespace DayTracker.HabitAnalysis
 
             foreach (var s in sleepRecords)
                 {
-                    double hours = (s.EndTime - s.StartTime).TotalHours;
+                    double hours = (s.GetLocalEndTime() - s.GetLocalStartTime()).TotalHours;
 
                     if (hours < 0 || hours > 24)
                     {
@@ -94,7 +94,7 @@ namespace DayTracker.HabitAnalysis
                         continue;
                     }
 
-                    var date = s.EndTime.Date;
+                    var date = s.GetLocalEndTime().Date;
                     if (!dashboard.SleepHoursPerDay.ContainsKey(date))
                         dashboard.SleepHoursPerDay[date] = 0;
 
@@ -112,7 +112,7 @@ namespace DayTracker.HabitAnalysis
                 foreach (var ev in calendarEvents)
                 {
                     double duration = ev.Duration.TotalHours;
-                    var eventDate = ev.StartTime.Date;
+                    var eventDate = ev.GetLocalStartTime().Date;
 
                     if (duration < 0)
                     {

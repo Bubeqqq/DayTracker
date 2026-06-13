@@ -48,5 +48,9 @@ namespace DayTracker.Database.Datatypes
             Todo = todo;
             Id = id;
         }
+        public DateTime GetLocalStartTime()
+        {
+            return StartTime.ToLocalTime();
+        }
     }
 }

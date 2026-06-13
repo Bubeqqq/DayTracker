@@ -14,5 +14,13 @@ namespace DayTracker.Database.Datatypes
 
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        public DateTime GetLocalStartTime()
+        {
+            return StartTime.ToLocalTime();
+        }
+        public DateTime GetLocalEndTime()
+        {
+            return EndTime.ToLocalTime();
+        }
     }
 }

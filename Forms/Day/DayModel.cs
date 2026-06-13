@@ -41,11 +41,11 @@ namespace DayTracker.Forms.Day
             List<CalendarEvent> events = LoadedDataService.GetCalendarEvents();
 
 
-            return events.Where(e => e.StartTime < date.AddDays(1) && e.StartTime.Add(e.Duration) > date).ToList();
+            return events.Where(e => e.GetLocalStartTime() < date.AddDays(1) && e.GetLocalStartTime().Add(e.Duration) > date).ToList();
         }
         public List<List<CalendarEvent>> CalculateColumns(List<CalendarEvent> events)
         {
-            var sortedEvents = events.OrderBy(e => e.StartTime).ThenBy(e => e.StartTime.Add(e.Duration)).ToList();
+            var sortedEvents = events.OrderBy(e => e.GetLocalStartTime()).ThenBy(e => e.GetLocalStartTime().Add(e.Duration)).ToList();
 
 
             List<List<CalendarEvent>> columns = new List<List<CalendarEvent>>();
@@ -56,7 +56,7 @@ namespace DayTracker.Forms.Day
 
                 foreach (var column in columns)
                 {
-                    if (column.Last().StartTime.Add(column.Last().Duration) <= calendarEvent.StartTime)
+                    if (column.Last().GetLocalStartTime().Add(column.Last().Duration) <= calendarEvent.GetLocalStartTime())
                     {
                         column.Add(calendarEvent);
                         placed = true;
@@ -87,25 +87,20 @@ namespace DayTracker.Forms.Day
 
             DateTime taskEnd = startTime.Add(duration);
 
-            // 2. Definiujemy ramy czasowe widoku dnia
-            DateTime dayStart = date.Date; // Wyzerowana godzina (00:00:00)
-            DateTime dayEnd = dayStart.AddDays(1); // Początek następnego dnia
+         
+            DateTime dayStart = date.Date;
+            DateTime dayEnd = dayStart.AddDays(1); 
 
-            // 3. Obliczamy punkt początkowy i końcowy w obrębie tego konkretnego dnia
-            // (Wybieramy późniejszy start i wcześniejszy koniec)
             DateTime overlapStart = startTime > dayStart ? startTime : dayStart;
             DateTime overlapEnd = taskEnd < dayEnd ? taskEnd : dayEnd;
 
-            // 4. Obliczamy faktyczny czas trwania zadania w tym dniu
             TimeSpan effectiveDuration = overlapEnd - overlapStart;
 
-            // 5. Jeśli przedział jest ujemny lub zerowy, zadanie nie wyświetla się w tym dniu
             if (effectiveDuration <= TimeSpan.Zero)
             {
                 return 0;
             }
 
-            // 6. Przeliczamy czas na piksele
             return Convert.ToInt32(effectiveDuration.TotalMinutes * pixelPerHour / 60.0);
           
         }
@@ -115,7 +110,7 @@ namespace DayTracker.Forms.Day
         }
         public CalendarEvent CreateDefualutCalendarEvent(DateTime date)
         {
-            CalendarEvent calendarEvent = new CalendarEvent("Title", "Description", _databaseService.CurrentCalendarID, date.Date, new TimeSpan(1, 1, 1, 0));
+            CalendarEvent calendarEvent = new CalendarEvent("Title", "Description", _databaseService.CurrentCalendarID, date.ToLocalTime().Date, new TimeSpan(1, 1, 1, 0));
 
             return calendarEvent;
         }
