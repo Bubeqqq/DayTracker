@@ -2,17 +2,11 @@
 using DayTracker.Database.Datatypes;
 using DayTracker.LoadedData;
 using DayTracker.Navigation;
-using DayTracker.UserControls.TestTask_usunac;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 namespace DayTracker.Forms.Day
 {
     internal class DayModel : IDayModel
     {
-        private readonly ILoadedDataService _loadedDataService;
+        public ILoadedDataService LoadedDataService { get; }
         private readonly IDatabaseService _databaseService;
 
         public INavigationService NavigationService { get; set; }
@@ -27,7 +21,7 @@ namespace DayTracker.Forms.Day
         private Color green4;
         public DayModel(INavigationService navigationService, ILoadedDataService loadedDataService, IDatabaseService databaseService)
         {
-            _loadedDataService = loadedDataService;
+            LoadedDataService = loadedDataService;
             NavigationService = navigationService;
             _databaseService = databaseService;
 
@@ -44,7 +38,7 @@ namespace DayTracker.Forms.Day
         public List<CalendarEvent> GetEventsForDay(DateTime date)
         {
             date = date.Date;
-            List<CalendarEvent> events = _loadedDataService.GetCalendarEvents();
+            List<CalendarEvent> events = LoadedDataService.GetCalendarEvents();
 
 
             return events.Where(e => e.StartTime < date.AddDays(1) && e.StartTime.Add(e.Duration) > date).ToList();
@@ -90,18 +84,30 @@ namespace DayTracker.Forms.Day
         }
         public int CalculateHeight(DateTime startTime, TimeSpan duration, int pixelPerHour, DateTime date)
         {
-            if (date.Date.ToUniversalTime() > startTime)
+
+            DateTime taskEnd = startTime.Add(duration);
+
+            // 2. Definiujemy ramy czasowe widoku dnia
+            DateTime dayStart = date.Date; // Wyzerowana godzina (00:00:00)
+            DateTime dayEnd = dayStart.AddDays(1); // Początek następnego dnia
+
+            // 3. Obliczamy punkt początkowy i końcowy w obrębie tego konkretnego dnia
+            // (Wybieramy późniejszy start i wcześniejszy koniec)
+            DateTime overlapStart = startTime > dayStart ? startTime : dayStart;
+            DateTime overlapEnd = taskEnd < dayEnd ? taskEnd : dayEnd;
+
+            // 4. Obliczamy faktyczny czas trwania zadania w tym dniu
+            TimeSpan effectiveDuration = overlapEnd - overlapStart;
+
+            // 5. Jeśli przedział jest ujemny lub zerowy, zadanie nie wyświetla się w tym dniu
+            if (effectiveDuration <= TimeSpan.Zero)
             {
-                TimeSpan newDuration = duration - (date.Date - startTime);
-                return Convert.ToInt32(newDuration.TotalMinutes * pixelPerHour / 60.0);
+                return 0;
             }
-            else
-            if (startTime.Add(duration) > date.Date.AddDays(1))
-            {
-                TimeSpan newDuration = date.Date.AddDays(1) - startTime;
-                return Convert.ToInt32(newDuration.TotalMinutes * pixelPerHour / 60.0);
-            }
-            return Convert.ToInt32(duration.TotalMinutes * pixelPerHour / 60.0);
+
+            // 6. Przeliczamy czas na piksele
+            return Convert.ToInt32(effectiveDuration.TotalMinutes * pixelPerHour / 60.0);
+          
         }
         public int CalculateX(int leftMargin, int columnIndex, int taskWidth)
         {
@@ -117,7 +123,7 @@ namespace DayTracker.Forms.Day
         {
             if (calendarEvent.IsHard)
             {
-                if (IsFun(calendarEvent)&&(calendarEvent.IsWork|| calendarEvent.IsEducation))
+                if (IsFun(calendarEvent) && (calendarEvent.IsWork || calendarEvent.IsEducation))
                 {
                     return blue3;
                 }
@@ -129,7 +135,7 @@ namespace DayTracker.Forms.Day
                 {
                     return blue1;
                 }
-                else 
+                else
                 {
                     return blue2;
                 }
@@ -173,6 +179,11 @@ namespace DayTracker.Forms.Day
         private async Task DeleteToDoItem(TodoItem todoItem)
         {
             await _databaseService.RemoveByType<TodoItem>(todoItem.Id);
+        }
+        public bool CanModify()
+        {
+            return true;
+            //return _loadedDataService.CanModify();
         }
     }
 }

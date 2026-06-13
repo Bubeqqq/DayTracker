@@ -65,6 +65,10 @@ namespace DayTracker.Forms.TaskControl
 
 
         }
+        public void ShowMessage(string message)
+        {
+            MessageBox.Show(message);
+        }
         public void SetStartDate(string hour, string minute, string day, string month, string year)
         {
             textBoxStartHour.Text = hour;

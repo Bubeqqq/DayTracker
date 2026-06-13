@@ -31,24 +31,26 @@ namespace DayTracker.Forms.Day
         public int TopMargin { get { return buttonAddEvent.Height; } }
         public event EventHandler SizeChanged;
         public event EventHandler AddClicked;
+        public event EventHandler BackToCalendarClicked;
         public event EventHandler<CalendarEventClickedEventArgs> CalendarEventClicked;
         public event EventHandler<CalendarEventClickedEventArgs> DeleteClicked;
 
         public DayUserControl()
         {
-            
+
             InitializeComponent();
             LeftMargin = 50;
             PixelsPerHour = 60;
             this.DoubleBuffered = true;
             this.ResizeRedraw = true;
+            VerticalScroll.Value = 0;
 
-            
         }
         // Algorytm grupujący zadania w kolumny, by uniknąć nachodzenia
 
-        public void CreateAndPlaceTaskControl(CalendarEvent calendarEvent, int x, int y, int taskWidth, int height, Color color,string? startedOn=null)
+        public void CreateAndPlaceTaskControl(CalendarEvent calendarEvent, int x, int y, int taskWidth, int height, Color color, string? startedOn = null)
         {
+
             CalendarEventPreviewUserControl control = new CalendarEventPreviewUserControl(calendarEvent);
             control.Location = new Point(x, y);
             control.Width = taskWidth;
@@ -59,29 +61,45 @@ namespace DayTracker.Forms.Day
             control.CalendarEventClicked += CalendarEventClicked;
             if (startedOn != null)
             {
-                control.LabelDidntStartToday= $"(This event started on {startedOn})";
+                control.LabelDidntStartToday = $"(This event started on {startedOn})";
                 control.LabelDidntStartTodayVisible(true);
             }
             this.Controls.Add(control);
 
 
         }
-        public void ModifyControl(int index, int x, int y, int taskWidth, int height, Color color,string? startedOn = null)
+        public void ModifyControl(int index, int x, int y, int taskWidth, int height, Color color, string? startedOn = null)
         {
-
-            CalendarEventPreviewUserControl control = (CalendarEventPreviewUserControl)this.Controls[index+1];
-            control.BackColor = color;
-            if (startedOn != null)
+            if (Controls.Count > 1)
             {
-                control.LabelDidntStartToday = $"(This event started on {startedOn})";
-                control.LabelDidntStartTodayVisible(true);
+
+
+                CalendarEventPreviewUserControl control = (CalendarEventPreviewUserControl)this.Controls[index + 1];
+                control.BackColor = color;
+                if (startedOn != null)
+                {
+                    control.LabelDidntStartToday = $"(This event started on {startedOn})";
+                    control.LabelDidntStartTodayVisible(true);
+                }
+                control.UpdateLocation(x, y, taskWidth, height);
             }
-            control.UpdateLocation(x, y, taskWidth, height);
         }
         public bool YesNoMessage(string message)
         {
             DialogResult dialogResult = MessageBox.Show(message, "Choose an option", MessageBoxButtons.YesNo);
             return dialogResult == DialogResult.Yes ? true : false;
+        }
+        public void ShowMessage(string message)
+        {
+            MessageBox.Show(message);
+        }
+        public void ClearControls()
+        {
+            this.Controls.Clear();
+            this.Controls.Add(panel1);
+            panel1.Controls.Add(buttonAddEvent);
+            panel1.Controls.Add(buttonGoCalendar);
+            panel1.Controls.Add(labelDate);
         }
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -98,24 +116,33 @@ namespace DayTracker.Forms.Day
 
             for (int i = 0; i <= 24; i++)
             {
-                int y = i * PixelsPerHour+buttonAddEvent.Height;
+                int y = i * PixelsPerHour + buttonAddEvent.Height;
 
                 string timeText = $"{i:00}:00";
-                g.DrawString(timeText, timeFont, textBrush, 5, y-4);//Czemu -4? Nie mam pojęcia ale wygląda git!!!
+                g.DrawString(timeText, timeFont, textBrush, 5, y - 4);//Czemu -4? Nie mam pojęcia ale wygląda git!!!
 
                 g.DrawLine(linePen, LeftMargin, y, this.Width - this.AutoScrollPosition.X, y);
             }
         }
-
+        public void SetDateLabel(DateTime date)
+        {
+            labelDate.Text = date.ToString("dd MMMM, yyyy");
+        }
 
         private void DayUserControl_ClientSizeChanged(object sender, EventArgs e)
         {
+            VerticalScroll.Value = 0;
             SizeChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void buttonAddEvent_Click(object sender, EventArgs e)
         {
             AddClicked?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void buttonGoCalendar_Click(object sender, EventArgs e)
+        {
+            BackToCalendarClicked?.Invoke(this, EventArgs.Empty);
         }
     }
 }

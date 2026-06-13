@@ -18,12 +18,24 @@ namespace DayTracker.Forms.Calendar
         public IModel Model => _model;
         public IView View => _view;
         private List<CalendarEvent> _events;
+        private bool canModify;
+        
         public CalendarPresenter(ICalendarView calendarView,CalendarModel calendarModel)
         {
 
             _view = calendarView;
             _model = calendarModel;
             _model.NavigationService.ShowBar();
+            canModify = _model.CanModify();
+            _model.LoadedDataService.OnCalendarEventsChanged += () =>
+            {
+                _events = _model.GetCalendarEvents();
+                GenerateMonth();
+            };
+            _model.LoadedDataService.OnPermissionsChanged += () =>
+            {
+                canModify = _model.CanModify();
+            };
             _view.DayClicked += OnDayClicked;
             _view.SelectedDateChanged += OnSelectedDateChanged;
             _view.NextButtonClicked += NextButtonClicked;
@@ -36,6 +48,7 @@ namespace DayTracker.Forms.Calendar
         }
         private void GenerateMonth()
         {
+            _view.ClearCalendarControls();
             try
             {
 
@@ -86,6 +99,11 @@ namespace DayTracker.Forms.Calendar
         }
         private void OnAddEventButtonClicked(object sender, EventArgs e)
         {
+            if (!canModify)
+            {
+                _view.ShowMessage("You don't have permissions to modify this calendar");
+                return;
+            }
             _model.NavigationService.NavigateTo<TaskPresenter, CalendarEvent>(null);
         }
     }

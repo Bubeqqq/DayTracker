@@ -50,6 +50,11 @@ namespace DayTracker.Forms.Calendar
             tableLayoutPanelCalendar.Controls.Add(dayCell, column, row);
 
         }
+        public void ClearCalendarControls() 
+        {
+            tableLayoutPanelCalendar.Controls.Clear();
+        }
+        
         public void AddMonthToDate(int monthsToAdd)
         {
             dateTimePicker1.Value = dateTimePicker1.Value.AddMonths(monthsToAdd);

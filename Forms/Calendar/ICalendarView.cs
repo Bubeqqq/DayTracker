@@ -20,5 +20,7 @@ namespace DayTracker.Forms.Calendar
         public void ResumeCalendarLayout();
         void ShowMessage(string message);
         void AddMonthToDate(int monthsToAdd);
+        void ClearCalendarControls();
+
     }
 }

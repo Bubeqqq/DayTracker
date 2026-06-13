@@ -1,5 +1,6 @@
 ﻿using DayTracker.Database.Datatypes;
 using DayTracker.Forms;
+using DayTracker.LoadedData;
 using DayTracker.Navigation;
 using DayTracker.UserControls.TestTask_usunac;
 using System;
@@ -11,6 +12,7 @@ namespace DayTracker.Forms.Day
 {
     internal interface IDayModel:IModel
     {
+        ILoadedDataService LoadedDataService { get; }
         INavigationService NavigationService { get; set; }
         List<List<CalendarEvent>> CalculateColumns(List<CalendarEvent> tasks);
         List<CalendarEvent> GetEventsForDay(DateTime date);
@@ -20,5 +22,6 @@ namespace DayTracker.Forms.Day
         int CalculateX(int leftMargin, int columnIndex, int taskWidth);
         CalendarEvent CreateDefualutCalendarEvent(DateTime date);
         Color GetEventColor(CalendarEvent calendarEvent);
+        bool CanModify();
     }
 }

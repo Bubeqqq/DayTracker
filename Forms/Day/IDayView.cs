@@ -18,11 +18,14 @@ namespace DayTracker.Forms.Day
         int TotalWidth { get;}
         event EventHandler AddClicked;
         event EventHandler SizeChanged;
+        event EventHandler BackToCalendarClicked;
         event EventHandler<CalendarEventClickedEventArgs> CalendarEventClicked;
         event EventHandler<CalendarEventClickedEventArgs> DeleteClicked;
         void CreateAndPlaceTaskControl(CalendarEvent calendarEvent, int x, int y, int taskWidth, int height, Color color, string? startedOn = null);
         public bool YesNoMessage(string message);
         void ModifyControl(int index, int x, int y, int taskWidth, int height, Color color, string? startedOn = null);
-
+        void ClearControls();
+        void SetDateLabel(DateTime date);
+        void ShowMessage(string message);
     }
 }

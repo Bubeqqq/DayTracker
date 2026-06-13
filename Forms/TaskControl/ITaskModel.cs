@@ -1,10 +1,14 @@
 ﻿using DayTracker.Database.Datatypes;
 using DayTracker.Forms;
+using DayTracker.LoadedData;
+using DayTracker.Navigation;
 
 namespace DayTracker.Forms.TaskControl
 {
     internal interface ITaskModel : IModel
     {
+        INavigationService NavigationService { get; set; }
+        ILoadedDataService LoadedDataService { get; }
         int GetCalendarId();
         Dictionary<string, bool> GetDefaultCategories();
         bool ValidateMinute(string minuteStr);
@@ -26,5 +30,6 @@ namespace DayTracker.Forms.TaskControl
         Task<TodoItem> ModifyToDoItem(TodoItem todoItem);
         Task DeleteToDoItem(TodoItem todoItem);
         Task<TodoItem> AddToDoItem(TodoItem todoItem);
+        bool CanModify();
     }
 }

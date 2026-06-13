@@ -34,5 +34,6 @@ namespace DayTracker.Forms.TaskControl
         void SetDuration(string days, string hours, string minutes);
         void SetCheckedListBoxItems(Dictionary<string, bool> categories);
         List<string> GetCheckedItems();
+        void ShowMessage(string message);
     }
 }

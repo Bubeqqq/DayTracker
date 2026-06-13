@@ -28,19 +28,60 @@
         private void InitializeComponent()
         {
             buttonAddEvent = new Button();
+            buttonGoCalendar = new Button();
+            panel1 = new Panel();
+            labelDate = new Label();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // buttonAddEvent
             // 
-            buttonAddEvent.Dock = DockStyle.Top;
-            buttonAddEvent.Location = new Point(0, 0);
+            buttonAddEvent.Dock = DockStyle.Left;
+            buttonAddEvent.Location = new Point(163, 0);
             buttonAddEvent.MaximumSize = new Size(0, 23);
             buttonAddEvent.Name = "buttonAddEvent";
-            buttonAddEvent.Size = new Size(1198, 23);
+            buttonAddEvent.Size = new Size(112, 23);
             buttonAddEvent.TabIndex = 0;
             buttonAddEvent.Text = "Add Event";
             buttonAddEvent.UseVisualStyleBackColor = true;
             buttonAddEvent.Click += buttonAddEvent_Click;
+            // 
+            // buttonGoCalendar
+            // 
+            buttonGoCalendar.Dock = DockStyle.Left;
+            buttonGoCalendar.Location = new Point(53, 0);
+            buttonGoCalendar.Name = "buttonGoCalendar";
+            buttonGoCalendar.Size = new Size(110, 23);
+            buttonGoCalendar.TabIndex = 1;
+            buttonGoCalendar.Text = "Back to calendar";
+            buttonGoCalendar.UseVisualStyleBackColor = true;
+            buttonGoCalendar.Click += buttonGoCalendar_Click;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(buttonAddEvent);
+            panel1.Controls.Add(buttonGoCalendar);
+            panel1.Controls.Add(labelDate);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 0);
+            panel1.MaximumSize = new Size(0, 23);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(1130, 23);
+            panel1.TabIndex = 2;
+            // 
+            // labelDate
+            // 
+            labelDate.AutoSize = true;
+            labelDate.Dock = DockStyle.Left;
+            labelDate.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 238);
+            labelDate.Location = new Point(0, 0);
+            labelDate.MaximumSize = new Size(0, 23);
+            labelDate.MinimumSize = new Size(0, 23);
+            labelDate.Name = "labelDate";
+            labelDate.Size = new Size(53, 23);
+            labelDate.TabIndex = 2;
+            labelDate.Text = "label1";
+            labelDate.TextAlign = ContentAlignment.MiddleLeft;
             // 
             // DayUserControl
             // 
@@ -48,16 +89,21 @@
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
             AutoScrollMinSize = new Size(0, 1490);
-            Controls.Add(buttonAddEvent);
+            Controls.Add(panel1);
             DoubleBuffered = true;
             Name = "DayUserControl";
-            Size = new Size(1198, 657);
+            Size = new Size(1130, 657);
             ClientSizeChanged += DayUserControl_ClientSizeChanged;
+            panel1.ResumeLayout(false);
+            panel1.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
 
         private Button buttonAddEvent;
+        private Button buttonGoCalendar;
+        private Panel panel1;
+        private Label labelDate;
     }
 }

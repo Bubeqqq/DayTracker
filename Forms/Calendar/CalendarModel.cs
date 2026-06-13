@@ -14,11 +14,11 @@ namespace DayTracker.Forms.Calendar
     {
         public INavigationService NavigationService { get; set; }
 
-        private readonly ILoadedDataService _loadedDataService;
+        public ILoadedDataService LoadedDataService { get; }
         
         public CalendarModel(INavigationService navigationService, ILoadedDataService loadedDataService)
         {
-            _loadedDataService = loadedDataService;       
+            LoadedDataService = loadedDataService;       
             NavigationService = navigationService;
 
             
@@ -37,7 +37,7 @@ namespace DayTracker.Forms.Calendar
         }
         public List<CalendarEvent> GetCalendarEvents()
         {
-            return _loadedDataService.GetCalendarEvents();
+            return LoadedDataService.GetCalendarEvents();
         }
         public List<string> GetStringTaskList(DateTime date, List<CalendarEvent> events) 
         {
@@ -47,6 +47,11 @@ namespace DayTracker.Forms.Calendar
                         .ToList();
             return dailyEvents.ConvertAll(t => $"- {t.Title}");
             
+        }
+        public bool CanModify()
+        {
+            return true;
+            //return _loadedDataService.CanModify();
         }
     }
 }
