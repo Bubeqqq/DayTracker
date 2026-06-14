@@ -14,9 +14,10 @@ namespace DayTracker.Forms.Calendar
     {
         ILoadedDataService LoadedDataService { get; }
         INavigationService NavigationService { get; set; }
+        bool CanModify { get; }
         int CalculateOffset(DateTime date);
         List<string> GetStringTaskList(DateTime date, List<CalendarEvent> events);
             List<CalendarEvent> GetCalendarEvents();
-        bool CanModify();
+    
     }
 }

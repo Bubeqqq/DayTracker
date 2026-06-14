@@ -9,6 +9,7 @@ namespace DayTracker.Forms.TaskControl
     {
         INavigationService NavigationService { get; set; }
         ILoadedDataService LoadedDataService { get; }
+        bool CanModify { get; }
         int GetCalendarId();
         Dictionary<string, bool> GetDefaultCategories();
         bool ValidateMinute(string minuteStr);
@@ -25,11 +26,14 @@ namespace DayTracker.Forms.TaskControl
         bool TryGetDuration(string minutesStr, string hoursStr, string daysStr, out TimeSpan duration, string secondsStr = "0");
         void SetEventCategories(List<string> checkedCategories, CalendarEvent calendarEvent);
         void SetAllCategoriesToFalse(CalendarEvent calendarEvent);
+        Dictionary<string, bool> SetCategoriesFromEvent(CalendarEvent calendarEvent);
         Task AddCalendarEvent(CalendarEvent calendarEvent);
         Task ModifyCalendarEvent(CalendarEvent calendarEvent);
         Task<TodoItem> ModifyToDoItem(TodoItem todoItem);
         Task DeleteToDoItem(TodoItem todoItem);
         Task<TodoItem> AddToDoItem(TodoItem todoItem);
-        bool CanModify();
+        Task ProcessSavedChanges(CalendarEvent calendarEvent, bool isEditMode, string toDoDescription, CalendarEvent originalEvent);
+
+
     }
 }

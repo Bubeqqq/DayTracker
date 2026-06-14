@@ -15,13 +15,18 @@ namespace DayTracker.Forms.Calendar
         public INavigationService NavigationService { get; set; }
 
         public ILoadedDataService LoadedDataService { get; }
-        
+        public bool CanModify { get; private set; }
         public CalendarModel(INavigationService navigationService, ILoadedDataService loadedDataService)
         {
+            
             LoadedDataService = loadedDataService;       
             NavigationService = navigationService;
+            CanModify = GetModifyPermission();
+            LoadedDataService.OnPermissionsChanged += () =>
+            {
+                CanModify = GetModifyPermission();
+            };
 
-            
 
         }
         public int CalculateOffset(DateTime date)
@@ -48,10 +53,17 @@ namespace DayTracker.Forms.Calendar
             return dailyEvents.ConvertAll(t => $"- {t.Title}");
             
         }
-        public bool CanModify()
+        private bool GetModifyPermission()
         {
-            return true;
-            //return _loadedDataService.CanModify();
+            PermissionType currentPermission = LoadedDataService.GetCurrentPermisions();
+            if (currentPermission == PermissionType.ReadOnly)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
     }
 }

@@ -20,15 +20,12 @@ namespace DayTracker.Forms.TaskControl
         private CalendarEvent defaultTask;
         private CalendarEvent _task;
         private bool _editMode;
-        private bool canModify;
+
         public TaskPresenter(ITaskView view,ITaskModel model) {
             _view=view;
             _model=model;
-            canModify = _model.CanModify();
-            _model.LoadedDataService.OnPermissionsChanged += () =>
-            {
-                canModify = _model.CanModify();
-            };
+  
+           
             _view.FieldValidation += OnFieldValidation;
             _view.ConfirmClicked += async ()=>await OnConfirmClicked();
             _view.SetCheckedListBoxItems(_model.GetDefaultCategories());
@@ -79,13 +76,8 @@ namespace DayTracker.Forms.TaskControl
         }
         private void SetCategories(CalendarEvent calendarEvent)
         {
-            Dictionary<string, bool> categories = _model.GetDefaultCategories();
-            categories["IsHard"] = calendarEvent.IsHard;
-            categories["IsOutdoor"] = calendarEvent.IsOutdoor;
-            categories["IsSport"] = calendarEvent.IsSport;
-            categories["IsWork"] = calendarEvent.IsWork;
-            categories["IsRelax"] = calendarEvent.IsRelax;
-            categories["IsEducation"] = calendarEvent.IsEducation;            
+             
+            Dictionary<string, bool> categories = _model.SetCategoriesFromEvent(calendarEvent);
             _view.SetCheckedListBoxItems(categories);
         }
         public void LoadArgs(CalendarEvent args)
@@ -306,7 +298,7 @@ namespace DayTracker.Forms.TaskControl
        
       private async Task OnConfirmClicked()
         {
-            if (!canModify)
+            if (!_model.CanModify)
             {
                 _view.ShowMessage("You don't have permissions to modify this calendar");
                 return;
@@ -321,62 +313,8 @@ namespace DayTracker.Forms.TaskControl
 
                 List<string> checkedCategories = _view.GetCheckedItems();
                 _model.SetEventCategories(checkedCategories, calendarEvent);
-                if (_editMode)
-                {
-                    if (!string.IsNullOrEmpty(toDoDescription))
-                    {
-                        if (calendarEvent.Todo != null)
-                        {
-                            TodoItem toDoItem = calendarEvent.Todo;
-                            toDoItem.Description = toDoDescription;
-
-                            toDoItem = await _model.ModifyToDoItem(toDoItem);
-                            calendarEvent.Todo = toDoItem;
-                            calendarEvent.TodoId = calendarEvent.Todo.Id;
-
-                        }
-                        else
-                        {
-                            TodoItem toDoItem = new TodoItem(toDoDescription);
-                            toDoItem = await _model.AddToDoItem(toDoItem);
-                            //MessageBox.Show("presenter ToDoItem: " + toDoItem.Description);
-                            calendarEvent.Todo = toDoItem;
-                            calendarEvent.TodoId = calendarEvent.Todo.Id;
-
-                        }
-
-                    }
-                    else
-                    {
-                        if (calendarEvent.Todo != null)
-                        {
-                            await _model.DeleteToDoItem(calendarEvent.Todo);
-                            calendarEvent.Todo = null;
-                            calendarEvent.TodoId = null;
-
-                        }
-                    }
-                    calendarEvent.Id = _task.Id;
-
-                    await _model.ModifyCalendarEvent(calendarEvent);
-                    DateTime comeBackDate = calendarEvent.GetLocalStartTime();
-                    _model.NavigationService.NavigateTo<DayPresenter, DateTime>(comeBackDate.Date);
-                }
-                else
-                {
-                    if (!string.IsNullOrEmpty(toDoDescription))
-                    {
-                        TodoItem toDoItem = new TodoItem(toDoDescription);
-                        //MessageBox.Show("presenter2 ToDoItem: " + toDoItem.Description);
-                        toDoItem = await _model.AddToDoItem(toDoItem);
-                        //MessageBox.Show("presenter2 ToDoItem: " + toDoItem.Description);
-                        calendarEvent.Todo = toDoItem;
-                        calendarEvent.TodoId = calendarEvent.Todo.Id;
-                    }
-                    await _model.AddCalendarEvent(calendarEvent);
-                    DateTime comeBackDate = calendarEvent.GetLocalStartTime();
-                    _model.NavigationService.NavigateTo<DayPresenter, DateTime>(comeBackDate.Date);
-                }
+                //MessageBox.Show("Deleting ToDoItem: " + calendarEvent.Todo.Description);
+                await _model.ProcessSavedChanges(calendarEvent, _editMode, toDoDescription, _task);
 
             }
 

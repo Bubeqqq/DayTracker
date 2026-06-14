@@ -11,12 +11,17 @@ namespace DayTracker.Forms.TaskControl
         public INavigationService NavigationService { get; set; }
         public ILoadedDataService LoadedDataService { get; }
         private readonly IDatabaseService _databaseService;
-        private bool _isSaving = false;
+        public bool CanModify { get; private set; }
         public TaskModel(INavigationService navigationService, ILoadedDataService loadedDataService, IDatabaseService databaseService)
         {
             LoadedDataService = loadedDataService;
             NavigationService = navigationService;
             _databaseService = databaseService;
+            CanModify = GetModifyPermission();
+            LoadedDataService.OnPermissionsChanged += () =>
+            {
+                CanModify = GetModifyPermission();
+            };
         }
         public int GetCalendarId()
         {
@@ -26,6 +31,17 @@ namespace DayTracker.Forms.TaskControl
         {
             Dictionary<string, bool> categories = new Dictionary<string, bool> { { "IsHard", false }, { "IsOutdoor", false },
                 { "IsSport", false }, { "IsWork", false }, { "IsRelax", false }, { "IsEducation", false } };
+            return categories;
+        }
+        public Dictionary<string, bool> SetCategoriesFromEvent(CalendarEvent calendarEvent)
+        {           
+            Dictionary<string, bool> categories = GetDefaultCategories();
+            categories["IsHard"] = calendarEvent.IsHard;
+            categories["IsOutdoor"] = calendarEvent.IsOutdoor;
+            categories["IsSport"] = calendarEvent.IsSport;
+            categories["IsWork"] = calendarEvent.IsWork;
+            categories["IsRelax"] = calendarEvent.IsRelax;
+            categories["IsEducation"] = calendarEvent.IsEducation;
             return categories;
         }
         public void SetAllCategoriesToFalse(CalendarEvent calendarEvent)
@@ -189,13 +205,87 @@ namespace DayTracker.Forms.TaskControl
         }
         public async Task DeleteToDoItem(TodoItem todoItem)
         {
+            MessageBox.Show("Deleting ToDoItem: " + todoItem.Description);
             await _databaseService.RemoveByType<TodoItem>(todoItem.Id);
         }
-        public bool CanModify()
+        private bool GetModifyPermission()
         {
-            return true;
-            //return _loadedDataService.CanModify();
+            PermissionType currentPermission = LoadedDataService.GetCurrentPermisions();
+            if (currentPermission == PermissionType.ReadOnly)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
+        public async Task ProcessSavedChanges(CalendarEvent calendarEvent,bool isEditMode,string toDoDescription,CalendarEvent originalEvent)
+        {
+            
+            if (isEditMode)
+            {
+                calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
+                calendarEvent.Todo = originalEvent.Todo;
+                calendarEvent.TodoId = originalEvent.TodoId;
+                if (!string.IsNullOrEmpty(toDoDescription))
+                {
+                    if (calendarEvent.Todo != null)
+                    {
+                        TodoItem toDoItem = calendarEvent.Todo;
+                        toDoItem.Description = toDoDescription;
 
+                        toDoItem = await ModifyToDoItem(toDoItem);
+                        calendarEvent.Todo = toDoItem;
+                        calendarEvent.TodoId = calendarEvent.Todo.Id;
+
+                    }
+                    else
+                    {
+                        TodoItem toDoItem = new TodoItem(toDoDescription);
+                        toDoItem = await AddToDoItem(toDoItem);
+                        //MessageBox.Show("presenter ToDoItem: " + toDoItem.Description);
+                        calendarEvent.Todo = toDoItem;
+                        calendarEvent.TodoId = calendarEvent.Todo.Id;
+
+                    }
+
+                }
+                else
+                {
+                    
+                    if (calendarEvent.Todo != null)
+                    {
+                        MessageBox.Show("Deleting ToDoItem: ");
+                        await DeleteToDoItem(calendarEvent.Todo);
+                        calendarEvent.Todo = null;
+                        calendarEvent.TodoId = null;
+
+                    }
+                }
+                calendarEvent.Id = originalEvent.Id;
+
+                await ModifyCalendarEvent(calendarEvent);
+                DateTime comeBackDate = calendarEvent.GetLocalStartTime();
+                NavigationService.NavigateTo<DayPresenter, DateTime>(comeBackDate.Date);
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(toDoDescription))
+                {
+                    TodoItem toDoItem = new TodoItem(toDoDescription);
+                    //MessageBox.Show("presenter2 ToDoItem: " + toDoItem.Description);
+                    toDoItem = await AddToDoItem(toDoItem);
+                    //MessageBox.Show("presenter2 ToDoItem: " + toDoItem.Description);
+                    calendarEvent.Todo = toDoItem;
+                    calendarEvent.TodoId = calendarEvent.Todo.Id;
+                }
+                await AddCalendarEvent(calendarEvent);
+                DateTime comeBackDate = calendarEvent.GetLocalStartTime();
+                NavigationService.NavigateTo<DayPresenter, DateTime>(comeBackDate.Date);
+            }
+        }
+       
+            
     }
 }
