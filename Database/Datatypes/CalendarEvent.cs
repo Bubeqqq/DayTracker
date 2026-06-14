@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DayTracker.Database.Datatypes
 {
     public class CalendarEvent : ICalendarRecord
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         public string Title { get; set; }
@@ -15,6 +19,7 @@ namespace DayTracker.Database.Datatypes
 
         public int CalendarId { get; set; }
 
+        [ForeignKey("Todo")]
         public int? TodoId { get; set; }
         public TodoItem? Todo { get; set; }
 

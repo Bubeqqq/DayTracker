@@ -65,6 +65,9 @@ namespace DayTracker.LoginServices
                 password = BCrypt.Net.BCrypt.HashPassword(password)
             };
             await _databaseService.AddUserAsync(r);
+            Permission p = new Permission() { UserId = r.Id, PermissionName = PermissionType.Admin };
+            await _databaseService.AddAsync(p);
+
             return SUCCESS;
         }
 

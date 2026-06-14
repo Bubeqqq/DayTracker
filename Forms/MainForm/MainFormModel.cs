@@ -192,6 +192,7 @@ namespace DayTracker.Forms.MainForm
 
         public void Logout()
         {
+            _loginService.Logout();
             _loadedDataService.LoadCalendar(-1);
             _navigationService.NavigateTo<LoginPresenter>();
         }

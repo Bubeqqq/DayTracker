@@ -1,10 +1,15 @@
 ﻿using DayTracker.Database.Datatypes;
+using HashidsNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -70,6 +75,15 @@ namespace DayTracker.Database
             }
         }
 
+        private int Encode(int originalId)
+        {
+            unchecked
+            {
+                int scrambled = originalId * 7727;
+                return scrambled ^ 987654321;
+            }
+        }
+
         public async Task AddUserAsync(User record)
         {
             await _dbLock.WaitAsync();
@@ -77,6 +91,11 @@ namespace DayTracker.Database
             {
                 record.Id = 0;
                 await Users.AddAsync(record);
+                await SaveChangesAsync();
+                record.CalendarId = Encode(record.Id);
+                var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("Resources/appsettings.json", optional: false, reloadOnChange: true).Build();
+                Hashids hashids = new Hashids(configuration.GetConnectionString("InvitationCode"), 6);
+                record.invitationCode = hashids.Encode(record.CalendarId);
                 await SaveChangesAsync();
             }
             finally
