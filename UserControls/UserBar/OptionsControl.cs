@@ -27,9 +27,18 @@ namespace CompactAppSettings
             InitializeComponent();
         }
 
+        public void ClearRows()
+        {
+            dgvUsers.Rows.Clear();
+        }
         public void AddRow(string email, string permission)
         {
             dgvUsers.Rows.Add(email, permission);
+        }
+
+        public void SetInvitationCode(string code)
+        {
+            InvitationCodeLabel.Text = "Invite Code: " + code;
         }
 
         private void logoutButton_Click(object sender, EventArgs e)
@@ -95,7 +104,7 @@ namespace CompactAppSettings
         {
             int y = e.RowIndex, x = e.ColumnIndex;
 
-            if(y < 0 || x < 0)
+            if (y < 0 || x < 0)
             {
                 return;
             }
@@ -124,6 +133,46 @@ namespace CompactAppSettings
             if (e.RowIndex >= 0)
             {
                 _oldEmailValue = dgvUsers.Rows[e.RowIndex].Cells[0].Value?.ToString();
+            }
+
+            if (dgvUsers.Columns[e.ColumnIndex].Name == "colRole")
+            {
+                string currentValue = dgvUsers.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString();
+
+                if (currentValue == "Admin")
+                {
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        private void dgvUsers_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (dgvUsers.CurrentCell.OwningColumn.Name == "colRole" && e.Control is ComboBox comboBox)
+            {
+                comboBox.Items.Clear();
+                comboBox.Items.AddRange(new object[] { "Blocked", "Read Only", "Edit" });
+            }
+        }
+
+        private void dgvUsers_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Middle)
+            {
+                if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+                {
+                    string? email = dgvUsers.Rows[e.RowIndex].Cells[0].Value?.ToString();
+                    string? role = dgvUsers.Rows[e.RowIndex].Cells[1].Value?.ToString();
+
+                    if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(role))
+                        return;
+
+                    if (role == "Admin")
+                        return;
+
+                    OnUserRemoved(email);
+                    dgvUsers.Rows.RemoveAt(e.RowIndex);
+                }
             }
         }
     }

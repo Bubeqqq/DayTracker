@@ -159,6 +159,11 @@ namespace DayTracker.Forms.MainForm
             OnAppExitRequest?.Invoke();
         }
 
+        public string GetInvitationCode()
+        {
+            return _loadedDataService.GetCurrentUser().invitationCode;
+        }
+
         public List<SimplePermission> GetPermissionsList()
         {
             var permissions = _loadedDataService.GetPermissions();

@@ -60,14 +60,18 @@ namespace DayTracker.UserControls.UserBar
             tableLayoutPanel.Controls.Add(optionsControl);
         }
 
-        public void PopulateSettingsData(List<SimplePermission> simplePermissions)
+        public void PopulateSettingsData(List<SimplePermission> simplePermissions, string code)
         {
             foreach (Control control in tableLayoutPanel.Controls)
             {
                 if (control is OptionsControl c)
                 {
+                    c.SetInvitationCode(code);
+                    c.ClearRows();
                     foreach (var perm in simplePermissions)
                         c.AddRow(perm.Email, perm.Permission);
+
+                    return;
                 }
             }
         }
