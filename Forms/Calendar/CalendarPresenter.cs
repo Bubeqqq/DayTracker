@@ -100,7 +100,7 @@ namespace DayTracker.Forms.Calendar
         }
         private void OnAddEventButtonClicked(object sender, EventArgs e)
         {
-            if (!_model.CanModify)
+            if (!_model.GetModifyPermission())
             {
                 _view.ShowMessage("You don't have permissions to modify this calendar");
                 return;
@@ -109,9 +109,8 @@ namespace DayTracker.Forms.Calendar
         }
         private async Task OnEditSleepClicked()
         {
-            
 
-            
+
             if (!_model.SleepSubmited())
             {
 
@@ -147,7 +146,7 @@ namespace DayTracker.Forms.Calendar
                     _view.ShowMessage("Sleep is incorrect");
                     sleep=_view.GetUserSleep("Sleep Hours", DateTime.MinValue, DateTime.MinValue);
                 }
-                _model.AddSleep(sleep);
+                await _model.AddSleep(sleep);
             }
         }
     }

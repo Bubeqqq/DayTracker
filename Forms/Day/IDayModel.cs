@@ -14,7 +14,7 @@ namespace DayTracker.Forms.Day
     {
         ILoadedDataService LoadedDataService { get; }
         INavigationService NavigationService { get; set; }
-        bool CanModify { get; }
+        
         List<List<CalendarEvent>> CalculateColumns(List<CalendarEvent> tasks);
         List<CalendarEvent> GetEventsForDay(DateTime date);
         Task DeleteCalendarEvent(CalendarEvent calendarEvent);
@@ -23,6 +23,7 @@ namespace DayTracker.Forms.Day
         int CalculateX(int leftMargin, int columnIndex, int taskWidth);
         CalendarEvent CreateDefualutCalendarEvent(DateTime date);
         Color GetEventColor(CalendarEvent calendarEvent);
+        bool GetModifyPermission();
 
     }
 }

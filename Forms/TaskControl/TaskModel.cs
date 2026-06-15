@@ -11,17 +11,13 @@ namespace DayTracker.Forms.TaskControl
         public INavigationService NavigationService { get; set; }
         public ILoadedDataService LoadedDataService { get; }
         private readonly IDatabaseService _databaseService;
-        public bool CanModify { get; private set; }
+        
         public TaskModel(INavigationService navigationService, ILoadedDataService loadedDataService, IDatabaseService databaseService)
         {
             LoadedDataService = loadedDataService;
             NavigationService = navigationService;
             _databaseService = databaseService;
-            CanModify = GetModifyPermission();
-            LoadedDataService.OnPermissionsChanged += () =>
-            {
-                CanModify = GetModifyPermission();
-            };
+            
         }
         public int GetCalendarId()
         {
@@ -208,7 +204,7 @@ namespace DayTracker.Forms.TaskControl
             MessageBox.Show("Deleting ToDoItem: " + todoItem.Description);
             await _databaseService.RemoveByType<TodoItem>(todoItem.Id);
         }
-        private bool GetModifyPermission()
+        public bool GetModifyPermission()
         {
             PermissionType currentPermission = LoadedDataService.GetCurrentPermisions();
             if (currentPermission == PermissionType.ReadOnly)

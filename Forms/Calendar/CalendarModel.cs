@@ -17,18 +17,15 @@ namespace DayTracker.Forms.Calendar
 
         public ILoadedDataService LoadedDataService { get; }
         private readonly IDatabaseService _databaseService;
-        public bool CanModify { get; private set; }
+        
         public CalendarModel(INavigationService navigationService, ILoadedDataService loadedDataService, IDatabaseService databaseService)
         {
 
             LoadedDataService = loadedDataService;
             NavigationService = navigationService;
             _databaseService = databaseService;
-            CanModify = GetModifyPermission();
-            LoadedDataService.OnPermissionsChanged += () =>
-            {
-                CanModify = GetModifyPermission();
-            };
+            
+            
 
 
         }
@@ -56,7 +53,7 @@ namespace DayTracker.Forms.Calendar
             return dailyEvents.ConvertAll(t => $"- {t.Title}");
 
         }
-        private bool GetModifyPermission()
+        public bool GetModifyPermission()
         {
             PermissionType currentPermission = LoadedDataService.GetCurrentPermisions();
             if (currentPermission == PermissionType.ReadOnly)
