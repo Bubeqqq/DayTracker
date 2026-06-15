@@ -6,6 +6,7 @@ using DayTracker.Forms.Habits;
 using DayTracker.Forms.LoginForm;
 using DayTracker.Forms.TaskControl;
 using DayTracker.Forms.TestForm;
+using DayTracker.LoadedData;
 using DayTracker.Navigation;
 using DayTracker.UserControls.TestTask_usunac;
 using System;
@@ -18,12 +19,14 @@ namespace DayTracker.Forms.MainForm
         private readonly IMainFormView _view;
         private readonly IMainFormModel _model;
         private readonly INavigationService _navigationService;
+        private readonly ILoadedDataService _loadedDataService;
 
-        public MainFormPresenter(IMainFormView view, IMainFormModel model, INavigationService navigationService)
+        public MainFormPresenter(IMainFormView view, IMainFormModel model, INavigationService navigationService, ILoadedDataService loadedDataService)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            _loadedDataService = loadedDataService ?? throw new ArgumentNullException(nameof(loadedDataService));
 
             _navigationService.OnSceneChanged += scene =>
             {
@@ -55,12 +58,18 @@ namespace DayTracker.Forms.MainForm
             _view.OnUserAdded += async (email, role) => await _model.AddUser(email, role);
             _view.OnUserRemoved += async (email) => await _model.RemoveUser(email);
 
-
+            _loadedDataService.OnPermissionsChanged += () => 
+            {
+                var permissions = _model.GetPermissionsList();
+                string code = _model.GetInvitationCode();
+                _view.LoadPermissions(permissions, code);
+            };
 
             _view.OnSettingsOpened += () =>
             {
                 var permissions = _model.GetPermissionsList();
-                _view.LoadPermissions(permissions);
+                string code = _model.GetInvitationCode();
+                _view.LoadPermissions(permissions, code);
             };
         }
 

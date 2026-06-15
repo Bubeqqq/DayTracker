@@ -27,7 +27,7 @@
             colEmail = new DataGridViewTextBoxColumn();
             colRole = new DataGridViewComboBoxColumn();
             addPersonButton = new Button();
-            lblInvitationCode = new Label();
+            InvitationCodeLabel = new Label();
             gbSession = new GroupBox();
             exitAppButton = new Button();
             logoutButton = new Button();
@@ -139,7 +139,7 @@
             // 
             gbUsers.Controls.Add(dgvUsers);
             gbUsers.Controls.Add(addPersonButton);
-            gbUsers.Controls.Add(lblInvitationCode);
+            gbUsers.Controls.Add(InvitationCodeLabel);
             gbUsers.Dock = DockStyle.Fill;
             gbUsers.Font = new Font("Microsoft Sans Serif", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
             gbUsers.Location = new Point(264, 20);
@@ -169,8 +169,10 @@
             dgvUsers.Size = new Size(452, 135);
             dgvUsers.TabIndex = 2;
             dgvUsers.CellBeginEdit += dgvUsers_CellBeginEdit;
+            dgvUsers.CellMouseClick += dgvUsers_CellMouseClick;
             dgvUsers.CellValueChanged += dgvUsers_CellValueChanged;
             dgvUsers.CurrentCellDirtyStateChanged += dgvUsers_CurrentCellDirtyStateChanged;
+            dgvUsers.EditingControlShowing += dgvUsers_EditingControlShowing;
             // 
             // colEmail
             // 
@@ -202,17 +204,17 @@
             addPersonButton.UseVisualStyleBackColor = true;
             addPersonButton.Click += addPersonButton_Click;
             // 
-            // lblInvitationCode
+            // InvitationCodeLabel
             // 
-            lblInvitationCode.AutoSize = true;
-            lblInvitationCode.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblInvitationCode.ForeColor = Color.DimGray;
-            lblInvitationCode.Location = new Point(13, 44);
-            lblInvitationCode.Margin = new Padding(4, 0, 4, 0);
-            lblInvitationCode.Name = "lblInvitationCode";
-            lblInvitationCode.Size = new Size(233, 24);
-            lblInvitationCode.TabIndex = 0;
-            lblInvitationCode.Text = "Invite Code: ABCD-1234";
+            InvitationCodeLabel.AutoSize = true;
+            InvitationCodeLabel.Font = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            InvitationCodeLabel.ForeColor = Color.DimGray;
+            InvitationCodeLabel.Location = new Point(13, 44);
+            InvitationCodeLabel.Margin = new Padding(4, 0, 4, 0);
+            InvitationCodeLabel.Name = "InvitationCodeLabel";
+            InvitationCodeLabel.Size = new Size(233, 24);
+            InvitationCodeLabel.TabIndex = 0;
+            InvitationCodeLabel.Text = "Invite Code: ABCD-1234";
             // 
             // gbSession
             // 
@@ -288,7 +290,7 @@
         private System.Windows.Forms.Label lblNavBar;
         private System.Windows.Forms.Button btnAppControl;
         private System.Windows.Forms.GroupBox gbUsers;
-        private System.Windows.Forms.Label lblInvitationCode;
+        private System.Windows.Forms.Label InvitationCodeLabel;
         private System.Windows.Forms.Button addPersonButton;
         private System.Windows.Forms.DataGridView dgvUsers;
         private System.Windows.Forms.GroupBox gbSession;

@@ -56,7 +56,6 @@ namespace DayTracker.Database
                 }
                 else if (record is Permission permissionRecord)
                 {
-                    permissionRecord.CalendarId = CurrentCalendarID;
                     permissionRecord.Id = 0;
                 }
                 else if (record is TodoItem todoRecord)

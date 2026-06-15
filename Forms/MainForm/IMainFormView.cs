@@ -41,7 +41,7 @@ namespace DayTracker.Forms.MainForm
 
 
         event Action OnSettingsOpened;
-        void LoadPermissions(List<SimplePermission> permissions);
+        void LoadPermissions(List<SimplePermission> permissions, string code);
 
     }
 }

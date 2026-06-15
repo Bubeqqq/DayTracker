@@ -22,5 +22,6 @@ namespace DayTracker.Forms.MainForm
         event Action OnAppExitRequest;
 
         List<SimplePermission> GetPermissionsList();
+        string GetInvitationCode();
     }
 }
