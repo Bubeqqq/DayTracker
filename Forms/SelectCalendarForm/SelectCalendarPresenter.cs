@@ -72,7 +72,13 @@ namespace DayTracker.Forms.SelectCalendarForm
                     var addAccessResult = await _model.AddCalendarAccess(calendarId);
                     if (addAccessResult.IsSuccess)
                     {
-                        _model.SetCurrentCalendar(calendarId);
+                        var setCalendarResult = await _model.SetCurrentCalendar(calendarId);
+                        if (!setCalendarResult.IsSuccess)
+                        {
+                            MessageBox.Show(setCalendarResult.ErrorMsg); // placeholder
+                            return;
+                        }
+
                         _navigationService.NavigateTo<Calendar.CalendarPresenter>();
                     }
                     else
