@@ -20,8 +20,8 @@ namespace DayTracker.Forms.SelectCalendarForm
 
             _view.BtnYourCalendarClicked += async () => await OnBtnYourCalendarClicked();
             _view.BtnSubmitSelectedCalendarClicked += OnBtnSubmitSelectedCalendarClicked;
-            _view.BtnSubmitCodeClicked += OnBtnSubmitCodeClicked;
-            _view.FormLoading += OnFormLoading;
+            _view.BtnSubmitCodeClicked += async (inviteCode) => await OnBtnSubmitCodeClicked(inviteCode);
+            _view.FormLoading += async () => await OnFormLoading();
         }
 
         private async Task OnBtnYourCalendarClicked()
@@ -44,7 +44,7 @@ namespace DayTracker.Forms.SelectCalendarForm
                 _navigationService.NavigateTo<Calendar.CalendarPresenter>();
             }
         }
-        private void OnBtnSubmitCodeClicked(string inviteCode)
+        private async Task OnBtnSubmitCodeClicked(string inviteCode)
         {
             inviteCode = inviteCode.Trim();
             var errors = new Dictionary<string, string>();
@@ -62,13 +62,37 @@ namespace DayTracker.Forms.SelectCalendarForm
             }
 
             // model wykonuje zapytanie do bazy danych, aby znaleźć kalendarz odpowiadający inviteCode i ustawia go jako aktualny
-            _navigationService.NavigateTo<Calendar.CalendarPresenter>();
+            var calendarIdResult = await _model.GetCalendarIdByInvitationCode(inviteCode);
+            if (calendarIdResult.IsSuccess)
+            {
+                if (calendarIdResult.Data is int calendarId)
+                {
+                    var addAccessResult = await _model.AddCalendarAccess(calendarId);
+                    if (addAccessResult.IsSuccess)
+                    {
+                        _model.SetCurrentCalendar(calendarId);
+                        _navigationService.NavigateTo<Calendar.CalendarPresenter>();
+                    }
+                    else
+                    {
+                        MessageBox.Show(addAccessResult.ErrorMsg); // placeholder
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Invalid invite code. Please check and try again."); // placeholder
+                }
+            }
+            else
+            {
+                MessageBox.Show(calendarIdResult.ErrorMsg); // placeholder
+            }
+            
         }
-        private void OnFormLoading()
+        private async Task OnFormLoading()
         {
             SetUserGreeting();
-            LoadUserSharedCalendars();
-
+            await LoadUserSharedCalendars();
         }
         
         private void SetUserGreeting()
@@ -83,9 +107,9 @@ namespace DayTracker.Forms.SelectCalendarForm
                 _view.Greeting = $"Error occured: {result.ErrorMsg}";
             }
         }
-        private void LoadUserSharedCalendars()
+        private async Task LoadUserSharedCalendars()
         {
-            var result = _model.GetUserSharedCalendars();
+            var result = await _model.GetUserSharedCalendars();
             if (result.IsSuccess)
             {
                 if (result.Data!.Count == 0)
