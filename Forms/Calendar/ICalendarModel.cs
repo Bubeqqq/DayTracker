@@ -18,6 +18,10 @@ namespace DayTracker.Forms.Calendar
         int CalculateOffset(DateTime date);
         List<string> GetStringTaskList(DateTime date, List<CalendarEvent> events);
             List<CalendarEvent> GetCalendarEvents();
-    
+        bool SleepSubmited();
+        Task AddSleep(Tuple<DateTime, DateTime> sleep);
+        Task EditSleep(Tuple<DateTime, DateTime> sleep);
+        bool SleepValid(Tuple<DateTime, DateTime> sleep);
+        Tuple<DateTime, DateTime> GetLatestSleep();
     }
 }

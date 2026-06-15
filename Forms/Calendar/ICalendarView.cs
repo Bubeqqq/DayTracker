@@ -15,12 +15,15 @@ namespace DayTracker.Forms.Calendar
         event EventHandler NextButtonClicked;
         event EventHandler PreviousButtonClicked;
         event EventHandler AddEventButtonClicked;
+        event Action CalendarLoad;
+        event Action EditSleepButtonClicked;
         void CreateAndAddDayCell(DateTime date, List<string> tasks, int column, int row);
         void SuspendAndClearCalendar();
         public void ResumeCalendarLayout();
         void ShowMessage(string message);
         void AddMonthToDate(int monthsToAdd);
         void ClearCalendarControls();
+        Tuple<DateTime, DateTime> GetUserSleep(string title, DateTime start, DateTime end);
 
     }
 }

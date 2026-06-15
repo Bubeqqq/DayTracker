@@ -18,15 +18,18 @@ namespace DayTracker.Forms.Calendar
         public IModel Model => _model;
         public IView View => _view;
         private List<CalendarEvent> _events;
-        
-        
-        public CalendarPresenter(ICalendarView calendarView,CalendarModel calendarModel)
+
+
+        public  CalendarPresenter(ICalendarView calendarView, CalendarModel calendarModel)
         {
 
             _view = calendarView;
+            _view.CalendarLoad += async () => await OnCalendarLoad();
             _model = calendarModel;
             _model.NavigationService.ShowBar();
+            _events = new List<CalendarEvent>();
             
+
             _model.LoadedDataService.OnCalendarEventsChanged += () =>
             {
                 _events = _model.GetCalendarEvents();
@@ -38,9 +41,10 @@ namespace DayTracker.Forms.Calendar
             _view.NextButtonClicked += NextButtonClicked;
             _view.PreviousButtonClicked += PreviousButtonClicked;
             _view.AddEventButtonClicked += OnAddEventButtonClicked;
-
+            _view.EditSleepButtonClicked += async () => await OnEditSleepClicked();
             _events = _model.GetCalendarEvents();
             
+
             GenerateMonth();
         }
         private void GenerateMonth()
@@ -102,6 +106,53 @@ namespace DayTracker.Forms.Calendar
                 return;
             }
             _model.NavigationService.NavigateTo<TaskPresenter, CalendarEvent>(null);
+        }
+        private async Task OnEditSleepClicked()
+        {
+            if (!_model.CanModify)
+            {
+                _view.ShowMessage("You don't have permissions to modify this calendar");
+                return;
+            }
+
+            
+            if (!_model.SleepSubmited())
+            {
+
+                Tuple<DateTime, DateTime> sleep = _view.GetUserSleep("Edit Sleep Hours", DateTime.MinValue, DateTime.MinValue);
+                while (sleep != null && !_model.SleepValid(sleep))
+                {
+                    _view.ShowMessage("Sleep is incorrect");
+                    sleep = _view.GetUserSleep("Sleep Hours", DateTime.MinValue, DateTime.MinValue);
+                }
+                await _model.AddSleep(sleep);
+            }
+            else
+            {
+                Tuple<DateTime, DateTime> latestSleep = _model.GetLatestSleep();
+                Tuple<DateTime, DateTime> sleep = _view.GetUserSleep("Edit Sleep Hours", latestSleep.Item1, latestSleep.Item2);
+                while (sleep != null && !_model.SleepValid(sleep))
+                {
+                    _view.ShowMessage("Sleep is incorrect");
+                    sleep = _view.GetUserSleep("Sleep Hours", DateTime.MinValue, DateTime.MinValue);
+                }
+                await _model.EditSleep(sleep);
+            }
+
+        }
+        private async Task OnCalendarLoad()
+        {
+            if (DateTime.Now>DateTime.Now.Date.AddHours(6)&&!_model.SleepSubmited())
+            {
+                Tuple<DateTime, DateTime> sleep = _view.GetUserSleep("Sleep Hours", DateTime.MinValue, DateTime.MinValue);
+
+                while (sleep != null && !_model.SleepValid(sleep))
+                {
+                    _view.ShowMessage("Sleep is incorrect");
+                    sleep=_view.GetUserSleep("Sleep Hours", DateTime.MinValue, DateTime.MinValue);
+                }
+                _model.AddSleep(sleep);
+            }
         }
     }
 }

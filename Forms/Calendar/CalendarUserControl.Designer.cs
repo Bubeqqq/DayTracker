@@ -41,6 +41,7 @@
             buttonNextMonth = new Button();
             buttonPreviousMonth = new Button();
             buttonAddEvent = new Button();
+            buttonEditSleep = new Button();
             tableLayoutPanelDaysOfWeek.SuspendLayout();
             SuspendLayout();
             // 
@@ -202,10 +203,21 @@
             buttonAddEvent.UseVisualStyleBackColor = true;
             buttonAddEvent.Click += buttonAddEvent_Click;
             // 
+            // buttonEditSleep
+            // 
+            buttonEditSleep.Location = new Point(341, 2);
+            buttonEditSleep.Name = "buttonEditSleep";
+            buttonEditSleep.Size = new Size(75, 23);
+            buttonEditSleep.TabIndex = 6;
+            buttonEditSleep.Text = "Edit Sleep";
+            buttonEditSleep.UseVisualStyleBackColor = true;
+            buttonEditSleep.Click += buttonEditSleep_Click;
+            // 
             // CalendarUserControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(buttonEditSleep);
             Controls.Add(buttonAddEvent);
             Controls.Add(tableLayoutPanelCalendar);
             Controls.Add(tableLayoutPanelDaysOfWeek);
@@ -214,6 +226,7 @@
             Controls.Add(dateTimePicker1);
             Name = "CalendarUserControl";
             Size = new Size(633, 650);
+            Load += CalendarUserControl_Load;
             tableLayoutPanelDaysOfWeek.ResumeLayout(false);
             tableLayoutPanelDaysOfWeek.PerformLayout();
             ResumeLayout(false);
@@ -234,5 +247,6 @@
         private Button buttonNextMonth;
         private Button buttonPreviousMonth;
         private Button buttonAddEvent;
+        private Button buttonEditSleep;
     }
 }
