@@ -19,7 +19,7 @@ namespace DayTracker.Forms.SelectCalendarForm
             _navigationService = navigationService;
 
             _view.BtnYourCalendarClicked += async () => await OnBtnYourCalendarClicked();
-            _view.BtnSubmitSelectedCalendarClicked += OnBtnSubmitSelectedCalendarClicked;
+            _view.BtnSubmitSelectedCalendarClicked += async (calendarId) => await OnBtnSubmitSelectedCalendarClicked(calendarId);
             _view.BtnSubmitCodeClicked += async (inviteCode) => await OnBtnSubmitCodeClicked(inviteCode);
             _view.FormLoading += async () => await OnFormLoading();
 
@@ -38,11 +38,16 @@ namespace DayTracker.Forms.SelectCalendarForm
                 throw new NotImplementedException("Błąd obsłużyć trzeba");
             }
         }
-        private void OnBtnSubmitSelectedCalendarClicked(int? calendarId)
+        private async Task OnBtnSubmitSelectedCalendarClicked(int? calendarId)
         {
             if (calendarId != null && calendarId > 0)
             {
-                _model.SetCurrentCalendar(calendarId.Value);
+                var setCalendarResult = await _model.SetCurrentCalendar(calendarId.Value);
+                if (!setCalendarResult.IsSuccess)
+                {
+                    MessageBox.Show(setCalendarResult.ErrorMsg); // placeholder
+                    return;
+                }
                 _navigationService.NavigateTo<Calendar.CalendarPresenter>();
             }
         }
