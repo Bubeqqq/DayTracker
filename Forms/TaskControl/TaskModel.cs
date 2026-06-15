@@ -222,7 +222,6 @@ namespace DayTracker.Forms.TaskControl
             if (isEditMode)
             {
                 calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
-                calendarEvent.Todo = originalEvent.Todo;
                 calendarEvent.TodoId = originalEvent.TodoId;
                 if (!string.IsNullOrEmpty(toDoDescription))
                 {
@@ -232,8 +231,7 @@ namespace DayTracker.Forms.TaskControl
                         toDoItem.Description = toDoDescription;
 
                         toDoItem = await ModifyToDoItem(toDoItem);
-                        calendarEvent.Todo = toDoItem;
-                        calendarEvent.TodoId = calendarEvent.Todo.Id;
+                        calendarEvent.TodoId = toDoItem.Id;
 
                     }
                     else
@@ -241,8 +239,7 @@ namespace DayTracker.Forms.TaskControl
                         TodoItem toDoItem = new TodoItem(toDoDescription);
                         toDoItem = await AddToDoItem(toDoItem);
                         //MessageBox.Show("presenter ToDoItem: " + toDoItem.Description);
-                        calendarEvent.Todo = toDoItem;
-                        calendarEvent.TodoId = calendarEvent.Todo.Id;
+                        calendarEvent.TodoId = toDoItem.Id;
 
                     }
 
@@ -273,8 +270,7 @@ namespace DayTracker.Forms.TaskControl
                     //MessageBox.Show("presenter2 ToDoItem: " + toDoItem.Description);
                     toDoItem = await AddToDoItem(toDoItem);
                     //MessageBox.Show("presenter2 ToDoItem: " + toDoItem.Description);
-                    calendarEvent.Todo = toDoItem;
-                    calendarEvent.TodoId = calendarEvent.Todo.Id;
+                    calendarEvent.TodoId = toDoItem.Id;
                 }
                 await AddCalendarEvent(calendarEvent);
                 DateTime comeBackDate = calendarEvent.GetLocalStartTime();

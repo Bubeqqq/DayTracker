@@ -112,7 +112,7 @@ namespace DayTracker.Forms.Calendar
                 {
                     throw new Exception("User not found");
                 }
-                Sleep newSleep = new Sleep(user.Id, start.ToUniversalTime(), end.ToUniversalTime(), user);
+                Sleep newSleep = new Sleep(user.Id, start.ToUniversalTime(), end.ToUniversalTime());
                 await _databaseService.AddAsync(newSleep);
             }
             await Task.CompletedTask;
@@ -140,7 +140,6 @@ namespace DayTracker.Forms.Calendar
                     s.StartTime = start.ToUniversalTime();
                     s.EndTime = end.ToUniversalTime();
                     s.UserId = user.Id;
-                    s.User = user;
                     s.Id = latestSleep.Id;
 
 
