@@ -7,7 +7,6 @@ using Microsoft.Extensions.Configuration;
 using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
@@ -25,6 +24,8 @@ namespace DayTracker.Database
         DbSet<CalendarEvent> CalendarEvents { get; set; }
         DbSet<Sleep> Sleeps { get; set; }
         DbSet<Permission> Permissions { get; set; }
+
+        DbSet<Calendar> Calendars { get; set; }
 
         public int CurrentCalendarID { get; set; } = -1;
 
@@ -51,7 +52,7 @@ namespace DayTracker.Database
 
         //
 
-        /*private async Task StartListeningForChangesAsync()
+        private async Task StartListeningForChangesAsync()
         {
             while (true)
             {
@@ -140,120 +141,8 @@ namespace DayTracker.Database
                     await Task.Delay(5000);
                 }
             }
-        }*/
-
-        private async Task StartListeningForChangesAsync()
-        {
-            while (true)
-            {
-                try
-                {
-                    string baseString = _configuration.GetConnectionString("NeonDatabase");
-
-                    // DODANE: Tcp Keepalive=true - wymusza wysyłanie sygnałów podtrzymujących na poziomie karty sieciowej
-                    string listenString = $"{baseString};Pooling=false;KeepAlive=10;Tcp Keepalive=true;";
-
-                    await using var conn = new NpgsqlConnection(listenString);
-                    await conn.OpenAsync();
-
-                    conn.Notification += (o, e) =>
-                    {
-                        string[] parts = e.Payload.Split('_');
-
-                        if (parts.Length >= 2)
-                        {
-                            string tableName = parts[0];
-                            string operation = parts[1];
-
-                            string extractedId = parts.Length == 3 ? parts[2] : null;
-
-                            var mainForm = Application.OpenForms[0];
-
-                            if (mainForm != null && mainForm.IsHandleCreated)
-                            {
-                                mainForm.Invoke(new Action(() =>
-                                {
-                                    switch (tableName)
-                                    {
-                                        case "CalendarEvents":
-                                            Console.WriteLine($"[KALENDARZ/UPRAWNIENIA] Tabela: {tableName}, Operacja: {operation}, CalendarId: {extractedId}");
-                                            int idCal = int.Parse(extractedId);
-                                            if (idCal == CurrentCalendarID)
-                                            {
-                                                OnEntityChanged?.Invoke(nameof(CalendarEvent), idCal);
-                                            }
-                                            break;
-                                        case "Permissions":
-                                            Console.WriteLine($"[KALENDARZ/UPRAWNIENIA] Tabela: {tableName}, Operacja: {operation}, CalendarId: {extractedId}");
-                                            int idPer = int.Parse(extractedId);
-                                            if (idPer == CurrentCalendarID)
-                                            {
-                                                OnEntityChanged?.Invoke(nameof(Permission), idPer);
-                                            }
-                                            break;
-
-                                        case "Sleeps":
-                                            Console.WriteLine($"[SEN] Tabela: {tableName}, Operacja: {operation}, UserId: {extractedId}");
-                                            int idSlee = int.Parse(extractedId);
-                                            if (_loginService != null && _loginService.GetUser() != null)
-                                                if (idSlee == _loginService.GetUser().Id)
-                                                {
-                                                    OnEntityChanged?.Invoke(nameof(Sleep), idSlee);
-                                                }
-                                            break;
-
-                                        case "Users":
-                                            Console.WriteLine($"[UŻYTKOWNICY] Wykryto zmianę. Operacja: {operation}");
-                                            OnEntityChanged?.Invoke(nameof(User), 0);
-                                            break;
-
-                                        case "TodoItems":
-                                            Console.WriteLine($"[ZADANIA] Wykryto zmianę. Operacja: {operation}");
-                                            OnEntityChanged?.Invoke(nameof(TodoItem), 0);
-                                            break;
-                                    }
-                                }));
-                            }
-                        }
-                    };
-
-                    await using var cmd = new NpgsqlCommand("LISTEN app_changes_channel;", conn);
-                    await cmd.ExecuteNonQueryAsync();
-
-                    Console.WriteLine("Nasłuchiwanie uruchomione...");
-
-                    // NOWA WEWNĘTRZNA PĘTLA Z "WATCHDOGIEM"
-                    while (true)
-                    {
-                        // Ustawiamy limit czekania na 45 sekund
-                        using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(45));
-
-                        try
-                        {
-                            // Czekamy na powiadomienie, ale jeśli minie 45s, wywoła się wyjątek OperationCanceledException
-                            await conn.WaitAsync(cts.Token);
-                        }
-                        catch (OperationCanceledException)
-                        {
-                            // Cisza w eterze od 45 sekund. Sprawdzamy, czy połączenie nadal fizycznie istnieje.
-                            // Wysyłamy najprostsze możliwe zapytanie, które nic nie waży.
-                            await using var pingCmd = new NpgsqlCommand("SELECT 1;", conn);
-                            await pingCmd.ExecuteNonQueryAsync();
-
-                            // Jeśli połączenie działa, pętla zawróci i znów zacznie nasłuchiwać na kolejne 45s.
-                            // Jeśli połączenie zostało po cichu zerwane przez router, ExecuteNonQueryAsync wyrzuci błąd
-                            // i wyrzuci nas do GŁÓWNEGO bloku catch na samym dole, który nawiąże połączenie od nowa!
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Tutaj teraz wpadnie błąd, jeśli "Watchdog" wykryje zerwanie połączenia
-                    Console.WriteLine($"Błąd/Zerwanie nasłuchiwania: {ex.Message}. Restart za 5s...");
-                    await Task.Delay(5000);
-                }
-            }
         }
+
 
         //
 
@@ -310,10 +199,13 @@ namespace DayTracker.Database
             await _dbLock.WaitAsync();
             try
             {
+                Calendar c = new Calendar();
+                await Set<Calendar>().AddAsync(c);
+                await SaveChangesAsync();
                 record.Id = 0;
                 await Users.AddAsync(record);
+                record.CalendarId = c.Id;
                 await SaveChangesAsync();
-                record.CalendarId = Encode(record.Id);
                 Hashids hashids = new Hashids(_configuration.GetConnectionString("InvitationCode"), 6);
                 record.invitationCode = hashids.Encode(record.CalendarId);
                 await SaveChangesAsync();

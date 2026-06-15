@@ -18,7 +18,9 @@ namespace DayTracker.Database.Datatypes
         public int UserId { get; set; }
         public User User { get; set; }
 
+        [ForeignKey("Calendar")]
         public int CalendarId { get; set; }
+        public Calendar? Calendar { get; set; }
 
         public PermissionType PermissionName { get; set; }
     }

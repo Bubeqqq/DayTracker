@@ -17,7 +17,9 @@ namespace DayTracker.Database.Datatypes
         public string Title { get; set; }
         public string Description { get; set; }
 
+        [ForeignKey("Calendar")]
         public int CalendarId { get; set; }
+        public Calendar? Calendar { get; set; }
 
         [ForeignKey("Todo")]
         public int? TodoId { get; set; }
