@@ -161,6 +161,9 @@ namespace DayTracker.Forms.MainForm
 
         public string GetInvitationCode()
         {
+            if (_loadedDataService.GetCurrentUser() == null)
+                return "";
+
             return _loadedDataService.GetCurrentUser().invitationCode;
         }
 
