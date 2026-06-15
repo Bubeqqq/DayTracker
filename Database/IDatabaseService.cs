@@ -14,7 +14,7 @@ namespace DayTracker.Database
     {
         public int CurrentCalendarID { get; set; }
 
-        event Action<string, EntityState> OnEntityChanged;
+        event Action<string, int> OnEntityChanged;
 
         Task<List<T>> GetType<T>() where T : class, ICalendarRecord;
 

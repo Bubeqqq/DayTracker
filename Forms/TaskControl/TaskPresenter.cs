@@ -81,7 +81,8 @@ namespace DayTracker.Forms.TaskControl
             _view.SetCheckedListBoxItems(categories);
         }
         public void LoadArgs(CalendarEvent args)
-        {            
+        {
+            Console.WriteLine(" ------------------------************************-------------" + args.TodoId);
             _task =args;
             Initialize();
         }

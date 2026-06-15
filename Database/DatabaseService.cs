@@ -4,6 +4,7 @@ using HashidsNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -31,11 +32,117 @@ namespace DayTracker.Database
 
         private ILoginService _loginService;
 
+        private readonly IConfigurationRoot _configuration;
+
         public DatabaseService(DbContextOptions<DatabaseService> options) : base(options)
         {
+            _configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("Resources/appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+
+            _ = Task.Run(() => StartListeningForChangesAsync());
         }
 
-        public event Action<string, EntityState> OnEntityChanged;
+
+        public event Action<string, int> OnEntityChanged;
+
+
+
+        //
+
+        private async Task StartListeningForChangesAsync()
+        {
+            while (true)
+            {
+                try
+                {
+                    string baseString = _configuration.GetConnectionString("NeonDatabase");
+                    string listenString = $"{baseString};Pooling=false;KeepAlive=30;";
+
+                    await using var conn = new NpgsqlConnection(listenString);
+                    await conn.OpenAsync();
+
+                    conn.Notification += (o, e) =>
+                    {
+                        string[] parts = e.Payload.Split('_');
+
+                        if (parts.Length >= 2)
+                        {
+                            string tableName = parts[0];
+                            string operation = parts[1];
+
+                            string extractedId = parts.Length == 3 ? parts[2] : null;
+
+                            var mainForm = Application.OpenForms[0];
+
+                            if (mainForm != null && mainForm.IsHandleCreated)
+                            {
+                                mainForm.Invoke(new Action(() =>
+                                {
+                                    switch (tableName)
+                                    {
+                                        case "CalendarEvents":
+                                            Console.WriteLine($"[KALENDARZ/UPRAWNIENIA] Tabela: {tableName}, Operacja: {operation}, CalendarId: {extractedId}");
+                                            int idCal = int.Parse(extractedId);
+                                            if (idCal == CurrentCalendarID)
+                                            {
+                                                OnEntityChanged?.Invoke(nameof(CalendarEvent), idCal);
+                                            }
+                                            break;
+                                        case "Permissions":
+                                            Console.WriteLine($"[KALENDARZ/UPRAWNIENIA] Tabela: {tableName}, Operacja: {operation}, CalendarId: {extractedId}");
+                                            int idPer = int.Parse(extractedId);
+                                            if (idPer == CurrentCalendarID)
+                                            {
+                                                OnEntityChanged?.Invoke(nameof(Permission), idPer);
+                                            }
+                                            break;
+
+                                        case "Sleeps":
+                                            Console.WriteLine($"[SEN] Tabela: {tableName}, Operacja: {operation}, UserId: {extractedId}");
+                                            int idSlee = int.Parse(extractedId);
+                                            if (_loginService != null && _loginService.GetUser() != null)
+                                                if (idSlee == _loginService.GetUser().Id)
+                                                {
+                                                    OnEntityChanged?.Invoke(nameof(Sleep), idSlee);
+                                                }
+                                            break;
+
+                                        case "Users":
+                                            Console.WriteLine($"[UŻYTKOWNICY] Wykryto zmianę. Operacja: {operation}");
+                                            OnEntityChanged?.Invoke(nameof(User), 0);
+                                            break;
+
+                                        case "TodoItems":
+                                            Console.WriteLine($"[ZADANIA] Wykryto zmianę. Operacja: {operation}");
+                                            OnEntityChanged?.Invoke(nameof(TodoItem), 0);
+                                            break;
+                                    }
+                                }));
+                            }
+                        }
+                    };
+
+                    await using var cmd = new NpgsqlCommand("LISTEN app_changes_channel;", conn);
+                    await cmd.ExecuteNonQueryAsync();
+
+                    Console.WriteLine("Nasłuchiwanie wszystkich 5 tabel uruchomione...");
+
+                    while (true)
+                    {
+                        await conn.WaitAsync();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Błąd połączenia z Neon.tech: {ex.Message}. Ponowna próba za 5 sekund...");
+                    await Task.Delay(5000);
+                }
+            }
+        }
+
+        //
 
         public async Task<T> AddAsync<T>(T record) where T : class, ICalendarRecord
         {
@@ -94,8 +201,7 @@ namespace DayTracker.Database
                 await Users.AddAsync(record);
                 await SaveChangesAsync();
                 record.CalendarId = Encode(record.Id);
-                var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("Resources/appsettings.json", optional: false, reloadOnChange: true).Build();
-                Hashids hashids = new Hashids(configuration.GetConnectionString("InvitationCode"), 6);
+                Hashids hashids = new Hashids(_configuration.GetConnectionString("InvitationCode"), 6);
                 record.invitationCode = hashids.Encode(record.CalendarId);
                 await SaveChangesAsync();
             }
@@ -136,10 +242,12 @@ namespace DayTracker.Database
             await _dbLock.WaitAsync();
             try
             {
+                this.ChangeTracker.Clear();
+
                 return typeof(T) switch
                 {
                     Type t when t == typeof(TodoItem) => await TodoItems.ToListAsync() as List<T>,
-                    Type t when t == typeof(CalendarEvent) => await CalendarEvents.Where(e => e.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
+                    Type t when t == typeof(CalendarEvent) => await CalendarEvents.Include(e => e.Todo).Where(e => e.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
                     Type t when t == typeof(Sleep) => await Sleeps.ToListAsync() as List<T>,
                     Type t when t == typeof(Permission) => await Permissions.ToListAsync() as List<T>,
                     _ => throw new InvalidOperationException($"Type {typeof(T).Name} is not supported.")
@@ -156,10 +264,12 @@ namespace DayTracker.Database
             await _dbLock.WaitAsync();
             try
             {
+                this.ChangeTracker.Clear();
+
                 return typeof(T) switch
                 {
                     Type t when t == typeof(TodoItem) => await TodoItems.Where(predicate as Expression<Func<TodoItem, bool>>).ToListAsync() as List<T>,
-                    Type t when t == typeof(CalendarEvent) => await CalendarEvents.Where(predicate as Expression<Func<CalendarEvent, bool>>).Where(e => e.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
+                    Type t when t == typeof(CalendarEvent) => await CalendarEvents.Include(e => e.Todo).Where(predicate as Expression<Func<CalendarEvent, bool>>).Where(e => e.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
                     Type t when t == typeof(Sleep) => await Sleeps.Where(predicate as Expression<Func<Sleep, bool>>).ToListAsync() as List<T>,
                     Type t when t == typeof(Permission) => await Permissions.Where(predicate as Expression<Func<Permission, bool>>).ToListAsync() as List<T>,
                     _ => throw new InvalidOperationException($"Type {typeof(T).Name} is not supported.")
@@ -196,7 +306,7 @@ namespace DayTracker.Database
             }
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        /*public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             var modifiedEntries = ChangeTracker.Entries()
                 .Where(e => e.State == EntityState.Added ||
@@ -236,7 +346,7 @@ namespace DayTracker.Database
             }
 
             return result;
-        }
+        }*/
 
         async Task IDatabaseService.RemoveByType<T>(int index)
         {

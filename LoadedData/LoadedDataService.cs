@@ -2,6 +2,7 @@
 using DayTracker.Database.Datatypes;
 using DayTracker.LoginServices;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,9 +27,17 @@ namespace DayTracker.LoadedData
             _loginService = loginService;
             _databaseService = databaseService;
 
-            _databaseService.OnEntityChanged += (e, o) =>
+            _databaseService.OnEntityChanged += (name, id) =>
             {
-                _ = UpdateDatabase(e, o);
+                _ = UpdateDatabase(name, id);
+            };
+
+            OnCalendarEventsChanged += () =>
+            {
+                foreach(var t in _calendarEvents)
+                {
+                    Console.WriteLine(t.Title);
+                }
             };
         }
 
@@ -38,7 +47,7 @@ namespace DayTracker.LoadedData
         public event Action OnPermissionsChanged;
         public event Action OnUsersChanged;
 
-        private async Task UpdateDatabase(string entityName, EntityState entityState)
+        private async Task UpdateDatabase(string entityName, int id)
         {
             switch (entityName)
             {
@@ -49,6 +58,8 @@ namespace DayTracker.LoadedData
                     break;
                 case nameof(TodoItem):
                     _todoItems = await _databaseService.GetType<TodoItem>();
+                    foreach (var t in _todoItems)
+                        Console.WriteLine("--" + t.Description + "--");
                     OnTodoItemsChanged?.Invoke();
                     break;
                 case nameof(Sleep):
