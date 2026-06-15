@@ -199,10 +199,10 @@ namespace DayTracker.Forms.TaskControl
                 e.Description = todoItem.Description;
             });
         }
-        public async Task DeleteToDoItem(TodoItem todoItem)
+        public async Task DeleteToDoItem(int todoItemID)
         {
-            MessageBox.Show("Deleting ToDoItem: " + todoItem.Description);
-            await _databaseService.RemoveByType<TodoItem>(todoItem.Id);
+            //MessageBox.Show("Deleting ToDoItem: " + todoItem.Description);
+            await _databaseService.RemoveByType<TodoItem>(todoItemID);
         }
         public bool GetModifyPermission()
         {
@@ -222,13 +222,15 @@ namespace DayTracker.Forms.TaskControl
             if (isEditMode)
             {
                 calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
+                calendarEvent.Id = originalEvent.Id;
                 calendarEvent.TodoId = originalEvent.TodoId;
                 if (!string.IsNullOrEmpty(toDoDescription))
                 {
-                    if (calendarEvent.Todo != null)
+                    if (calendarEvent.TodoId != null)
                     {
-                        TodoItem toDoItem = calendarEvent.Todo;
-                        toDoItem.Description = toDoDescription;
+                        TodoItem toDoItem = new TodoItem(toDoDescription);
+                        toDoItem.Id = (int)calendarEvent.TodoId;
+                        
 
                         toDoItem = await ModifyToDoItem(toDoItem);
                         calendarEvent.TodoId = toDoItem.Id;
@@ -247,12 +249,31 @@ namespace DayTracker.Forms.TaskControl
                 else
                 {
                     
-                    if (calendarEvent.Todo != null)
+                    if (calendarEvent.TodoId != null)
                     {
                         MessageBox.Show("Deleting ToDoItem: ");
-                        await DeleteToDoItem(calendarEvent.Todo);
-                        calendarEvent.Todo = null;
+
+                        calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
+                       
+                        //MessageBox.Show("Modyfying Event: " + calendarEvent.Title);
+                        if (calendarEvent.StartTime.Kind != DateTimeKind.Utc)
+                        {
+                            throw new Exception("StartTime must be in UTC");
+                        }
+                        int toDoId = (int)calendarEvent.TodoId;
+                        MessageBox.Show("Uptading calendar event with id: "+ calendarEvent.Id);
+                        await _databaseService.UpdateByType<CalendarEvent>(calendarEvent.Id, (e) =>
+                        {
+                            
+
+                            e.TodoId = null;
+                            e.Todo = null;
+
+
+                        });
                         calendarEvent.TodoId = null;
+                        await DeleteToDoItem(toDoId);
+
 
                     }
                 }
