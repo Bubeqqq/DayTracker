@@ -62,14 +62,16 @@ namespace DayTracker.Forms.MainForm
             {
                 var permissions = _model.GetPermissionsList();
                 string code = _model.GetInvitationCode();
-                _view.LoadPermissions(permissions, code);
+                bool isAdmin = _model.IsCurrentUserAdmin();
+                _view.LoadPermissions(permissions, code, isAdmin);
             };
 
             _view.OnSettingsOpened += () =>
             {
                 var permissions = _model.GetPermissionsList();
                 string code = _model.GetInvitationCode();
-                _view.LoadPermissions(permissions, code);
+                bool isAdmin = _model.IsCurrentUserAdmin();
+                _view.LoadPermissions(permissions, code, isAdmin);
             };
         }
 

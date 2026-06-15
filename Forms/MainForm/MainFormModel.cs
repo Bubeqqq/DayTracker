@@ -195,6 +195,11 @@ namespace DayTracker.Forms.MainForm
             return result;
         }
 
+        public bool IsCurrentUserAdmin()
+        {
+            return _loadedDataService.GetCurrentPermisions() == PermissionType.Admin;
+        }
+
         public void Logout()
         {
             _loginService.Logout();

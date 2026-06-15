@@ -60,12 +60,15 @@ namespace DayTracker.UserControls.UserBar
             tableLayoutPanel.Controls.Add(optionsControl);
         }
 
-        public void PopulateSettingsData(List<SimplePermission> simplePermissions, string code)
+        public void PopulateSettingsData(List<SimplePermission> simplePermissions, string code, bool isAdmin)
         {
             foreach (Control control in tableLayoutPanel.Controls)
             {
                 if (control is OptionsControl c)
                 {
+                    if (!isAdmin)
+                        c.HidePermissions();
+
                     c.SetInvitationCode(code);
                     c.ClearRows();
                     foreach (var perm in simplePermissions)

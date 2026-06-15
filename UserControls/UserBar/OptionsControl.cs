@@ -27,6 +27,21 @@ namespace CompactAppSettings
             InitializeComponent();
         }
 
+        public void HidePermissions()
+        {
+            dgvUsers.Enabled = false;
+            addPersonButton.Enabled = false;
+            clearPeopleListButton.Enabled = false;
+            clearCalendarButton.Enabled = false;
+            InvitationCodeLabel.Enabled = false;
+
+            dgvUsers.Visible = false;
+            addPersonButton.Visible = false;
+            clearPeopleListButton.Visible = false;
+            clearCalendarButton.Visible = false;
+            InvitationCodeLabel.Visible = false;
+        }
+
         public void ClearRows()
         {
             dgvUsers.Rows.Clear();

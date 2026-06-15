@@ -22,6 +22,8 @@ namespace DayTracker.Forms.SelectCalendarForm
             _view.BtnSubmitSelectedCalendarClicked += OnBtnSubmitSelectedCalendarClicked;
             _view.BtnSubmitCodeClicked += async (inviteCode) => await OnBtnSubmitCodeClicked(inviteCode);
             _view.FormLoading += async () => await OnFormLoading();
+
+            _navigationService.HideBar();
         }
 
         private async Task OnBtnYourCalendarClicked()

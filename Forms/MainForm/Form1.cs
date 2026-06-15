@@ -142,9 +142,9 @@ namespace DayTracker
             Application.Exit();
         }
 
-        void IMainFormView.LoadPermissions(List<SimplePermission> permissions, string code)
+        void IMainFormView.LoadPermissions(List<SimplePermission> permissions, string code, bool isAdmin)
         {
-            userBar.PopulateSettingsData(permissions, code);
+            userBar.PopulateSettingsData(permissions, code, isAdmin);
         }
     }
 }

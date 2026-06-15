@@ -23,5 +23,7 @@ namespace DayTracker.Forms.MainForm
 
         List<SimplePermission> GetPermissionsList();
         string GetInvitationCode();
+
+        bool IsCurrentUserAdmin();
     }
 }
