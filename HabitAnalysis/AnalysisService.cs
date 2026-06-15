@@ -39,17 +39,17 @@ namespace DayTracker.HabitAnalysis
             var sleepRecords = new List<Sleep>
 {
     // Normalny sen (8h)
-    new Sleep { Id = 1, StartTime = dzisiaj.AddDays(-3).AddHours(23), EndTime = dzisiaj.AddDays(-2).AddHours(7) },
-    // Normalny sen (7h)
-    new Sleep { Id = 2, StartTime = dzisiaj.AddDays(-2).AddHours(23), EndTime = dzisiaj.AddDays(-1).AddHours(6) },
-    // Normalny sen (7h)
-    new Sleep { Id = 3, StartTime = dzisiaj.AddDays(-1).AddHours(22), EndTime = dzisiaj.AddHours(5) },
+    //new Sleep { Id = 1, StartTime = dzisiaj.AddDays(-3).AddHours(23), EndTime = dzisiaj.AddDays(-2).AddHours(7) },
+    //// Normalny sen (7h)
+    //new Sleep { Id = 2, StartTime = dzisiaj.AddDays(-2).AddHours(23), EndTime = dzisiaj.AddDays(-1).AddHours(6) },
+    //// Normalny sen (7h)
+    //new Sleep { Id = 3, StartTime = dzisiaj.AddDays(-1).AddHours(22), EndTime = dzisiaj.AddHours(5) },
     
-    // ANOMALIA 1: Użytkownik spał tylko 3 godziny (Wykres pokaże mocny dołek)
-    new Sleep { Id = 4, StartTime = dzisiaj.AddHours(1), EndTime = dzisiaj.AddHours(4) },
+    //// ANOMALIA 1: Użytkownik spał tylko 3 godziny (Wykres pokaże mocny dołek)
+    //new Sleep { Id = 4, StartTime = dzisiaj.AddHours(1), EndTime = dzisiaj.AddHours(4) },
     
-    // ANOMALIA 2: Użytkownik nie kliknął "Zakończ sen" i spał 26 godzin
-    new Sleep { Id = 5, StartTime = dzisiaj.AddDays(-4).AddHours(20), EndTime = dzisiaj.AddDays(-3).AddHours(22) }
+    //// ANOMALIA 2: Użytkownik nie kliknął "Zakończ sen" i spał 26 godzin
+    //new Sleep { Id = 5, StartTime = dzisiaj.AddDays(-4).AddHours(20), EndTime = dzisiaj.AddDays(-3).AddHours(22) }
 };
 
             // --- 3. MOCK: WYDARZENIA Z KALENDARZA ---

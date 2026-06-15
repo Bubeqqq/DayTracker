@@ -20,6 +20,14 @@ namespace DayTracker.Database.Datatypes
 
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
+        private Sleep() { }
+        public Sleep(int userId, DateTime startTime, DateTime endTime,User user)
+        {
+            UserId = userId;
+            StartTime = startTime;
+            EndTime = endTime;
+            User = user;
+        }
         public DateTime GetLocalStartTime()
         {
             return StartTime.ToLocalTime();
