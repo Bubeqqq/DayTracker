@@ -109,11 +109,7 @@ namespace DayTracker.Forms.Calendar
         }
         private async Task OnEditSleepClicked()
         {
-            if (!_model.CanModify)
-            {
-                _view.ShowMessage("You don't have permissions to modify this calendar");
-                return;
-            }
+            
 
             
             if (!_model.SleepSubmited())

@@ -81,7 +81,10 @@ namespace DayTracker.Forms.Calendar
                 return false;
             }
             Sleep latestSleep = sleeps.Where((s) => s.UserId == user.Id).ToList().MaxBy(s => s.EndTime);
-
+            if (latestSleep == null)
+            {
+                return false;
+            }
             if (latestSleep.GetLocalEndTime().Date == DateTime.Now.Date)
             {
                 return true;
