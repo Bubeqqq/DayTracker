@@ -19,18 +19,14 @@ namespace DayTracker.Forms.Day
         private Color green2;
         private Color green3;
         private Color green4;
-        public bool CanModify { get; private set; }
+       
         public DayModel(INavigationService navigationService, ILoadedDataService loadedDataService, IDatabaseService databaseService)
         {
             LoadedDataService = loadedDataService;
             NavigationService = navigationService;
             _databaseService = databaseService;
 
-            CanModify = GetModifyPermission();
-            LoadedDataService.OnPermissionsChanged += () =>
-            {
-                CanModify = GetModifyPermission();
-            };
+            
 
             blue1 = Color.FromArgb(41, 128, 185);
             blue2 = Color.FromArgb(52, 152, 219);
@@ -182,7 +178,7 @@ namespace DayTracker.Forms.Day
         {
             await _databaseService.RemoveByType<TodoItem>(todoItem.Id);
         }
-        private bool GetModifyPermission()
+        public bool GetModifyPermission()
         {
             PermissionType currentPermission = LoadedDataService.GetCurrentPermisions();
             if (currentPermission == PermissionType.ReadOnly)

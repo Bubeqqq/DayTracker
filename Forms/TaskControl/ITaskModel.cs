@@ -9,12 +9,12 @@ namespace DayTracker.Forms.TaskControl
     {
         INavigationService NavigationService { get; set; }
         ILoadedDataService LoadedDataService { get; }
-        bool CanModify { get; }
+        
         int GetCalendarId();
         Dictionary<string, bool> GetDefaultCategories();
         bool ValidateMinute(string minuteStr);
 
-
+        bool GetModifyPermission();
         bool ValidateHour(string hourStr);
 
         bool ValidateDay(string dayStr);

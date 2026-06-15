@@ -298,7 +298,7 @@ namespace DayTracker.Forms.TaskControl
        
       private async Task OnConfirmClicked()
         {
-            if (!_model.CanModify)
+            if (!_model.GetModifyPermission())
             {
                 _view.ShowMessage("You don't have permissions to modify this calendar");
                 return;

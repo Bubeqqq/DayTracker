@@ -14,7 +14,7 @@ namespace DayTracker.Forms.Calendar
     {
         ILoadedDataService LoadedDataService { get; }
         INavigationService NavigationService { get; set; }
-        bool CanModify { get; }
+        
         int CalculateOffset(DateTime date);
         List<string> GetStringTaskList(DateTime date, List<CalendarEvent> events);
             List<CalendarEvent> GetCalendarEvents();
@@ -23,5 +23,6 @@ namespace DayTracker.Forms.Calendar
         Task EditSleep(Tuple<DateTime, DateTime> sleep);
         bool SleepValid(Tuple<DateTime, DateTime> sleep);
         Tuple<DateTime, DateTime> GetLatestSleep();
+        bool GetModifyPermission();
     }
 }

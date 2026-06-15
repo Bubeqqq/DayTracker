@@ -100,7 +100,7 @@ namespace DayTracker.Forms.Calendar
         }
         private void OnAddEventButtonClicked(object sender, EventArgs e)
         {
-            if (!_model.CanModify)
+            if (!_model.GetModifyPermission())
             {
                 _view.ShowMessage("You don't have permissions to modify this calendar");
                 return;

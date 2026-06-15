@@ -26,13 +26,7 @@ namespace DayTracker.Forms.Day
                 _eventList = _model.GetEventsForDay(_date);
                 LayoutEvents(_eventList);
             };
-            _model.LoadedDataService.OnTodoItemsChanged += () =>
-            {
-                _view.ClearControls();
-                _view.SetDateLabel(_date);
-                _eventList = _model.GetEventsForDay(_date);
-                LayoutEvents(_eventList);
-            };
+            
             
             _view.BackToCalendarClicked += (sender, args) => _model.NavigationService.NavigateTo<CalendarPresenter>();
             _view.SizeChanged += OnSizeChanged;
@@ -121,7 +115,7 @@ namespace DayTracker.Forms.Day
         }
         private void OnAddClicked(object sender, EventArgs e)
         {
-            if(!_model.CanModify)
+            if(!_model.GetModifyPermission())
             {
                 _view.ShowMessage("You don't have permissions to modify this calendar");
                 return;
@@ -142,7 +136,7 @@ namespace DayTracker.Forms.Day
         }
         private void OnDeleteClicked(object sender, CalendarEventClickedEventArgs e)
         {
-            if (!_model.CanModify)
+            if (!_model.GetModifyPermission())
             {
                 _view.ShowMessage("You don't have permissions to modify this calendar");
                 return;
