@@ -14,7 +14,9 @@ namespace DayTracker.Database.Datatypes
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public int CalendarId { get; set; }
+        [ForeignKey("User")]
+        public int UserId { get; set; }
+        public User User { get; set; }
 
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }

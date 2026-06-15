@@ -1,4 +1,5 @@
 ﻿using DayTracker.Database.Datatypes;
+using DayTracker.LoginServices;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -36,5 +37,7 @@ namespace DayTracker.Database
         Task<List<User>> GetUsersAsync(Expression<Func<User, bool>> predicate);
 
         Task<PermissionType> LoadUserPermissions(int UserID, int CalendarID);
+
+        void AddLoginService(ILoginService loginService);
     }
 }

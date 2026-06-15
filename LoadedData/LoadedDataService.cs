@@ -26,8 +26,6 @@ namespace DayTracker.LoadedData
             _loginService = loginService;
             _databaseService = databaseService;
 
-            //_databaseService.OnEntityChanged += async (e, o) => await UpdateDatabase(e, o);
-
             _databaseService.OnEntityChanged += (e, o) =>
             {
                 _ = UpdateDatabase(e, o);
@@ -58,7 +56,7 @@ namespace DayTracker.LoadedData
                     OnSleepsChanged?.Invoke();
                     break;
                 case nameof(Permission):
-                    _permissions = await _databaseService.GetType<Permission>();
+                    _permissions = await _databaseService.GetType<Permission>(p => p.CalendarId == _databaseService.CurrentCalendarID);
                     OnPermissionsChanged?.Invoke();
                     break;
                 case nameof(User):
@@ -71,7 +69,7 @@ namespace DayTracker.LoadedData
         public async Task Initialize()
         {
             _calendarEvents = await _databaseService.GetType<CalendarEvent>();
-            _permissions = await _databaseService.GetType<Permission>();
+            _permissions = await _databaseService.GetType<Permission>(p => p.CalendarId == _databaseService.CurrentCalendarID);
             _sleeps = await _databaseService.GetType<Sleep>();
             _todoItems = await _databaseService.GetType<TodoItem>();
             _users = await _databaseService.GetUsersAsync(u => true);

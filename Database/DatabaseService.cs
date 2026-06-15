@@ -1,4 +1,5 @@
 ﻿using DayTracker.Database.Datatypes;
+using DayTracker.LoginServices;
 using HashidsNet;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
@@ -28,6 +29,8 @@ namespace DayTracker.Database
 
         private readonly SemaphoreSlim _dbLock = new SemaphoreSlim(1, 1);
 
+        private ILoginService _loginService;
+
         public DatabaseService(DbContextOptions<DatabaseService> options) : base(options)
         {
         }
@@ -51,7 +54,6 @@ namespace DayTracker.Database
                 }
                 else if (record is Sleep sleepRecord)
                 {
-                    sleepRecord.CalendarId = CurrentCalendarID;
                     sleepRecord.Id = 0;
                 }
                 else if (record is Permission permissionRecord)
@@ -138,8 +140,8 @@ namespace DayTracker.Database
                 {
                     Type t when t == typeof(TodoItem) => await TodoItems.ToListAsync() as List<T>,
                     Type t when t == typeof(CalendarEvent) => await CalendarEvents.Where(e => e.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
-                    Type t when t == typeof(Sleep) => await Sleeps.Where(s => s.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
-                    Type t when t == typeof(Permission) => await Permissions.Where(p => p.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
+                    Type t when t == typeof(Sleep) => await Sleeps.ToListAsync() as List<T>,
+                    Type t when t == typeof(Permission) => await Permissions.ToListAsync() as List<T>,
                     _ => throw new InvalidOperationException($"Type {typeof(T).Name} is not supported.")
                 };
             }
@@ -158,8 +160,8 @@ namespace DayTracker.Database
                 {
                     Type t when t == typeof(TodoItem) => await TodoItems.Where(predicate as Expression<Func<TodoItem, bool>>).ToListAsync() as List<T>,
                     Type t when t == typeof(CalendarEvent) => await CalendarEvents.Where(predicate as Expression<Func<CalendarEvent, bool>>).Where(e => e.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
-                    Type t when t == typeof(Sleep) => await Sleeps.Where(predicate as Expression<Func<Sleep, bool>>).Where(s => s.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
-                    Type t when t == typeof(Permission) => await Permissions.Where(predicate as Expression<Func<Permission, bool>>).Where(p => p.CalendarId == CurrentCalendarID).ToListAsync() as List<T>,
+                    Type t when t == typeof(Sleep) => await Sleeps.Where(predicate as Expression<Func<Sleep, bool>>).ToListAsync() as List<T>,
+                    Type t when t == typeof(Permission) => await Permissions.Where(predicate as Expression<Func<Permission, bool>>).ToListAsync() as List<T>,
                     _ => throw new InvalidOperationException($"Type {typeof(T).Name} is not supported.")
                 };
             }
@@ -215,7 +217,13 @@ namespace DayTracker.Database
                 }
                 else if (entry.Entity is Sleep sleep)
                 {
-                    if (sleep.CalendarId == CurrentCalendarID)
+                    if (_loginService != null)
+                    {
+                        if(_loginService.GetUser() != null)
+                            if (_loginService.GetUser().Id == sleep.UserId)
+                                OnEntityChanged?.Invoke(nameof(Sleep), entry.State);
+                    }
+                    else
                     {
                         OnEntityChanged?.Invoke(nameof(Sleep), entry.State);
                     }
@@ -325,6 +333,11 @@ namespace DayTracker.Database
             {
                 _dbLock.Release();
             }
+        }
+
+        public void AddLoginService(ILoginService loginService)
+        {
+            _loginService = loginService;
         }
     }
 }
