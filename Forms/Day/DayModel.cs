@@ -167,15 +167,16 @@ namespace DayTracker.Forms.Day
         }
         public async Task DeleteCalendarEvent(CalendarEvent calendarEvent)
         {
-            if (calendarEvent.TodoId != null)
-            {
-                await DeleteToDoItem(calendarEvent.Todo);
-            }
+            int? toDoId = calendarEvent.TodoId;
             await _databaseService.RemoveByType<CalendarEvent>(calendarEvent.Id);
+            if (toDoId != null)
+            {
+                await DeleteToDoItem((int)toDoId);
+            }
         }
-        private async Task DeleteToDoItem(TodoItem todoItem)
+        private async Task DeleteToDoItem(int todoItemId)
         {
-            await _databaseService.RemoveByType<TodoItem>(todoItem.Id);
+            await _databaseService.RemoveByType<TodoItem>(todoItemId);
         }
         public bool GetModifyPermission()
         {

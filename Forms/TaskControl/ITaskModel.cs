@@ -30,7 +30,7 @@ namespace DayTracker.Forms.TaskControl
         Task AddCalendarEvent(CalendarEvent calendarEvent);
         Task ModifyCalendarEvent(CalendarEvent calendarEvent);
         Task<TodoItem> ModifyToDoItem(TodoItem todoItem);
-        Task DeleteToDoItem(TodoItem todoItem);
+        Task DeleteToDoItem(int todoItemID);
         Task<TodoItem> AddToDoItem(TodoItem todoItem);
         Task ProcessSavedChanges(CalendarEvent calendarEvent, bool isEditMode, string toDoDescription, CalendarEvent originalEvent);
 
