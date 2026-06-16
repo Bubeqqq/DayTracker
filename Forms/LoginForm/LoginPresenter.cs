@@ -64,8 +64,7 @@ namespace DayTracker.Forms.LoginForm
             }
             else
             {
-                // TODO: Wyświetl błąd logowania w message boxie
-                MessageBox.Show(result.ErrorMsg); // placeholder
+                _view.ShowError(result.ErrorMsg!);
                 return;
             }
         }

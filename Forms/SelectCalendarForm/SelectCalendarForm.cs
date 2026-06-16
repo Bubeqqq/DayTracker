@@ -47,5 +47,15 @@ namespace DayTracker.Forms.SelectCalendarForm
         {
             errorProvider.SetError(textBoxInviteCode, string.Empty);
         }
+
+        public void ShowInfo(string message)
+        {
+            MessageBox.Show(message, "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        public void ShowError(string message)
+        {
+            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }

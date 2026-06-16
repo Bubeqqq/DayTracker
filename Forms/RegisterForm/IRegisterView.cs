@@ -29,5 +29,8 @@ namespace DayTracker.Forms.RegisterForm
 
         void ShowValidationErrors(Dictionary<string, string> errors);
         void ClearAllValidationErrors();
+
+        void ShowInfo(string message);
+        void ShowError(string message);
     }
 }

@@ -80,12 +80,10 @@ namespace DayTracker.Forms.RegisterForm
             }
 
             var registrationResult = await _model.Register(firstName, lastName, email, password);
+            _view.ShowInfo("Registration successful!");
 
             if (registrationResult.IsSuccess)
             {
-                // powiadom użytkownika o pomyślnej rejestracji
-                MessageBox.Show("Registration successful!"); // placeholder
-
                 var loginResult = await _model.Login(email, password);
                 if (loginResult.IsSuccess)
                 {
@@ -93,15 +91,13 @@ namespace DayTracker.Forms.RegisterForm
                 }
                 else
                 {
-                    // TODO: Wyświetl błąd logowania w message boxie
-                    MessageBox.Show(loginResult.ErrorMsg); // placeholder
+                    _view.ShowError(loginResult.ErrorMsg!);
                     return;
                 }
             }
             else
             {
-                // TODO: Wyświetl błąd rejestracji w message boxie
-                MessageBox.Show(registrationResult.ErrorMsg); // placeholder
+                _view.ShowError(registrationResult.ErrorMsg!);
                 return;
             }
         }

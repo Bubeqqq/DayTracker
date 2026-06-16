@@ -84,5 +84,15 @@ namespace DayTracker.UserControls.ToDoControl
             errorProvider.SetError(textBoxPass, string.Empty);
             errorProvider.SetError(textBoxConfirmPass, string.Empty);
         }
+
+        public void ShowInfo(string message)
+        {
+            MessageBox.Show(message, "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        public void ShowError(string message)
+        {
+            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }

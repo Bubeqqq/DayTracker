@@ -59,5 +59,15 @@ namespace DayTracker.UserControls
             errorProvider.SetError(textBoxEmail, string.Empty);
             errorProvider.SetError(textBoxPass, string.Empty);
         }
+
+        public void ShowInfo(string message)
+        {
+            MessageBox.Show(message, "Notification", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        public void ShowError(string message)
+        {
+            MessageBox.Show(message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
     }
 }

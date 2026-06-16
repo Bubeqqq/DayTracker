@@ -45,7 +45,7 @@ namespace DayTracker.Forms.SelectCalendarForm
                 var setCalendarResult = await _model.SetCurrentCalendar(calendarId.Value);
                 if (!setCalendarResult.IsSuccess)
                 {
-                    MessageBox.Show(setCalendarResult.ErrorMsg); // placeholder
+                    _view.ShowError(setCalendarResult.ErrorMsg!);
                     return;
                 }
                 _navigationService.NavigateTo<Calendar.CalendarPresenter>();
@@ -80,7 +80,7 @@ namespace DayTracker.Forms.SelectCalendarForm
                         var setCalendarResult = await _model.SetCurrentCalendar(calendarId);
                         if (!setCalendarResult.IsSuccess)
                         {
-                            MessageBox.Show(setCalendarResult.ErrorMsg); // placeholder
+                            _view.ShowError(setCalendarResult.ErrorMsg!);
                             return;
                         }
 
@@ -88,17 +88,17 @@ namespace DayTracker.Forms.SelectCalendarForm
                     }
                     else
                     {
-                        MessageBox.Show(addAccessResult.ErrorMsg); // placeholder
+                        _view.ShowError(addAccessResult.ErrorMsg!);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Invalid invite code. Please check and try again."); // placeholder
+                    _view.ShowInfo("Invalid invite code. Please check and try again.");
                 }
             }
             else
             {
-                MessageBox.Show(calendarIdResult.ErrorMsg); // placeholder
+                _view.ShowError(calendarIdResult.ErrorMsg!);
             }
             
         }
