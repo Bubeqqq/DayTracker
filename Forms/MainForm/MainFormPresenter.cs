@@ -58,17 +58,17 @@ namespace DayTracker.Forms.MainForm
             _view.OnUserAdded += async (email, role) => await _model.AddUser(email, role);
             _view.OnUserRemoved += async (email) => await _model.RemoveUser(email);
 
-            _loadedDataService.OnPermissionsChanged += () => 
+            _loadedDataService.OnPermissionsChanged += async () => 
             {
-                var permissions = _model.GetPermissionsList();
+                var permissions = await _model.GetPermissionsList();
                 string code = _model.GetInvitationCode();
                 bool isAdmin = _model.IsCurrentUserAdmin();
                 _view.LoadPermissions(permissions, code, isAdmin);
             };
 
-            _view.OnSettingsOpened += () =>
+            _view.OnSettingsOpened += async () =>
             {
-                var permissions = _model.GetPermissionsList();
+                var permissions = await _model.GetPermissionsList();
                 string code = _model.GetInvitationCode();
                 bool isAdmin = _model.IsCurrentUserAdmin();
                 _view.LoadPermissions(permissions, code, isAdmin);

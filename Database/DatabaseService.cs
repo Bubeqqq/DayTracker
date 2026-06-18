@@ -116,8 +116,12 @@ namespace DayTracker.Database
                                             break;
 
                                         case "TodoItems":
-                                            Console.WriteLine($"[ZADANIA] Wykryto zmianę. Operacja: {operation}");
-                                            OnEntityChanged?.Invoke(nameof(TodoItem), 0);
+                                            Console.WriteLine($"[ZADANIA] Wykryto zmianę. Operacja: {operation}, CalendarId: {extractedId}");
+                                            int idTodo = int.Parse(extractedId);
+                                            if (idTodo == CurrentCalendarID)
+                                            {
+                                                OnEntityChanged?.Invoke(nameof(TodoItem), idTodo);
+                                            }
                                             break;
                                     }
                                 }));
@@ -185,14 +189,6 @@ namespace DayTracker.Database
             }
         }
 
-        private int Encode(int originalId)
-        {
-            unchecked
-            {
-                int scrambled = originalId * 7727;
-                return scrambled ^ 987654321;
-            }
-        }
 
         public async Task AddUserAsync(User record)
         {

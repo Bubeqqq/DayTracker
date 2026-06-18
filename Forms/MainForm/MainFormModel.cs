@@ -27,7 +27,7 @@ namespace DayTracker.Forms.MainForm
 
         public async Task AddUser(string email, string role)
         {
-            List<User> users = _loadedDataService.GetUsers().Where(user => user.email == email).ToList();
+            List<User> users = await _databaseService.GetUsersAsync(user => user.email == email);
 
             if (users.Count != 1)
             {
@@ -66,8 +66,8 @@ namespace DayTracker.Forms.MainForm
 
         public async Task ChangePermission(string email, string role, string old)
         {
-            List<User> newUsers = _loadedDataService.GetUsers().Where(user => user.email == email).ToList();
-            List<User> oldUsers = _loadedDataService.GetUsers().Where(user => user.email == old).ToList();
+            List<User> newUsers = await _databaseService.GetUsersAsync(user => user.email == email);
+            List<User> oldUsers = await _databaseService.GetUsersAsync(user => user.email == old);
 
 
             if (newUsers.Count != 1)
@@ -167,15 +167,17 @@ namespace DayTracker.Forms.MainForm
             return _loadedDataService.GetCurrentUser().invitationCode;
         }
 
-        public List<SimplePermission> GetPermissionsList()
+        public async Task<List<SimplePermission>> GetPermissionsList()
         {
             var permissions = _loadedDataService.GetPermissions();
-            var users = _loadedDataService.GetUsers();
             var result = new List<SimplePermission>();
 
             foreach (var p in permissions)
             {
-                var user = users.FirstOrDefault(u => u.Id == p.UserId);
+                var users = await _databaseService.GetUsersAsync(u => u.Id == p.UserId);
+
+                var user = users.ElementAt(0);
+                
                 if (user != null)
                 {
                     string roleName = p.PermissionName switch
@@ -212,7 +214,7 @@ namespace DayTracker.Forms.MainForm
 
         public async Task RemoveUser(string email)
         {
-            List<User> users = _loadedDataService.GetUsers().Where(user => user.email == email).ToList();
+            List<User> users = await _databaseService.GetUsersAsync(user => user.email == email);
 
             if (users.Count != 1)
             {

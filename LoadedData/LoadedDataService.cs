@@ -20,7 +20,6 @@ namespace DayTracker.LoadedData
         private List<Permission> _permissions;
         private List<Sleep> _sleeps;
         private List<TodoItem> _todoItems;
-        private List<User> _users;
 
         public LoadedDataService(ILoginService loginService, IDatabaseService databaseService)
         {
@@ -45,7 +44,6 @@ namespace DayTracker.LoadedData
         public event Action OnTodoItemsChanged;
         public event Action OnSleepsChanged;
         public event Action OnPermissionsChanged;
-        public event Action OnUsersChanged;
 
         private async Task UpdateDatabase(string entityName, int id)
         {
@@ -57,22 +55,21 @@ namespace DayTracker.LoadedData
                     OnCalendarEventsChanged?.Invoke();
                     break;
                 case nameof(TodoItem):
-                    _todoItems = await _databaseService.GetType<TodoItem>();
+                    _todoItems = await _databaseService.GetType<TodoItem>(t => t.calendarID == _databaseService.CurrentCalendarID);
                     foreach (var t in _todoItems)
                         Console.WriteLine("--" + t.Description + "--");
                     OnTodoItemsChanged?.Invoke();
                     break;
                 case nameof(Sleep):
-                    _sleeps = await _databaseService.GetType<Sleep>();
-                    OnSleepsChanged?.Invoke();
+                    if (_loginService.GetUser() != null)
+                    {
+                        _sleeps = await _databaseService.GetType<Sleep>(s => s.UserId == _loginService.GetUser()!.Id);
+                        OnSleepsChanged?.Invoke();
+                    }
                     break;
                 case nameof(Permission):
                     _permissions = await _databaseService.GetType<Permission>(p => p.CalendarId == _databaseService.CurrentCalendarID);
                     OnPermissionsChanged?.Invoke();
-                    break;
-                case nameof(User):
-                    _users = await _databaseService.GetUsersAsync(u => true);
-                    OnUsersChanged?.Invoke();
                     break;
             }
         }
@@ -81,10 +78,12 @@ namespace DayTracker.LoadedData
         {
             _calendarEvents = await _databaseService.GetType<CalendarEvent>();
             _permissions = await _databaseService.GetType<Permission>(p => p.CalendarId == _databaseService.CurrentCalendarID);
-            _sleeps = await _databaseService.GetType<Sleep>();
-            _todoItems = await _databaseService.GetType<TodoItem>();
-            _users = await _databaseService.GetUsersAsync(u => true);
-        }
+            
+            if(_loginService.GetUser() != null)
+                _sleeps = await _databaseService.GetType<Sleep>(s => s.UserId == _loginService.GetUser()!.Id);
+            
+            
+            _todoItems = await _databaseService.GetType<TodoItem>(t => t.calendarID == _databaseService.CurrentCalendarID);        }
 
         public List<CalendarEvent> GetCalendarEvents()
         {
@@ -117,11 +116,6 @@ namespace DayTracker.LoadedData
         public List<TodoItem> GetTodoItems()
         {
             return _todoItems;
-        }
-
-        public List<User> GetUsers()
-        {
-            return _users;
         }
 
         public async Task LoadCalendar(int CalendarID)

@@ -150,15 +150,12 @@ namespace CompactAppSettings
                 _oldEmailValue = dgvUsers.Rows[e.RowIndex].Cells[0].Value?.ToString();
             }
 
-            if (dgvUsers.Columns[e.ColumnIndex].Name == "colRole")
-            {
-                string currentValue = dgvUsers.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString();
+                string currentValue = dgvUsers.Rows[e.RowIndex].Cells[1].Value?.ToString();
 
                 if (currentValue == "Admin")
                 {
                     e.Cancel = true;
                 }
-            }
         }
 
         private void dgvUsers_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)

@@ -21,7 +21,7 @@ namespace DayTracker.Forms.MainForm
 
         event Action OnAppExitRequest;
 
-        List<SimplePermission> GetPermissionsList();
+        Task<List<SimplePermission>> GetPermissionsList();
         string GetInvitationCode();
 
         bool IsCurrentUserAdmin();

@@ -29,7 +29,7 @@ namespace DayTracker
             var configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("Resources/appsettings.json", optional: false, reloadOnChange: true).Build();
 
             services.AddSingleton<ILoginService, LoginService>();
-            services.AddDbContext<IDatabaseService, DatabaseService>(options => options.UseNpgsql(configuration.GetConnectionString("NeonDatabase")));
+            services.AddDbContext<IDatabaseService, DatabaseService>(options => options.UseNpgsql(configuration.GetConnectionString("NeonDatabase")), ServiceLifetime.Singleton);
 
             services.AddSingleton<INavigationService, NavigationService>();
 

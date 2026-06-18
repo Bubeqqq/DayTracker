@@ -228,7 +228,7 @@ namespace DayTracker.Forms.TaskControl
                 {
                     if (calendarEvent.TodoId != null)
                     {
-                        TodoItem toDoItem = new TodoItem(toDoDescription);
+                        TodoItem toDoItem = new TodoItem(toDoDescription, _databaseService.CurrentCalendarID);
                         toDoItem.Id = (int)calendarEvent.TodoId;
                         
 
@@ -238,7 +238,7 @@ namespace DayTracker.Forms.TaskControl
                     }
                     else
                     {
-                        TodoItem toDoItem = new TodoItem(toDoDescription);
+                        TodoItem toDoItem = new TodoItem(toDoDescription, _databaseService.CurrentCalendarID);
                         toDoItem = await AddToDoItem(toDoItem);
                         //MessageBox.Show("presenter ToDoItem: " + toDoItem.Description);
                         calendarEvent.TodoId = toDoItem.Id;
@@ -287,7 +287,7 @@ namespace DayTracker.Forms.TaskControl
             {
                 if (!string.IsNullOrEmpty(toDoDescription))
                 {
-                    TodoItem toDoItem = new TodoItem(toDoDescription);
+                    TodoItem toDoItem = new TodoItem(toDoDescription, _databaseService.CurrentCalendarID);
                     //MessageBox.Show("presenter2 ToDoItem: " + toDoItem.Description);
                     toDoItem = await AddToDoItem(toDoItem);
                     //MessageBox.Show("presenter2 ToDoItem: " + toDoItem.Description);

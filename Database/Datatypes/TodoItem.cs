@@ -15,11 +15,16 @@ namespace DayTracker.Database.Datatypes
         public int Id { get; set; }
         
         public string Description { get; set; }
+
+        [ForeignKey("Calendar")]
+        public int? calendarID { get; set; }
+        public Calendar? Calendar { get; set; }
+
         private TodoItem() { } 
 
-        public TodoItem(string description)
+        public TodoItem(string description, int calendarID)
         {
-        
+            this.calendarID = calendarID;
             Description = description;
         }
         public override string ToString()
