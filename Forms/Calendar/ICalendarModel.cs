@@ -19,7 +19,7 @@ namespace DayTracker.Forms.Calendar
         List<string> GetStringTaskList(DateTime date, List<CalendarEvent> events);
             List<CalendarEvent> GetCalendarEvents();
         List<CalendarEvent> GetSoftCalendarEvents();
-        List<CalendarEvent> GetRepetetiveCalendarEvents();
+        List<CalendarEvent> GetRepetitiveCalendarEvents();
         bool SleepSubmited();
         Task AddSleep(Tuple<DateTime, DateTime> sleep);
         Task EditSleep(Tuple<DateTime, DateTime> sleep);

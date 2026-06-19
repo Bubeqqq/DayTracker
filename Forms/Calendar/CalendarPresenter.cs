@@ -105,12 +105,16 @@ namespace DayTracker.Forms.Calendar
                 }
             }
         }
-        private async Task HandleRepetetiveEvents()
+        private async Task HandleRepetitiveEvents()
         {
-            List<CalendarEvent> repetetiveEvents = _model.GetRepetetiveCalendarEvents();
-            foreach (var calendarEvent in repetetiveEvents)
+            List<CalendarEvent> repetitiveEvents = _model.GetRepetitiveCalendarEvents();
+            MessageBox.Show($"{repetitiveEvents.Count}");
+            foreach (var calendarEvent in repetitiveEvents)
             {
-                DateTime newStartTime = calendarEvent.GetLocalStartTime().AddDays(7);
+                int diff = (DateTime.Now - calendarEvent.GetLocalStartTime()).Days;
+                int weeks = diff / 7+1;
+                DateTime newStartTime = calendarEvent.GetLocalStartTime().AddDays(7*weeks);
+
                 if (newStartTime.Year > 2100)
                 {
                     continue;
@@ -181,7 +185,7 @@ namespace DayTracker.Forms.Calendar
         }
         private async Task OnCalendarLoad()
         {
-                await HandleRepetetiveEvents();
+                await HandleRepetitiveEvents();
             if (DateTime.Now>DateTime.Now.Date.AddHours(6)&&!_model.SleepSubmited())
             {
                 Tuple<DateTime, DateTime> sleep = _view.GetUserSleep("Sleep Hours", DateTime.MinValue, DateTime.MinValue);

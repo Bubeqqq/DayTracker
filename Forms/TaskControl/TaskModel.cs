@@ -25,8 +25,8 @@ namespace DayTracker.Forms.TaskControl
         }
         public Dictionary<string, bool> GetDefaultCategories()
         {
-            Dictionary<string, bool> categories = new Dictionary<string, bool> { { "IsHard", false }, { "IsOutdoor", false },
-                { "IsSport", false }, { "IsWork", false }, { "IsRelax", false }, { "IsEducation", false }, { "IsRepetetive", false } };
+            Dictionary<string, bool> categories = new Dictionary<string, bool> { { "IsHard", true }, { "IsOutdoor", false },
+                { "IsSport", false }, { "IsWork", false }, { "IsRelax", false }, { "IsEducation", false }, { "IsRepetitive", false } };
             return categories;
         }
         public Dictionary<string, bool> SetCategoriesFromEvent(CalendarEvent calendarEvent)
@@ -38,7 +38,7 @@ namespace DayTracker.Forms.TaskControl
             categories["IsWork"] = calendarEvent.IsWork;
             categories["IsRelax"] = calendarEvent.IsRelax;
             categories["IsEducation"] = calendarEvent.IsEducation;
-            categories["IsRepetetive"] = calendarEvent.IsRepetetive;
+            categories["IsRepetitive"] = calendarEvent.IsRepetitive;
             return categories;
         }
         public void SetAllCategoriesToFalse(CalendarEvent calendarEvent)
@@ -49,7 +49,7 @@ namespace DayTracker.Forms.TaskControl
             calendarEvent.IsWork = false;
             calendarEvent.IsRelax = false;
             calendarEvent.IsEducation = false;
-            calendarEvent.IsRepetetive = false;
+            calendarEvent.IsRepetitive = false;
         }
         public void SetEventCategories(List<string> checkedCategories, CalendarEvent calendarEvent)
         {
@@ -65,7 +65,7 @@ namespace DayTracker.Forms.TaskControl
             calendarEvent.IsWork = categories["IsWork"];
             calendarEvent.IsRelax = categories["IsRelax"];
             calendarEvent.IsEducation = categories["IsEducation"];
-            calendarEvent.IsRepetetive =categories["IsRepetetive"];
+            calendarEvent.IsRepetitive =categories["IsRepetitive"];
         }
         public bool ValidateMinute(string minuteStr)
         {
@@ -188,7 +188,7 @@ namespace DayTracker.Forms.TaskControl
                 e.IsWork = calendarEvent.IsWork;
                 e.IsRelax = calendarEvent.IsRelax;
                 e.IsEducation = calendarEvent.IsEducation;
-                e.IsRepetetive = calendarEvent.IsRepetetive;
+                e.IsRepetitive = calendarEvent.IsRepetitive;
 
             });
 

@@ -356,23 +356,23 @@ namespace DayTracker.Forms.TaskControl
             }
             if(e.Index == categories.Count - 1)
             {
-                changedItemName = "IsRepetetive";
+                changedItemName = "IsRepetitive";
                 categories[changedItemName] = isChecked;
             }
             
-            if (!categories["IsHard"] && categories["IsRepetetive"])
+            if (!categories["IsHard"] && categories["IsRepetitive"])
             {
-                if (changedItemName == "IsRepetetive")
+                if (changedItemName == "IsRepetitive")
                 {
-                    _view.ShowMessage("Only hard events can be repetetive. If you want to set this event as repetetive please check the Hard Event category");
+                    _view.ShowMessage("Only hard events can be Repetitive. If you want to set this event as Repetitive please check the Hard Event category");
                     e.NewValue = CheckState.Unchecked;
-                    categories["IsRepetetive"] = false;
+                    categories["IsRepetitive"] = false;
                     _view.SetCheckedListBoxItems(categories);
                 }
                 else if(changedItemName=="IsHard")
                 {
 
-                    categories["IsRepetetive"] = false;
+                    categories["IsRepetitive"] = false;
                     _view.SetCheckedListBoxItems(categories);
                 }
             }

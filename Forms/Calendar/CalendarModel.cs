@@ -52,10 +52,10 @@ namespace DayTracker.Forms.Calendar
             List<CalendarEvent> events = GetCalendarEvents();
             return events.Where(e => !e.IsHard&&e.GetLocalStartTime().Add(e.Duration)<DateTime.Now).ToList();
         }
-        public List<CalendarEvent> GetRepetetiveCalendarEvents()
+        public List<CalendarEvent> GetRepetitiveCalendarEvents()
         {
             List<CalendarEvent> events = GetCalendarEvents();
-            return events.Where(e => e.IsHard && e.IsRepetetive && e.GetLocalStartTime().Add(e.Duration) < DateTime.Now).ToList();
+            return events.Where(e => e.IsHard && e.IsRepetitive && e.GetLocalStartTime().Add(e.Duration) < DateTime.Now).ToList();
         }
         public List<string> GetStringTaskList(DateTime date, List<CalendarEvent> events)
         {
