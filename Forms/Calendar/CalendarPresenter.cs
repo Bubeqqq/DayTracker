@@ -82,6 +82,29 @@ namespace DayTracker.Forms.Calendar
                 _view.ShowMessage(ex.Message);
             }
         }
+        private async Task HandleSoftEvents()
+        {
+            List<CalendarEvent> softEvents = _model.GetSoftCalendarEvents();
+            foreach(var calendarEvent in softEvents)
+            {
+                string message = $"Have you completed following event: {calendarEvent.Title} at {calendarEvent.StartTime.ToLocalTime()}, finished at {calendarEvent.StartTime.ToLocalTime().Add(calendarEvent.Duration)} Event Description: {calendarEvent.Description}?";
+                bool yesDecision = _view.YesNoMessage(message);
+                if (yesDecision)
+                {
+                    await _model.DeleteCalendarEvent(calendarEvent);
+                }
+                else
+                {
+                    DateTime newStartTime=_model.GetNextAvailableDate(calendarEvent.GetLocalStartTime(), calendarEvent.Duration);
+                    if(newStartTime == DateTime.MinValue)
+                    {
+                        _view.ShowMessage("No available time slot found for rescheduling.");
+                        continue;
+                    }
+                    await _model.ModifyCalendarEvent(calendarEvent,newStartTime);
+                }
+            }
+        }
         private void OnDayClicked(object sender, DayClickedEventArgs e)
         {
             _model.NavigationService.NavigateTo<DayPresenter, DateTime>(e.Date);
@@ -148,6 +171,7 @@ namespace DayTracker.Forms.Calendar
                 }
                 await _model.AddSleep(sleep);
             }
+            await HandleSoftEvents();
         }
     }
 }

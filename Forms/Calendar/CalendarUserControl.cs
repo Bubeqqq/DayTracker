@@ -127,6 +127,11 @@ namespace DayTracker.Forms.Calendar
         {
             dateTimePicker1.Value = dateTimePicker1.Value.AddMonths(monthsToAdd);
         }
+        public bool YesNoMessage(string message)
+        {
+            DialogResult dialogResult = MessageBox.Show(message, "Choose an option", MessageBoxButtons.YesNo);
+            return dialogResult == DialogResult.Yes ? true : false;
+        }
         public void SuspendAndClearCalendar()
         {
             tableLayoutPanelCalendar.SuspendLayout();

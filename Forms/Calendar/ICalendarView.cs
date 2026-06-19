@@ -24,6 +24,7 @@ namespace DayTracker.Forms.Calendar
         void AddMonthToDate(int monthsToAdd);
         void ClearCalendarControls();
         Tuple<DateTime, DateTime> GetUserSleep(string title, DateTime start, DateTime end);
+        bool YesNoMessage(string message);
 
     }
 }

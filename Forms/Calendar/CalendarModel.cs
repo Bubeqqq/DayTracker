@@ -1,13 +1,16 @@
 ﻿using DayTracker.Database;
 using DayTracker.Database.Datatypes;
+using DayTracker.Forms.Day;
 using DayTracker.LoadedData;
 using DayTracker.Navigation;
 using DayTracker.UserControls.TestTask_usunac;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace DayTracker.Forms.Calendar
 {
@@ -43,6 +46,11 @@ namespace DayTracker.Forms.Calendar
         public List<CalendarEvent> GetCalendarEvents()
         {
             return LoadedDataService.GetCalendarEvents();
+        }
+        public List<CalendarEvent> GetSoftCalendarEvents()
+        {
+            List<CalendarEvent> events = GetCalendarEvents();
+            return events.Where(e => !e.IsHard&&e.GetLocalStartTime().Add(e.Duration)<DateTime.Now).ToList();
         }
         public List<string> GetStringTaskList(DateTime date, List<CalendarEvent> events)
         {
@@ -162,6 +170,63 @@ namespace DayTracker.Forms.Calendar
             Sleep latestSleep = sleeps.Where((s) => s.UserId == user.Id).ToList().MaxBy(s => s.EndTime);
             return new Tuple<DateTime, DateTime>(latestSleep.GetLocalStartTime(), latestSleep.GetLocalEndTime());
 
+        }
+        public async Task DeleteCalendarEvent(CalendarEvent calendarEvent)
+        {
+            int? toDoId = calendarEvent.TodoId;
+            await _databaseService.RemoveByType<CalendarEvent>(calendarEvent.Id);
+            if (toDoId != null)
+            {
+                await DeleteToDoItem((int)toDoId);
+            }
+        }
+        private async Task DeleteToDoItem(int todoItemId)
+        {
+            await _databaseService.RemoveByType<TodoItem>(todoItemId);
+        }
+        public async Task ModifyCalendarEvent(CalendarEvent calendarEvent, DateTime newStartTime)
+        {
+            calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
+            calendarEvent.StartTime = newStartTime.ToUniversalTime();
+            //MessageBox.Show("Modyfying Event: " + calendarEvent.Title);
+            if (calendarEvent.StartTime.Kind != DateTimeKind.Utc)
+            {
+                throw new Exception("StartTime must be in UTC");
+            }
+            await _databaseService.UpdateByType<CalendarEvent>(calendarEvent.Id, (e) =>
+            {
+                
+                e.StartTime = calendarEvent.StartTime;
+                
+
+            });
+
+            
+
+        }
+        public DateTime GetNextAvailableDate(DateTime startTime,TimeSpan duration,int maxDaysToSearch=365)
+        {
+            
+            List<CalendarEvent> events = GetCalendarEvents();
+            DateTime now = DateTime.Now.Date.AddHours(startTime.Hour).AddMinutes(startTime.Minute);
+            for (int i = 0; i < maxDaysToSearch; i++)
+            {
+                DateTime start = now.AddDays(i);
+                DateTime end = start.Add(duration);
+
+              
+                bool hasConflict = events.Any(e =>
+                    start < e.GetLocalStartTime().Add(e.Duration) &&
+                    end > e.GetLocalStartTime()
+                );
+
+                if (!hasConflict)
+                {
+                    return start; 
+                }
+            }
+
+            return DateTime.MinValue; 
         }
     }
     }

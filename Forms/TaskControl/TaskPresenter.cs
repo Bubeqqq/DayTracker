@@ -82,7 +82,7 @@ namespace DayTracker.Forms.TaskControl
         }
         public void LoadArgs(CalendarEvent args)
         {
-            Console.WriteLine(" ------------------------************************-------------" + args.TodoId);
+           // Console.WriteLine(" ------------------------************************-------------" + args.TodoId);
             _task =args;
             Initialize();
         }

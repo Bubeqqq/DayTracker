@@ -18,11 +18,15 @@ namespace DayTracker.Forms.Calendar
         int CalculateOffset(DateTime date);
         List<string> GetStringTaskList(DateTime date, List<CalendarEvent> events);
             List<CalendarEvent> GetCalendarEvents();
+        List<CalendarEvent> GetSoftCalendarEvents();
         bool SleepSubmited();
         Task AddSleep(Tuple<DateTime, DateTime> sleep);
         Task EditSleep(Tuple<DateTime, DateTime> sleep);
         bool SleepValid(Tuple<DateTime, DateTime> sleep);
         Tuple<DateTime, DateTime> GetLatestSleep();
         bool GetModifyPermission();
+        Task DeleteCalendarEvent(CalendarEvent calendarEvent);
+        Task ModifyCalendarEvent(CalendarEvent calendarEvent, DateTime newStartTime);
+        DateTime GetNextAvailableDate(DateTime startTime, TimeSpan duration, int maxDaysToSearch = 365);
     }
 }
