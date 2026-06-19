@@ -19,8 +19,9 @@ namespace DayTracker
     internal static class Program
     {
         [STAThread]
-        static async Task Main()
+        static void Main()
         {
+            Application.SetHighDpiMode(HighDpiMode.DpiUnawareGdiScaled);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -45,7 +46,7 @@ namespace DayTracker
             services.AddSingleton<IMainFormView, Form1>();
             services.AddSingleton<IMainFormModel, MainFormModel>();
 
-            using var serviceProvider = services.BuildServiceProvider();
+            var serviceProvider = services.BuildServiceProvider();
 
             using (var scope = serviceProvider.CreateScope())
             {
@@ -54,34 +55,27 @@ namespace DayTracker
                 if (db != null)
                 {
                     Console.WriteLine("Sprawdzanie i tworzenie bazy danych...");
-                    await db.EnsureCreated();
+                    db.EnsureCreated().GetAwaiter().GetResult();
 
                     db.AddLoginService(serviceProvider.GetRequiredService<ILoginService>());
                 }
             }
 
-            await serviceProvider.GetRequiredService<ILoadedDataService>().Initialize();
+            serviceProvider.GetRequiredService<ILoadedDataService>().Initialize().GetAwaiter().GetResult();
 
             var mainForm = serviceProvider.GetRequiredService<MainFormPresenter>();
             mainForm.Initialize();
 
-            Thread winFormsThread = new Thread(() =>
+            if (mainForm.View is Form mainFormWindow)
             {
-                if (mainForm.View is Form mainFormWindow)
-                {
-                    Application.Run(mainFormWindow);
-                }
-                else
-                {
-                    MessageBox.Show("G³ówny widok aplikacji nie jest oknem typu Form!");
-                }
-            });
+                Application.Run(mainFormWindow);
+            }
+            else
+            {
+                MessageBox.Show("G³ówny widok aplikacji nie jest oknem typu Form!");
+            }
 
-            winFormsThread.SetApartmentState(ApartmentState.STA);
-            winFormsThread.Start();
-            winFormsThread.Join();
-
-           
+            serviceProvider.Dispose();
         }
 
         private static void ConfigureService<T>(ServiceCollection services)

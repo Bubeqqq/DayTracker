@@ -21,7 +21,7 @@ namespace DayTracker.Forms.Habits
             _model = model ?? throw new ArgumentNullException(nameof(model));
             _view = view ?? throw new ArgumentNullException(nameof(view));
 
-            DashboardData data = analysisService.AnalyzeHabitsAsync().Result;
+            DashboardData data = analysisService.AnalyzeHabits();
             _view.BuildDashboard(data);
         }
     }

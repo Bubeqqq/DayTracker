@@ -8,6 +8,6 @@ namespace DayTracker.HabitAnalysis
 {
     internal interface IAnalysisService
     {
-        Task<DashboardData> AnalyzeHabitsAsync();
+        DashboardData AnalyzeHabits();
     }
 }

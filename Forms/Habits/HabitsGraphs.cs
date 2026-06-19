@@ -19,18 +19,10 @@ namespace DayTracker.Forms.Habits
         private LiveCharts.WinForms.PieChart chartCategories;
         private LiveCharts.WinForms.CartesianChart chartSleep;
         private LiveCharts.WinForms.CartesianChart chartTodos;
-        private ListBox listAnomalies;
 
         public HabitsGraphs()
         {
             InitializeComponent();
-
-            Initialize();
-        }
-
-        private void Initialize()
-        {
-            mainPanel.Controls.Clear();
 
             chartCategories = new LiveCharts.WinForms.PieChart
             {
@@ -38,30 +30,32 @@ namespace DayTracker.Forms.Habits
                 Margin = new Padding(10)
             };
 
-            mainPanel.Controls.Add(chartCategories, 0, 0);
-
             chartSleep = new LiveCharts.WinForms.CartesianChart
             {
                 Dock = DockStyle.Fill,
                 Margin = new Padding(10)
             };
-            mainPanel.Controls.Add(chartSleep, 1, 0);
 
             chartTodos = new LiveCharts.WinForms.CartesianChart
             {
                 Dock = DockStyle.Fill,
                 Margin = new Padding(10)
             };
+
+            this.Load += Initialize;
+        }
+
+        private void Initialize(object? sender, EventArgs e)
+        {
+            mainPanel.SuspendLayout();
+
+            mainPanel.Controls.Clear();
+            mainPanel.Controls.Add(chartCategories, 0, 0);
+            mainPanel.Controls.Add(chartSleep, 1, 0);
+
             mainPanel.Controls.Add(chartTodos, 1, 1);
 
-            listAnomalies = new ListBox
-            {
-                Dock = DockStyle.Fill,
-                Margin = new Padding(10),
-                BackColor = System.Drawing.Color.LightSalmon,
-                Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
-            };
-            mainPanel.Controls.Add(listAnomalies, 0, 1);
+            mainPanel.ResumeLayout(true);
         }
 
         public void BuildDashboard(DashboardData data)
@@ -90,6 +84,14 @@ namespace DayTracker.Forms.Habits
             chartSleep.AxisY.Clear();
 
             var sleepData = data.SleepHoursPerDay.OrderBy(x => x.Key).ToList();
+
+            Console.WriteLine("===============");
+            Console.WriteLine(sleepData.Count);
+            foreach (var s in sleepData)
+            {
+                Console.WriteLine(s.Value);
+            }
+            Console.WriteLine("===============");
 
             chartSleep.Series.Add(new LineSeries
             {
@@ -137,20 +139,6 @@ namespace DayTracker.Forms.Habits
                 MinValue = 0,
                 LabelFormatter = value => value.ToString("N0")
             });
-
-            listAnomalies.Items.Clear();
-            if (data.Anomalies.Any())
-            {
-                listAnomalies.Items.Add("⚠️ DATA ERRORS DETECTED:");
-                foreach (var anomaly in data.Anomalies)
-                {
-                    listAnomalies.Items.Add($"- {anomaly}");
-                }
-            }
-            else
-            {
-                listAnomalies.Items.Add("✅ Data is consistent. No anomalies.");
-            }
         }
     }
 }

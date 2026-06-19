@@ -26,6 +26,8 @@ namespace DayTracker.UserControls.UserBar
 
         //settings
 
+        public event Action OnAnalasisRequest;
+
         public event Action OnLogoutRequested;
         public event Action OnExitRequested;
 
@@ -125,6 +127,11 @@ namespace DayTracker.UserControls.UserBar
         private void SettingButton_Click(object sender, EventArgs e)
         {
             SettingButtonClicked?.Invoke();
+        }
+
+        private void AnalasisButton_Click(object sender, EventArgs e)
+        {
+            OnAnalasisRequest?.Invoke();
         }
     }
 }

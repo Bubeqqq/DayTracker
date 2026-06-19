@@ -46,6 +46,8 @@ namespace DayTracker.Forms.MainForm
             _view.OnMouseLeaveUserBar += () => _navigationService.MouseLeaveUserBar();
 
             _model.OnAppExitRequest += () => _view.ExitApp();
+
+            _view.OnAnalasisRequest += () => _navigationService.NavigateTo<HabitsPresenter>();
         
             //settings
 

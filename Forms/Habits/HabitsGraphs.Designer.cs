@@ -38,20 +38,22 @@
             mainPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             mainPanel.Dock = DockStyle.Fill;
             mainPanel.Location = new Point(0, 0);
+            mainPanel.Margin = new Padding(3, 4, 3, 4);
             mainPanel.Name = "mainPanel";
             mainPanel.RowCount = 2;
             mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            mainPanel.Size = new Size(1152, 625);
+            mainPanel.Size = new Size(1317, 833);
             mainPanel.TabIndex = 0;
             // 
             // HabitsGraphs
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
-            AutoScaleMode = AutoScaleMode.Font;
+            AutoScaleMode = AutoScaleMode.None;
+            AutoSizeMode = AutoSizeMode.GrowAndShrink;
             Controls.Add(mainPanel);
+            Margin = new Padding(3, 4, 3, 4);
             Name = "HabitsGraphs";
-            Size = new Size(1152, 625);
+            Size = new Size(1317, 833);
             ResumeLayout(false);
         }
 

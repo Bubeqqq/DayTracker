@@ -55,7 +55,7 @@ namespace DayTracker.LoadedData
                     OnCalendarEventsChanged?.Invoke();
                     break;
                 case nameof(TodoItem):
-                    _todoItems = await _databaseService.GetType<TodoItem>(t => t.calendarID == _databaseService.CurrentCalendarID);
+                    _todoItems = await _databaseService.GetType<TodoItem>(t => t.CalendarId == _databaseService.CurrentCalendarID);
                     foreach (var t in _todoItems)
                         Console.WriteLine("--" + t.Description + "--");
                     OnTodoItemsChanged?.Invoke();
@@ -83,7 +83,7 @@ namespace DayTracker.LoadedData
                 _sleeps = await _databaseService.GetType<Sleep>(s => s.UserId == _loginService.GetUser()!.Id);
             
             
-            _todoItems = await _databaseService.GetType<TodoItem>(t => t.calendarID == _databaseService.CurrentCalendarID);        }
+            _todoItems = await _databaseService.GetType<TodoItem>(t => t.CalendarId == _databaseService.CurrentCalendarID);        }
 
         public List<CalendarEvent> GetCalendarEvents()
         {

@@ -1,5 +1,6 @@
 ﻿
 using DayTracker.Database.Datatypes;
+using DayTracker.LoadedData;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,147 +11,81 @@ namespace DayTracker.HabitAnalysis
     internal class AnalysisService : IAnalysisService
     {
         
-        public AnalysisService()
+        private readonly ILoadedDataService _loadedDataService;
+
+        public AnalysisService(ILoadedDataService loadedDataService)
         {
-            
+            _loadedDataService = loadedDataService;
         }
 
         
-        public async Task<DashboardData> AnalyzeHabitsAsync()
+        public DashboardData AnalyzeHabits()
         {
             var dashboard = new DashboardData();
 
-            /*if (!_calendarService.IsConnected)
-                return dashboard;
 
-            using (var db = _calendarService.CreateContext())
+            foreach (var s in _loadedDataService.GetSleeps())
             {
-                var calendarEvents = await db.GetType<CalendarEvent>();
-                var sleepRecords = await db.GetType<Sleep>();
-                var todoItems = await db.GetType<TodoItem>();*/
+                Console.WriteLine(s.StartTime);
 
+                double hours = (s.GetLocalEndTime() - s.GetLocalStartTime()).TotalHours;
 
-            DateTime dzisiaj = DateTime.Today;
-
-            // --- 1. MOCK: ZADANIA TODO ---
-            
-
-            // --- 2. MOCK: SEN ---
-            var sleepRecords = new List<Sleep>
-{
-    // Normalny sen (8h)
-    //new Sleep { Id = 1, StartTime = dzisiaj.AddDays(-3).AddHours(23), EndTime = dzisiaj.AddDays(-2).AddHours(7) },
-    //// Normalny sen (7h)
-    //new Sleep { Id = 2, StartTime = dzisiaj.AddDays(-2).AddHours(23), EndTime = dzisiaj.AddDays(-1).AddHours(6) },
-    //// Normalny sen (7h)
-    //new Sleep { Id = 3, StartTime = dzisiaj.AddDays(-1).AddHours(22), EndTime = dzisiaj.AddHours(5) },
-    
-    //// ANOMALIA 1: Użytkownik spał tylko 3 godziny (Wykres pokaże mocny dołek)
-    //new Sleep { Id = 4, StartTime = dzisiaj.AddHours(1), EndTime = dzisiaj.AddHours(4) },
-    
-    //// ANOMALIA 2: Użytkownik nie kliknął "Zakończ sen" i spał 26 godzin
-    //new Sleep { Id = 5, StartTime = dzisiaj.AddDays(-4).AddHours(20), EndTime = dzisiaj.AddDays(-3).AddHours(22) }
-};
-
-            // --- 3. MOCK: WYDARZENIA Z KALENDARZA ---
-            var calendarEvents = new List<CalendarEvent>
-{
-    // Praca (część połączona z zadaniami Todo)
-    new CalendarEvent("","",-1,dzisiaj.AddDays(-2).AddHours(9),TimeSpan.FromHours(8),isWork:true,todoId:1,id:1),
-    //new CalendarEvent { Id = 1, StartTime = dzisiaj.AddDays(-2).AddHours(9), Duration = TimeSpan.FromHours(8), IsWork = true, TodoId = 1 },
-    new CalendarEvent("","",-1,dzisiaj.AddDays(-1).AddHours(10),TimeSpan.FromHours(6),isWork:true,id:2),
-    //new CalendarEvent { Id = 2, StartTime = dzisiaj.AddDays(-1).AddHours(10), Duration = TimeSpan.FromHours(6), IsWork = true },
-    new CalendarEvent("","",-1,dzisiaj.AddHours(8),TimeSpan.FromHours(4),isWork:true,todoId:4,id:3),
-    //new CalendarEvent { Id = 3, StartTime = dzisiaj.AddHours(8), Duration = TimeSpan.FromHours(4), IsWork = true, TodoId = 4 },
-    
-    // Edukacja
-    new CalendarEvent("","",-1,dzisiaj.AddDays(-2).AddHours(18),TimeSpan.FromHours(2),isEducation:true,id:4),
-    //new CalendarEvent { Id = 4, StartTime = dzisiaj.AddDays(-2).AddHours(18), Duration = TimeSpan.FromHours(2), IsEducation = true },
-    
-    // Sport i czas na zewnątrz
-    new CalendarEvent("","",-1,dzisiaj.AddDays(-1).AddHours(17),TimeSpan.FromHours(1.5),isSport:true,isOutdoor:true,id:5),
-    //new CalendarEvent { Id = 5, StartTime = dzisiaj.AddDays(-1).AddHours(17), Duration = TimeSpan.FromHours(1.5), IsSport = true, IsOutdoor = true },
-    new CalendarEvent("","",-1,dzisiaj.AddHours(16),TimeSpan.FromHours(1.5),isSport:true,todoId:3,id:6),
-    //new CalendarEvent { Id = 6, StartTime = dzisiaj.AddHours(16), Duration = TimeSpan.FromHours(1.5), IsSport = true, TodoId = 3 },
-    
-    // Relaks
-    new CalendarEvent("","",-1,dzisiaj.AddDays(-1).AddHours(20),TimeSpan.FromHours(2),isRelax:true,id:7),
-    //new CalendarEvent { Id = 7, StartTime = dzisiaj.AddDays(-1).AddHours(20), Duration = TimeSpan.FromHours(2), IsRelax = true },
-    new CalendarEvent("","",-1,dzisiaj.AddHours(19),TimeSpan.FromHours(3),isRelax:true,id:8),
-    //new CalendarEvent { Id = 8, StartTime = dzisiaj.AddHours(19), Duration = TimeSpan.FromHours(3), IsRelax = true },
-    
-    // ANOMALIA 3: Zagięcie czasoprzestrzeni (Ten dzień ma zarejestrowane 8h pracy + 26h snu z rekordu wyżej)
-    new CalendarEvent("","",-1,dzisiaj.AddDays(-3).AddHours(10),TimeSpan.FromHours(8),isWork:true,id:9),
-    //new CalendarEvent { Id = 9, StartTime = dzisiaj.AddDays(-3).AddHours(10), Duration = TimeSpan.FromHours(8), IsWork = true }
-};
-
-            foreach (var s in sleepRecords)
+                if (hours < 0 || hours > 24)
                 {
-                    double hours = (s.GetLocalEndTime() - s.GetLocalStartTime()).TotalHours;
-
-                    if (hours < 0 || hours > 24)
-                    {
-                        dashboard.Anomalies.Add($"Anomalia Snu (ID: {s.Id}): Nieprawidłowy czas trwania ({hours:F1}h).");
-                        continue;
-                    }
-
-                    var date = s.GetLocalEndTime().Date;
-                    if (!dashboard.SleepHoursPerDay.ContainsKey(date))
-                        dashboard.SleepHoursPerDay[date] = 0;
-
-                    dashboard.SleepHoursPerDay[date] += hours;
+                    Console.WriteLine($"{hours} <==== {s.GetLocalEndTime()} -- {s.GetLocalStartTime()}");
+                    continue;
                 }
 
-                dashboard.TotalTimePerCategory.Add("Praca", 0);
-                dashboard.TotalTimePerCategory.Add("Edukacja", 0);
-                dashboard.TotalTimePerCategory.Add("Sport", 0);
-                dashboard.TotalTimePerCategory.Add("Relaks", 0);
-                dashboard.TotalTimePerCategory.Add("Na zewnątrz", 0);
+                var date = s.GetLocalEndTime().Date;
+                if (!dashboard.SleepHoursPerDay.ContainsKey(date))
+                    dashboard.SleepHoursPerDay[date] = 0;
 
-                var dailyActivityTime = new Dictionary<DateTime, double>();
+                dashboard.SleepHoursPerDay[date] += hours;
+            }
 
-                foreach (var ev in calendarEvents)
+            dashboard.TotalTimePerCategory.Add("Praca", 0);
+            dashboard.TotalTimePerCategory.Add("Edukacja", 0);
+            dashboard.TotalTimePerCategory.Add("Sport", 0);
+            dashboard.TotalTimePerCategory.Add("Relaks", 0);
+            dashboard.TotalTimePerCategory.Add("Na zewnątrz", 0);
+
+            var dailyActivityTime = new Dictionary<DateTime, double>();
+
+            foreach (var ev in _loadedDataService.GetCalendarEvents())
+            {
+                double duration = ev.Duration.TotalHours;
+                var eventDate = ev.GetLocalStartTime().Date;
+
+                if (duration < 0)
                 {
-                    double duration = ev.Duration.TotalHours;
-                    var eventDate = ev.GetLocalStartTime().Date;
-
-                    if (duration < 0)
-                    {
-                        dashboard.Anomalies.Add($"Anomalia Wydarzenia (ID: {ev.Id}): Ujemny czas trwania.");
-                        continue;
-                    }
-
-                    if (!dailyActivityTime.ContainsKey(eventDate)) dailyActivityTime[eventDate] = 0;
-                    dailyActivityTime[eventDate] += duration;
-
-                    if (ev.IsWork) dashboard.TotalTimePerCategory["Praca"] += duration;
-                    if (ev.IsEducation) dashboard.TotalTimePerCategory["Edukacja"] += duration;
-                    if (ev.IsSport) dashboard.TotalTimePerCategory["Sport"] += duration;
-                    if (ev.IsRelax) dashboard.TotalTimePerCategory["Relaks"] += duration;
-                    if (ev.IsOutdoor) dashboard.TotalTimePerCategory["Na zewnątrz"] += duration;
-
-                    if (ev.TodoId.HasValue)
-                    {
-                        if (!dashboard.TodosCompletedPerDay.ContainsKey(eventDate))
-                            dashboard.TodosCompletedPerDay[eventDate] = 0;
-
-                        dashboard.TodosCompletedPerDay[eventDate]++;
-                    }
+                    continue;
                 }
 
-                foreach (var date in dailyActivityTime.Keys)
+                if (!dailyActivityTime.ContainsKey(eventDate)) dailyActivityTime[eventDate] = 0;
+                dailyActivityTime[eventDate] += duration;
+
+                if (ev.IsWork) dashboard.TotalTimePerCategory["Praca"] += duration;
+                if (ev.IsEducation) dashboard.TotalTimePerCategory["Edukacja"] += duration;
+                if (ev.IsSport) dashboard.TotalTimePerCategory["Sport"] += duration;
+                if (ev.IsRelax) dashboard.TotalTimePerCategory["Relaks"] += duration;
+                if (ev.IsOutdoor) dashboard.TotalTimePerCategory["Na zewnątrz"] += duration;
+
+                if (ev.TodoId.HasValue)
                 {
-                    double sleepHours = dashboard.SleepHoursPerDay.ContainsKey(date) ? dashboard.SleepHoursPerDay[date] : 0;
-                    double totalLoggedHours = dailyActivityTime[date] + sleepHours;
+                    if (!dashboard.TodosCompletedPerDay.ContainsKey(eventDate))
+                        dashboard.TodosCompletedPerDay[eventDate] = 0;
 
-                    if (totalLoggedHours > 24.1)
-                    {
-                        dashboard.Anomalies.Add($"Zagięcie czasoprzestrzeni ({date:dd.MM.yyyy}): Zarejestrowano {totalLoggedHours:F1} godzin w ciągu jednej doby!");
-                    }
+                    dashboard.TodosCompletedPerDay[eventDate]++;
                 }
+            }
 
-                return dashboard;
-            //}
+            foreach (var date in dailyActivityTime.Keys)
+            {
+                double sleepHours = dashboard.SleepHoursPerDay.ContainsKey(date) ? dashboard.SleepHoursPerDay[date] : 0;
+                double totalLoggedHours = dailyActivityTime[date] + sleepHours;
+            }
+
+            return dashboard;
         }
     }
 
@@ -161,7 +96,5 @@ namespace DayTracker.HabitAnalysis
         public Dictionary<string, double> TotalTimePerCategory { get; set; } = new();
 
         public Dictionary<DateTime, int> TodosCompletedPerDay { get; set; } = new();
-
-        public List<string> Anomalies { get; set; } = new();
     }
 }

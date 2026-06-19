@@ -37,6 +37,7 @@ namespace DayTracker
             userBar.OnPermissionChanged += (email, role, old) => OnPermissionChanged?.Invoke(email, role, old);
             userBar.OnUserAdded += (email, role) => OnUserAdded?.Invoke(email, role);
             userBar.OnUserRemoved += (email) => OnUserRemoved?.Invoke(email);
+            userBar.OnAnalasisRequest += () => OnAnalasisRequest?.Invoke();
         }
 
         public event Action OnGoBack;
@@ -53,6 +54,7 @@ namespace DayTracker
         public event Action<string, string> OnUserAdded;
         public event Action<string> OnUserRemoved;
         public event Action OnSettingsOpened;
+        public event Action OnAnalasisRequest;
 
         public void SetBackButtonEnable(bool enable)
         {

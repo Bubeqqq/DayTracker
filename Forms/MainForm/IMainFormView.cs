@@ -33,6 +33,8 @@ namespace DayTracker.Forms.MainForm
         public event Action OnClearListRequested;
         public event Action OnCalendarResetRequested;
 
+        public event Action OnAnalasisRequest;
+
         public event Action<bool> OnBarVisibilityChanged;
 
         public event Action<string, string, string> OnPermissionChanged;
