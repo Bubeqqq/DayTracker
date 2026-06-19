@@ -1,4 +1,5 @@
 ﻿using DayTracker.Navigation;
+using System.Text.RegularExpressions;
 
 namespace DayTracker.Forms.RegisterForm
 {
@@ -51,10 +52,18 @@ namespace DayTracker.Forms.RegisterForm
             {
                 errors[nameof(_view.LastName)] = "Last name is required.";
             }
+
             if (string.IsNullOrEmpty(email))
             {
                 errors[nameof(_view.Email)] = "Email is required.";
             }
+            /* -------------------------// to się potem odkomentuje
+            else if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+            {
+                errors[nameof(_view.Email)] = "Invalid email format.";
+            }
+            */
+
             if (string.IsNullOrEmpty(password))
             {
                 passwordErrors.Add("Password is required.");
@@ -79,7 +88,7 @@ namespace DayTracker.Forms.RegisterForm
                     passwordErrors.Add("Password must contain at least one special character.");
                 }
                 */
-                if (string.IsNullOrEmpty(confirmPassword))
+            if (string.IsNullOrEmpty(confirmPassword))
                 {
                     errors[nameof(_view.ConfirmPassword)] = "Please confirm your password.";
                 }
