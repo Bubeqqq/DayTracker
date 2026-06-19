@@ -42,6 +42,7 @@ namespace DayTracker.Forms.TaskControl
         public string EndYear { get { return textBoxEndYear.Text; } }
         public event EventHandler<FieldValidationEventArgs> FieldValidation;
         public event Action? ConfirmClicked;
+        public event EventHandler<ItemCheckEventArgs>? CheckedListBoxItemCheck;
         private string _originalValue;
         public TaskUserControl()
         {
@@ -315,5 +316,12 @@ namespace DayTracker.Forms.TaskControl
         {
             ConfirmClicked?.Invoke();
         }
+
+        private void checkedListBoxCategories_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            CheckedListBoxItemCheck?.Invoke(this, e);
+        }
+
+        
     }
 }

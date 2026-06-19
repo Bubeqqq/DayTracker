@@ -105,13 +105,34 @@ namespace DayTracker.Forms.Calendar
                 }
             }
         }
+        private async Task HandleRepetetiveEvents()
+        {
+            List<CalendarEvent> repetetiveEvents = _model.GetRepetetiveCalendarEvents();
+            foreach (var calendarEvent in repetetiveEvents)
+            {
+                DateTime newStartTime = calendarEvent.GetLocalStartTime().AddDays(7);
+                if (newStartTime.Year > 2100)
+                {
+                    continue;
+                }
+                await _model.ModifyCalendarEvent(calendarEvent, newStartTime);
+            }
+        }
         private void OnDayClicked(object sender, DayClickedEventArgs e)
         {
             _model.NavigationService.NavigateTo<DayPresenter, DateTime>(e.Date);
         }
-        private void OnSelectedDateChanged(object sender, EventArgs e) {
-            
-            GenerateMonth();
+        private void OnSelectedDateChanged(object sender, EventArgs e)
+        {
+            DateTime date = _view.SelectedDate;
+            if (_model.ValidateYear(date.Year.ToString()))
+            {
+                _view.ShowMessage("Year has to be  beetwen 2000 and 2100");
+                _view.SelectedDate = DateTime.Now;
+                
+            }
+
+                GenerateMonth();
         }
         private void NextButtonClicked(object sender, EventArgs e) {
             _view.AddMonthToDate(1);
@@ -160,6 +181,7 @@ namespace DayTracker.Forms.Calendar
         }
         private async Task OnCalendarLoad()
         {
+                await HandleRepetetiveEvents();
             if (DateTime.Now>DateTime.Now.Date.AddHours(6)&&!_model.SleepSubmited())
             {
                 Tuple<DateTime, DateTime> sleep = _view.GetUserSleep("Sleep Hours", DateTime.MinValue, DateTime.MinValue);

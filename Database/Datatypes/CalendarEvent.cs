@@ -34,12 +34,16 @@ namespace DayTracker.Database.Datatypes
         public bool IsWork { get; set; }
         public bool IsRelax { get; set; }
         public bool IsEducation { get; set; }
+        public bool IsRepetetive { get; set; } // Indicates if the event is repetitive
         //To musi być konstruktor prywatny, aby Entity Framework mógł tworzyć instancje klasy CalendarEvent podczas odczytu danych z bazy danych.
         private CalendarEvent() { }
         public CalendarEvent(string title, string description, int calendarId, DateTime startTime, TimeSpan duration, int? todoId = null,
-            bool isHard=false, bool isOutdoor = false, bool isSport = false, bool isWork = false, bool isRelax = false, bool isEducation = false,int id=-1)
+            bool isHard=false, bool isOutdoor = false, bool isSport = false, bool isWork = false, bool isRelax = false, bool isEducation = false ,bool isRepetetive = false, int id=-1)
         {
-            
+            if(!IsFieldsValid())
+            {
+                throw new InvalidOperationException("Repetetive events must be hard events.");
+            }
             Title = title;
             Description = description;
             CalendarId = calendarId;            
@@ -51,8 +55,17 @@ namespace DayTracker.Database.Datatypes
             IsWork = isWork;
             IsRelax = isRelax;
             IsEducation = isEducation;
+            IsRepetetive=isRepetetive;
             TodoId = todoId;
             Id = id;
+        }
+        private bool IsFieldsValid()
+        {
+            if (IsRepetetive && !IsHard)
+            {
+                return false;
+            }
+            return true;
         }
         public DateTime GetLocalStartTime()
         {

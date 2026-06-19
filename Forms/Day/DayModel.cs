@@ -103,7 +103,7 @@ namespace DayTracker.Forms.Day
                 return 0;
             }
 
-            return Convert.ToInt32(effectiveDuration.TotalMinutes * pixelPerHour / 60.0);
+            return Math.Max(Convert.ToInt32(effectiveDuration.TotalMinutes * pixelPerHour / 60.0),5);
           
         }
         public int CalculateX(int leftMargin, int columnIndex, int taskWidth)

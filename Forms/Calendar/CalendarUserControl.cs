@@ -27,7 +27,7 @@ namespace DayTracker.Forms.Calendar
             }
         }
 
-        public DateTime SelectedDate { get { return dateTimePicker1.Value; } }
+        public DateTime SelectedDate { get { return dateTimePicker1.Value; } set { dateTimePicker1.Value = value; } }
         public event EventHandler<DayClickedEventArgs> DayClicked;
         public event EventHandler SelectedDateChanged;
         public event EventHandler NextButtonClicked;

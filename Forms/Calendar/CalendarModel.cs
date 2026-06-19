@@ -52,6 +52,11 @@ namespace DayTracker.Forms.Calendar
             List<CalendarEvent> events = GetCalendarEvents();
             return events.Where(e => !e.IsHard&&e.GetLocalStartTime().Add(e.Duration)<DateTime.Now).ToList();
         }
+        public List<CalendarEvent> GetRepetetiveCalendarEvents()
+        {
+            List<CalendarEvent> events = GetCalendarEvents();
+            return events.Where(e => e.IsHard && e.IsRepetetive && e.GetLocalStartTime().Add(e.Duration) < DateTime.Now).ToList();
+        }
         public List<string> GetStringTaskList(DateTime date, List<CalendarEvent> events)
         {
 
@@ -227,6 +232,10 @@ namespace DayTracker.Forms.Calendar
             }
 
             return DateTime.MinValue; 
+        }
+        public bool ValidateYear(string yearStr)
+        {
+            return !int.TryParse(yearStr, out int year) || year < 2000 || year > 2100;
         }
     }
     }

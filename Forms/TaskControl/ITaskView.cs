@@ -11,6 +11,7 @@ namespace DayTracker.Forms.TaskControl
     {
         event Action? ConfirmClicked;
         event EventHandler<FieldValidationEventArgs> FieldValidation;
+        event EventHandler<ItemCheckEventArgs> CheckedListBoxItemCheck;
         string Title { get ; }
         string Descritpion { get; }
         string StartMinute { get; }

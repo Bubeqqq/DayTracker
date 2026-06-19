@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace DayTracker.Forms.TaskControl
 {
-    internal class TaskPresenter:IPresenter<CalendarEvent>
+    internal class TaskPresenter : IPresenter<CalendarEvent>
     {
         private readonly ITaskModel _model;
         private readonly ITaskView _view;
@@ -21,14 +21,16 @@ namespace DayTracker.Forms.TaskControl
         private CalendarEvent _task;
         private bool _editMode;
 
-        public TaskPresenter(ITaskView view,ITaskModel model) {
-            _view=view;
-            _model=model;
-  
-           
+        public TaskPresenter(ITaskView view, ITaskModel model)
+        {
+            _view = view;
+            _model = model;
+
+
             _view.FieldValidation += OnFieldValidation;
-            _view.ConfirmClicked += async ()=>await OnConfirmClicked();
+            _view.ConfirmClicked += async () => await OnConfirmClicked();
             _view.SetCheckedListBoxItems(_model.GetDefaultCategories());
+            _view.CheckedListBoxItemCheck += OnCheckedListBoxItems;
             Initialize();
 
         }
@@ -36,11 +38,12 @@ namespace DayTracker.Forms.TaskControl
         {
 
             _view.SetToDoList("");
-            if (_task != null&& _task.Id == -1)
+            if (_task != null && _task.Id == -1)
             {
                 _editMode = false;
                 SetTaskFields(_task);
-            }else if (_task != null)
+            }
+            else if (_task != null)
             {
                 _editMode = true;
                 //MessageBox.Show($"{_task.StartTime.Kind.ToString()}");
@@ -61,9 +64,17 @@ namespace DayTracker.Forms.TaskControl
             _view.SetTaskInfoFields(calendarEvent.Title, calendarEvent.Description);
 
             DateTime startDate = calendarEvent.GetLocalStartTime();
-            _view.SetStartDate(startDate.Hour.ToString(),startDate.Minute.ToString(),startDate.Day.ToString(),startDate.Month.ToString(),startDate.Year.ToString());
+            if (_model.ValidateYear(startDate.Year.ToString()))
+            {
+                startDate = DateTime.Now.Date;
+            }
+            _view.SetStartDate(startDate.Hour.ToString(), startDate.Minute.ToString(), startDate.Day.ToString(), startDate.Month.ToString(), startDate.Year.ToString());
 
-            TimeSpan duration= calendarEvent.Duration;
+            TimeSpan duration = calendarEvent.Duration;
+            if (_model.ValidateYear(startDate.Add(duration).Year.ToString()))
+            {
+                duration = new TimeSpan(0, 0, 0, 0);
+            }
             _view.SetDuration(duration.Days.ToString(), duration.Hours.ToString(), duration.Minutes.ToString());
 
             DateTime endDate = calendarEvent.GetLocalStartTime().Add(duration);
@@ -76,14 +87,14 @@ namespace DayTracker.Forms.TaskControl
         }
         private void SetCategories(CalendarEvent calendarEvent)
         {
-             
+
             Dictionary<string, bool> categories = _model.SetCategoriesFromEvent(calendarEvent);
             _view.SetCheckedListBoxItems(categories);
         }
         public void LoadArgs(CalendarEvent args)
         {
-           // Console.WriteLine(" ------------------------************************-------------" + args.TodoId);
-            _task =args;
+            // Console.WriteLine(" ------------------------************************-------------" + args.TodoId);
+            _task = args;
             Initialize();
         }
         private void ValidateField(FieldValidationEventArgs e)
@@ -114,7 +125,7 @@ namespace DayTracker.Forms.TaskControl
                         if (_model.ValidateDurationDays(daysStr))
                         {
                             e.IsValid = false;
-                            e.ErrorMessage= "Day field has to be a number greater or equal 0";
+                            e.ErrorMessage = "Day field has to be a number greater or equal 0";
                         }
                         break;
                     }
@@ -185,7 +196,7 @@ namespace DayTracker.Forms.TaskControl
                         {
                             e.IsValid = false;
                             e.ErrorMessage = "Month field has to be a number between 1 and 12";
-                            
+
                         }
                         else if (!_model.TryCalculateDaysInMonth(monthStr, _view.EndYear, out int daysInMonth) || !int.TryParse(_view.EndDay, out int day))
                         {
@@ -255,11 +266,11 @@ namespace DayTracker.Forms.TaskControl
                 case TaskField.EndMinute or TaskField.EndHour or TaskField.EndDay or TaskField.EndMonth or TaskField.EndYear:
                     {
                         if (_model.TryGetDate(_view.StartMinute, _view.StartHour, _view.StartDay, _view.StartMonth, _view.StartYear, out DateTime startDate) &&
-                            _model.TryGetDuration(_view.DurationMinutes, _view.DurationHours, _view.DurationDays, out TimeSpan duration)&&
+                            _model.TryGetDuration(_view.DurationMinutes, _view.DurationHours, _view.DurationDays, out TimeSpan duration) &&
                             _model.TryGetDate(_view.EndMinute, _view.EndHour, _view.EndDay, _view.EndMonth, _view.EndYear, out DateTime endDate)
                             )
                         {
-                            if (DateTime.Compare(startDate,endDate)<0)
+                            if (DateTime.Compare(startDate, endDate) < 0)
                             {
                                 SetNewDuration(startDate, endDate);
                             }
@@ -268,7 +279,7 @@ namespace DayTracker.Forms.TaskControl
                                 SetNewStartDate(duration, endDate);
                             }
                         }
-                            break;//Change duration unless enddate<startDate change StartDate
+                        break;//Change duration unless enddate<startDate change StartDate
                     }
                 case TaskField.DurationMinutes or TaskField.DurationHours or TaskField.DurationDays:
                     {
@@ -286,24 +297,25 @@ namespace DayTracker.Forms.TaskControl
             DateTime newEndDate = startDate.Add(duration);
             _view.SetEndDate(newEndDate.Hour.ToString(), newEndDate.Minute.ToString(), newEndDate.Day.ToString(), newEndDate.Month.ToString(), newEndDate.Year.ToString());
         }
-        private void SetNewDuration(DateTime startDate,DateTime endDate)
+        private void SetNewDuration(DateTime startDate, DateTime endDate)
         {
             TimeSpan newDuration = endDate - startDate;
             _view.SetDuration(newDuration.Days.ToString(), newDuration.Hours.ToString(), newDuration.Minutes.ToString());
         }
-        private void SetNewStartDate(TimeSpan duration,DateTime endDate)
+        private void SetNewStartDate(TimeSpan duration, DateTime endDate)
         {
             DateTime newStartDate = endDate.Subtract(duration);
             _view.SetStartDate(newStartDate.Hour.ToString(), newStartDate.Minute.ToString(), newStartDate.Day.ToString(), newStartDate.Month.ToString(), newStartDate.Year.ToString());
         }
-       
-      private async Task OnConfirmClicked()
+
+        private async Task OnConfirmClicked()
         {
             if (!_model.GetModifyPermission())
             {
                 _view.ShowMessage("You don't have permissions to modify this calendar");
                 return;
-            }else
+            }
+            else
             if (_model.TryGetDate(_view.StartMinute, _view.StartHour, _view.StartDay, _view.StartMonth, _view.StartYear, out DateTime startTime) &&
                 _model.TryGetDuration(_view.DurationMinutes, _view.DurationHours, _view.DurationDays, out TimeSpan duration) &&
                 !string.IsNullOrEmpty(_view.Title))
@@ -319,8 +331,52 @@ namespace DayTracker.Forms.TaskControl
 
             }
 
+
+        }
+        private void OnCheckedListBoxItems(object sender, ItemCheckEventArgs e)
+        {
+            Dictionary<string, bool> categories = _model.GetDefaultCategories();
+            if (e.Index!=0&& e.Index!= categories.Count - 1)
+            {
+                return;
+            }
+            List<string> checkedCategories = _view.GetCheckedItems();            
+            string changedItemName = "";
+            bool isChecked = e.NewValue == CheckState.Checked;
+            //MessageBox.Show($"e.index= {e.Index} + value: {e.NewValue == CheckState.Checked}");
+            foreach (string checkedCategory in checkedCategories)
+            {
+
+                categories[checkedCategory] = true;
+            }
+            if (e.Index == 0)
+            {
+                changedItemName = "IsHard";
+                categories[changedItemName] = isChecked;
+            }
+            if(e.Index == categories.Count - 1)
+            {
+                changedItemName = "IsRepetetive";
+                categories[changedItemName] = isChecked;
+            }
+            
+            if (!categories["IsHard"] && categories["IsRepetetive"])
+            {
+                if (changedItemName == "IsRepetetive")
+                {
+                    _view.ShowMessage("Only hard events can be repetetive. If you want to set this event as repetetive please check the Hard Event category");
+                    e.NewValue = CheckState.Unchecked;
+                    categories["IsRepetetive"] = false;
+                    _view.SetCheckedListBoxItems(categories);
+                }
+                else if(changedItemName=="IsHard")
+                {
+
+                    categories["IsRepetetive"] = false;
+                    _view.SetCheckedListBoxItems(categories);
+                }
+            }
             
         }
-        
     }
 }

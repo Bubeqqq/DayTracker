@@ -60,13 +60,13 @@
             // 
             // labelDelete
             // 
+            labelDelete.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             labelDelete.AutoSize = true;
             labelDelete.BackColor = Color.White;
             labelDelete.Cursor = Cursors.Hand;
-            labelDelete.Dock = DockStyle.Right;
             labelDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 238);
             labelDelete.ForeColor = Color.Red;
-            labelDelete.Location = new Point(175, 70);
+            labelDelete.Location = new Point(211, 0);
             labelDelete.Name = "labelDelete";
             labelDelete.Size = new Size(15, 15);
             labelDelete.TabIndex = 4;
@@ -97,7 +97,7 @@
             Controls.Add(labelDescription);
             Controls.Add(labelTitle);
             Name = "CalendarEventPreviewUserControl";
-            Size = new Size(190, 115);
+            Size = new Size(226, 115);
             BackColorChanged += TaskUserControl_BackColorChanged;
             Click += CalendarEvent_Click;
             ResumeLayout(false);

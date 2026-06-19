@@ -26,7 +26,7 @@ namespace DayTracker.Forms.TaskControl
         public Dictionary<string, bool> GetDefaultCategories()
         {
             Dictionary<string, bool> categories = new Dictionary<string, bool> { { "IsHard", false }, { "IsOutdoor", false },
-                { "IsSport", false }, { "IsWork", false }, { "IsRelax", false }, { "IsEducation", false } };
+                { "IsSport", false }, { "IsWork", false }, { "IsRelax", false }, { "IsEducation", false }, { "IsRepetetive", false } };
             return categories;
         }
         public Dictionary<string, bool> SetCategoriesFromEvent(CalendarEvent calendarEvent)
@@ -38,6 +38,7 @@ namespace DayTracker.Forms.TaskControl
             categories["IsWork"] = calendarEvent.IsWork;
             categories["IsRelax"] = calendarEvent.IsRelax;
             categories["IsEducation"] = calendarEvent.IsEducation;
+            categories["IsRepetetive"] = calendarEvent.IsRepetetive;
             return categories;
         }
         public void SetAllCategoriesToFalse(CalendarEvent calendarEvent)
@@ -48,6 +49,7 @@ namespace DayTracker.Forms.TaskControl
             calendarEvent.IsWork = false;
             calendarEvent.IsRelax = false;
             calendarEvent.IsEducation = false;
+            calendarEvent.IsRepetetive = false;
         }
         public void SetEventCategories(List<string> checkedCategories, CalendarEvent calendarEvent)
         {
@@ -63,6 +65,7 @@ namespace DayTracker.Forms.TaskControl
             calendarEvent.IsWork = categories["IsWork"];
             calendarEvent.IsRelax = categories["IsRelax"];
             calendarEvent.IsEducation = categories["IsEducation"];
+            calendarEvent.IsRepetetive =categories["IsRepetetive"];
         }
         public bool ValidateMinute(string minuteStr)
         {
@@ -185,6 +188,7 @@ namespace DayTracker.Forms.TaskControl
                 e.IsWork = calendarEvent.IsWork;
                 e.IsRelax = calendarEvent.IsRelax;
                 e.IsEducation = calendarEvent.IsEducation;
+                e.IsRepetetive = calendarEvent.IsRepetetive;
 
             });
 

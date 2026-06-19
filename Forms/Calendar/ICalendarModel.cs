@@ -19,6 +19,7 @@ namespace DayTracker.Forms.Calendar
         List<string> GetStringTaskList(DateTime date, List<CalendarEvent> events);
             List<CalendarEvent> GetCalendarEvents();
         List<CalendarEvent> GetSoftCalendarEvents();
+        List<CalendarEvent> GetRepetetiveCalendarEvents();
         bool SleepSubmited();
         Task AddSleep(Tuple<DateTime, DateTime> sleep);
         Task EditSleep(Tuple<DateTime, DateTime> sleep);
@@ -28,5 +29,6 @@ namespace DayTracker.Forms.Calendar
         Task DeleteCalendarEvent(CalendarEvent calendarEvent);
         Task ModifyCalendarEvent(CalendarEvent calendarEvent, DateTime newStartTime);
         DateTime GetNextAvailableDate(DateTime startTime, TimeSpan duration, int maxDaysToSearch = 365);
+        bool ValidateYear(string yearStr);
     }
 }

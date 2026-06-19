@@ -9,7 +9,7 @@ namespace DayTracker.Forms.Calendar
 {
     internal interface ICalendarView:IView
     {
-        DateTime SelectedDate { get; }
+        DateTime SelectedDate { get; set; }
         event EventHandler<DayClickedEventArgs> DayClicked;
         event EventHandler SelectedDateChanged;
         event EventHandler NextButtonClicked;
