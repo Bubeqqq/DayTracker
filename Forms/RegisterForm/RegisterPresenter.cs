@@ -36,10 +36,12 @@ namespace DayTracker.Forms.RegisterForm
             string password = _view.Password;
             string confirmPassword = _view.ConfirmPassword;
 
+            List<string> passwordErrors = new List<string>();
+
             _view.ClearAllValidationErrors();
             var errors = new Dictionary<string, string>();
 
-            // TODO: Dodaj bardziej zaawansowaną walidację (np. regex dla emaila, sprawdzanie siły hasła itp.)
+
 
             if (string.IsNullOrEmpty(firstName))
             {
@@ -55,10 +57,28 @@ namespace DayTracker.Forms.RegisterForm
             }
             if (string.IsNullOrEmpty(password))
             {
-                errors[nameof(_view.Password)] = "Password is required.";
+                passwordErrors.Add("Password is required.");
             }
             else
             {
+                /* -------------------------// to się potem odkomentuje
+                if (password.Length < 8)
+                {
+                    passwordErrors.Add("Password must be at least 8 characters long.");
+                }
+                if (!password.Any(char.IsUpper))
+                {
+                    passwordErrors.Add("Password must contain at least one uppercase letter.");
+                }
+                if (!password.Any(char.IsDigit))
+                {
+                    passwordErrors.Add("Password must contain at least one number.");
+                }
+                if (!password.Any(ch => !char.IsLetterOrDigit(ch)))
+                {
+                    passwordErrors.Add("Password must contain at least one special character.");
+                }
+                */
                 if (string.IsNullOrEmpty(confirmPassword))
                 {
                     errors[nameof(_view.ConfirmPassword)] = "Please confirm your password.";
@@ -67,12 +87,17 @@ namespace DayTracker.Forms.RegisterForm
                 {
                     if (password != confirmPassword)
                     {
-                        errors[nameof(_view.Password)] = "Passwords do not match.";
+                        passwordErrors.Add("Passwords do not match.");
                         errors[nameof(_view.ConfirmPassword)] = "Passwords do not match.";
                     }
                 }
             }
             
+            if (passwordErrors.Count != 0)
+            {
+                errors[nameof(_view.Password)] = string.Join('\n', passwordErrors);
+            }
+
             if (errors.Count > 0)
             {
                 _view.ShowValidationErrors(errors);
@@ -80,10 +105,10 @@ namespace DayTracker.Forms.RegisterForm
             }
 
             var registrationResult = await _model.Register(firstName, lastName, email, password);
-            _view.ShowInfo("Registration successful!");
 
             if (registrationResult.IsSuccess)
             {
+                _view.ShowInfo("Registration successful!");
                 var loginResult = await _model.Login(email, password);
                 if (loginResult.IsSuccess)
                 {
