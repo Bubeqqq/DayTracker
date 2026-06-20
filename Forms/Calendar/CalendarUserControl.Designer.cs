@@ -60,8 +60,7 @@
             tableLayoutPanelCalendar.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 14.2857151F));
             tableLayoutPanelCalendar.Dock = DockStyle.Fill;
             tableLayoutPanelCalendar.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
-            tableLayoutPanelCalendar.Location = new Point(0, 56);
-            tableLayoutPanelCalendar.Margin = new Padding(3, 4, 3, 4);
+            tableLayoutPanelCalendar.Location = new Point(0, 48);
             tableLayoutPanelCalendar.Name = "tableLayoutPanelCalendar";
             tableLayoutPanelCalendar.RowCount = 6;
             tableLayoutPanelCalendar.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
@@ -70,7 +69,7 @@
             tableLayoutPanelCalendar.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
             tableLayoutPanelCalendar.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
             tableLayoutPanelCalendar.RowStyles.Add(new RowStyle(SizeType.Percent, 16.666666F));
-            tableLayoutPanelCalendar.Size = new Size(723, 811);
+            tableLayoutPanelCalendar.Size = new Size(633, 602);
             tableLayoutPanelCalendar.TabIndex = 0;
             // 
             // tableLayoutPanelDaysOfWeek
@@ -94,65 +93,64 @@
             tableLayoutPanelDaysOfWeek.Dock = DockStyle.Top;
             tableLayoutPanelDaysOfWeek.GrowStyle = TableLayoutPanelGrowStyle.FixedSize;
             tableLayoutPanelDaysOfWeek.Location = new Point(0, 23);
-            tableLayoutPanelDaysOfWeek.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanelDaysOfWeek.Name = "tableLayoutPanelDaysOfWeek";
             tableLayoutPanelDaysOfWeek.RowCount = 1;
             tableLayoutPanelDaysOfWeek.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
-            tableLayoutPanelDaysOfWeek.RowStyles.Add(new RowStyle(SizeType.Absolute, 36F));
-            tableLayoutPanelDaysOfWeek.Size = new Size(723, 33);
+            tableLayoutPanelDaysOfWeek.RowStyles.Add(new RowStyle(SizeType.Absolute, 22F));
+            tableLayoutPanelDaysOfWeek.Size = new Size(633, 25);
             tableLayoutPanelDaysOfWeek.TabIndex = 1;
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(618, 3);
+            label7.Location = new Point(546, 3);
             label7.Name = "label7";
-            label7.Size = new Size(57, 20);
+            label7.Size = new Size(46, 15);
             label7.TabIndex = 6;
             label7.Text = "Sunday";
             // 
             // label6
             // 
             label6.AutoSize = true;
-            label6.Location = new Point(516, 3);
+            label6.Location = new Point(456, 3);
             label6.Name = "label6";
-            label6.Size = new Size(67, 20);
+            label6.Size = new Size(53, 15);
             label6.TabIndex = 5;
             label6.Text = "Saturday";
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(414, 3);
+            label5.Location = new Point(366, 3);
             label5.Name = "label5";
-            label5.Size = new Size(49, 20);
+            label5.Size = new Size(39, 15);
             label5.TabIndex = 4;
             label5.Text = "Friday";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(312, 3);
+            label4.Location = new Point(276, 3);
             label4.Name = "label4";
-            label4.Size = new Size(68, 20);
+            label4.Size = new Size(56, 15);
             label4.TabIndex = 3;
             label4.Text = "Thursday";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(210, 3);
+            label3.Location = new Point(186, 3);
             label3.Name = "label3";
-            label3.Size = new Size(85, 20);
+            label3.Size = new Size(68, 15);
             label3.TabIndex = 2;
             label3.Text = "Wednesday";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(108, 3);
+            label2.Location = new Point(96, 3);
             label2.Name = "label2";
-            label2.Size = new Size(63, 20);
+            label2.Size = new Size(51, 15);
             label2.TabIndex = 1;
             label2.Text = "Tuesday";
             // 
@@ -161,7 +159,7 @@
             label1.AutoSize = true;
             label1.Location = new Point(6, 3);
             label1.Name = "label1";
-            label1.Size = new Size(63, 20);
+            label1.Size = new Size(51, 15);
             label1.TabIndex = 0;
             label1.Text = "Monday";
             // 
@@ -171,10 +169,9 @@
             dateTimePicker1.Dock = DockStyle.Left;
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
             dateTimePicker1.Location = new Point(0, 0);
-            dateTimePicker1.Margin = new Padding(3, 4, 3, 4);
-            dateTimePicker1.MaximumSize = new Size(194, 23);
+            dateTimePicker1.MaximumSize = new Size(170, 23);
             dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(194, 23);
+            dateTimePicker1.Size = new Size(170, 23);
             dateTimePicker1.TabIndex = 2;
             dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged;
             // 
@@ -182,8 +179,9 @@
             // 
             buttonNextMonth.Dock = DockStyle.Left;
             buttonNextMonth.Location = new Point(196, 0);
+            buttonNextMonth.Margin = new Padding(3, 2, 3, 2);
             buttonNextMonth.Name = "buttonNextMonth";
-            buttonNextMonth.Size = new Size(30, 31);
+            buttonNextMonth.Size = new Size(26, 23);
             buttonNextMonth.TabIndex = 3;
             buttonNextMonth.Text = ">";
             buttonNextMonth.UseVisualStyleBackColor = true;
@@ -193,8 +191,9 @@
             // 
             buttonPreviousMonth.Dock = DockStyle.Left;
             buttonPreviousMonth.Location = new Point(170, 0);
+            buttonPreviousMonth.Margin = new Padding(3, 2, 3, 2);
             buttonPreviousMonth.Name = "buttonPreviousMonth";
-            buttonPreviousMonth.Size = new Size(30, 31);
+            buttonPreviousMonth.Size = new Size(26, 23);
             buttonPreviousMonth.TabIndex = 4;
             buttonPreviousMonth.Text = "<";
             buttonPreviousMonth.UseVisualStyleBackColor = true;
@@ -204,8 +203,9 @@
             // 
             buttonAddEvent.Dock = DockStyle.Right;
             buttonAddEvent.Location = new Point(558, 0);
+            buttonAddEvent.Margin = new Padding(3, 2, 3, 2);
             buttonAddEvent.Name = "buttonAddEvent";
-            buttonAddEvent.Size = new Size(86, 31);
+            buttonAddEvent.Size = new Size(75, 23);
             buttonAddEvent.TabIndex = 5;
             buttonAddEvent.Text = "Add Event";
             buttonAddEvent.UseVisualStyleBackColor = true;
@@ -215,8 +215,9 @@
             // 
             buttonEditSleep.Dock = DockStyle.Right;
             buttonEditSleep.Location = new Point(483, 0);
+            buttonEditSleep.Margin = new Padding(3, 2, 3, 2);
             buttonEditSleep.Name = "buttonEditSleep";
-            buttonEditSleep.Size = new Size(86, 31);
+            buttonEditSleep.Size = new Size(75, 23);
             buttonEditSleep.TabIndex = 6;
             buttonEditSleep.Text = "Edit Sleep";
             buttonEditSleep.UseVisualStyleBackColor = true;
@@ -231,6 +232,7 @@
             panel1.Controls.Add(dateTimePicker1);
             panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
+            panel1.Margin = new Padding(3, 2, 3, 2);
             panel1.MaximumSize = new Size(0, 23);
             panel1.MinimumSize = new Size(0, 23);
             panel1.Name = "panel1";
@@ -239,13 +241,14 @@
             // 
             // CalendarUserControl
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(tableLayoutPanelCalendar);
             Controls.Add(tableLayoutPanelDaysOfWeek);
             Controls.Add(panel1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "CalendarUserControl";
-            Size = new Size(723, 867);
+            Size = new Size(633, 650);
             Load += CalendarUserControl_Load;
             tableLayoutPanelDaysOfWeek.ResumeLayout(false);
             tableLayoutPanelDaysOfWeek.PerformLayout();
