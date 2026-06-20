@@ -1,14 +1,16 @@
 ﻿using DayTracker.HabitAnalysis;
+using LiveChartsCore;
+using LiveChartsCore.Kernel;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Drawing.Geometries;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView.VisualElements;
+using LiveChartsCore.SkiaSharpView.WinForms;
+using SkiaSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
-using LiveChartsCore.SkiaSharpView.Painting;
-using LiveChartsCore.SkiaSharpView.WinForms;
-using SkiaSharp;
 
 namespace DayTracker.Forms.Habits
 {
@@ -17,6 +19,7 @@ namespace DayTracker.Forms.Habits
         private PieChart chartCategories;
         private CartesianChart chartSleep;
         private CartesianChart chartTodos;
+        private CartesianChart chartSportVsSleep;
 
         public HabitsGraphs()
         {
@@ -28,19 +31,49 @@ namespace DayTracker.Forms.Habits
             {
                 Dock = DockStyle.Fill,
                 Margin = new Padding(10),
-                LegendPosition = LiveChartsCore.Measure.LegendPosition.Right // Nowy sposób na legendę
+                LegendPosition = LiveChartsCore.Measure.LegendPosition.Right,
+                Title = new DrawnLabelVisual(new LabelGeometry
+                {
+                    Text = "Daily Activity Breakdown",
+                    TextSize = 18,
+                    Paint = new SolidColorPaint(SKColors.Black)
+                })
             };
 
             chartSleep = new CartesianChart
             {
                 Dock = DockStyle.Fill,
-                Margin = new Padding(10)
+                Margin = new Padding(10),
+                Title = new DrawnLabelVisual(new LabelGeometry
+                {
+                    Text = "Daily Sleep Tracking",
+                    TextSize = 18,
+                    Paint = new SolidColorPaint(SKColors.Black)
+                })
             };
 
             chartTodos = new CartesianChart
             {
                 Dock = DockStyle.Fill,
-                Margin = new Padding(10)
+                Margin = new Padding(10),
+                Title = new DrawnLabelVisual(new LabelGeometry
+                {
+                    Text = "Completed Tasks per Day",
+                    TextSize = 18,
+                    Paint = new SolidColorPaint(SKColors.Black)
+                })
+            };
+
+            chartSportVsSleep = new CartesianChart 
+            { 
+                Dock = DockStyle.Fill, 
+                Margin = new Padding(10),
+                Title = new DrawnLabelVisual(new LabelGeometry
+                {
+                    Text = "Activity vs. Sleep Correlation",
+                    TextSize = 18,
+                    Paint = new SolidColorPaint(SKColors.Black)
+                })
             };
 
             this.Load += HabitsGraphs_Load;
@@ -54,6 +87,7 @@ namespace DayTracker.Forms.Habits
             mainPanel.Controls.Add(chartCategories, 0, 0);
             mainPanel.Controls.Add(chartSleep, 1, 0);
             mainPanel.Controls.Add(chartTodos, 1, 1);
+            mainPanel.Controls.Add(chartSportVsSleep, 0, 1);
 
             mainPanel.ResumeLayout(true);
         }
@@ -141,6 +175,60 @@ namespace DayTracker.Forms.Habits
                     Name = "Task Count",
                     MinLimit = 0,
                     Labeler = value => value.ToString("N0")
+                }
+            };
+
+            var allDates = data.SleepHoursPerDay.Keys
+            .Union(data.SportAndOutdoorHoursPerDay.Keys)
+            .OrderBy(d => d)
+            .ToList();
+
+            var sleepValues = new List<double>();
+            var activeValues = new List<double>();
+
+            foreach (var d in allDates)
+            {
+                sleepValues.Add(data.SleepHoursPerDay.ContainsKey(d) ? data.SleepHoursPerDay[d] : 0);
+                activeValues.Add(data.SportAndOutdoorHoursPerDay.ContainsKey(d) ? data.SportAndOutdoorHoursPerDay[d] : 0);
+            }
+
+            chartSportVsSleep.Series = new ISeries[]
+            {
+                new LineSeries<double>
+                {
+                    Name = "Czas Snu",
+                    Values = sleepValues.ToArray(),
+                    GeometrySize = 10,
+                    Stroke = new SolidColorPaint(SKColors.DarkBlue) { StrokeThickness = 3 },
+                    GeometryStroke = new SolidColorPaint(SKColors.DarkBlue) { StrokeThickness = 3 },
+                    Fill = null
+                },
+                new LineSeries<double>
+                {
+                    Name = "Sport i Outdoor",
+                    Values = activeValues.ToArray(),
+                    GeometrySize = 10,
+                    Stroke = new SolidColorPaint(SKColors.MediumSeaGreen) { StrokeThickness = 3 },
+                    GeometryStroke = new SolidColorPaint(SKColors.MediumSeaGreen) { StrokeThickness = 3 },
+                    Fill = null
+                }
+             };
+
+            chartSportVsSleep.XAxes = new Axis[]
+            {
+                new Axis
+                {
+                    Name = "Data",
+                    Labels = allDates.Select(x => x.ToString("dd MMM")).ToList()
+                }
+                        };
+
+                        chartSportVsSleep.YAxes = new Axis[]
+                        {
+                new Axis
+                {
+                    Name = "Czas (Godziny)",
+                    MinLimit = 0
                 }
             };
         }

@@ -30,14 +30,6 @@ namespace DayTracker.LoadedData
             {
                 _ = UpdateDatabase(name, id);
             };
-
-            OnCalendarEventsChanged += () =>
-            {
-                foreach(var t in _calendarEvents)
-                {
-                    Console.WriteLine(t.Title);
-                }
-            };
         }
 
         public event Action OnCalendarEventsChanged;

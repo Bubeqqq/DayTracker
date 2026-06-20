@@ -61,6 +61,14 @@ namespace DayTracker.HabitAnalysis
                     continue;
                 }
 
+                if (ev.IsSport || ev.IsOutdoor)
+                {
+                    if (!dashboard.SportAndOutdoorHoursPerDay.ContainsKey(eventDate))
+                        dashboard.SportAndOutdoorHoursPerDay[eventDate] = 0;
+
+                    dashboard.SportAndOutdoorHoursPerDay[eventDate] += duration;
+                }
+
                 if (!dailyActivityTime.ContainsKey(eventDate)) dailyActivityTime[eventDate] = 0;
                 dailyActivityTime[eventDate] += duration;
 
@@ -96,5 +104,7 @@ namespace DayTracker.HabitAnalysis
         public Dictionary<string, double> TotalTimePerCategory { get; set; } = new();
 
         public Dictionary<DateTime, int> TodosCompletedPerDay { get; set; } = new();
+
+        public Dictionary<DateTime, double> SportAndOutdoorHoursPerDay { get; set; } = new();
     }
 }
