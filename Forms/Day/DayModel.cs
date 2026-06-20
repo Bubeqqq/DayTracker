@@ -42,7 +42,7 @@ namespace DayTracker.Forms.Day
         {
             date = date.Date;
             List<CalendarEvent> events = LoadedDataService.GetCalendarEvents();
-
+            
             return events.Where(e => e.GetLocalStartTime() < date.AddDays(1) && e.GetLocalStartTime().Add(e.Duration) > date).ToList();
         }
         public List<List<CalendarEvent>> CalculateColumns(List<CalendarEvent> events)

@@ -13,7 +13,7 @@ namespace DayTracker.Forms.TaskControl
         int GetCalendarId();
         Dictionary<string, bool> GetDefaultCategories();
         bool ValidateMinute(string minuteStr);
-
+        string GetToDoDescription(int id);
         bool GetModifyPermission();
         bool ValidateHour(string hourStr);
 
