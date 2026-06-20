@@ -22,6 +22,12 @@ namespace DayTracker.Forms.Habits
 
         public HabitsGraphs()
         {
+            using (var dummyHost = new System.Windows.Forms.Integration.ElementHost())
+            {
+                var dummyChart = new LiveCharts.Wpf.PieChart();
+                dummyHost.Child = dummyChart;
+            }
+
             InitializeComponent();
 
             chartCategories = new LiveCharts.WinForms.PieChart

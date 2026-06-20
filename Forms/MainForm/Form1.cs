@@ -63,6 +63,9 @@ namespace DayTracker
 
         public void SetControl(UserControl form)
         {
+            mainPanel.SuspendLayout();
+            SuspendLayout();
+
             if (mainPanel.Controls.Count > 1)
             {
                 mainPanel.Controls.RemoveAt(1);
@@ -70,6 +73,9 @@ namespace DayTracker
 
             form.Dock = DockStyle.Fill;
             mainPanel.Controls.Add(form);
+
+            mainPanel.ResumeLayout(true);
+            ResumeLayout(true);
         }
 
         public void SetForwardButtonEnable(bool enable)
@@ -85,7 +91,7 @@ namespace DayTracker
                 userBar.Enabled = false;
 
             mainPanel.RowStyles.Clear();
-            mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, absolute ? 0F : 10F));
+            mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, absolute ? 0F : LogicalToDeviceUnits(10)));
             mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
 
             mainPanel.ResumeLayout(true);
@@ -98,7 +104,7 @@ namespace DayTracker
             userBar.Enabled = true;
 
             mainPanel.RowStyles.Clear();
-            mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, LogicalToDeviceUnits(35)));
             mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
 
             mainPanel.ResumeLayout(true);
@@ -111,7 +117,7 @@ namespace DayTracker
             isBarEnlarged = true;
 
             mainPanel.RowStyles.Clear();
-            mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 250F));
+            mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, LogicalToDeviceUnits(250)));
             mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
 
             userBar.ShowUserSettingsMenu();
@@ -126,7 +132,7 @@ namespace DayTracker
             isBarEnlarged = false;
 
             mainPanel.RowStyles.Clear();
-            mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, 35F));
+            mainPanel.RowStyles.Add(new RowStyle(SizeType.Absolute, LogicalToDeviceUnits(35)));
             mainPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
 
             userBar.HideUserSettingsMenu();
