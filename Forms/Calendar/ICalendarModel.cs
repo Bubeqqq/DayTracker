@@ -30,5 +30,6 @@ namespace DayTracker.Forms.Calendar
         Task ModifyCalendarEvent(CalendarEvent calendarEvent, DateTime newStartTime);
         DateTime GetNextAvailableDate(DateTime startTime, TimeSpan duration, int maxDaysToSearch = 365);
         bool ValidateYear(string yearStr);
+        Task HandleRepetitiveEvents();
     }
 }

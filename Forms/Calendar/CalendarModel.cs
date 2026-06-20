@@ -237,6 +237,22 @@ namespace DayTracker.Forms.Calendar
         {
             return !int.TryParse(yearStr, out int year) || year < 2000 || year > 2100;
         }
+        public async Task HandleRepetitiveEvents()
+        {
+            List<CalendarEvent> repetitiveEvents = GetRepetitiveCalendarEvents();
+            foreach (var calendarEvent in repetitiveEvents)
+            {
+                int diff = (DateTime.Now - calendarEvent.GetLocalStartTime()).Days;
+                int weeks = diff / 7 + 1;
+                DateTime newStartTime = calendarEvent.GetLocalStartTime().AddDays(7 * weeks);
+
+                if (newStartTime.Year > 2100)
+                {
+                    continue;
+                }
+                await ModifyCalendarEvent(calendarEvent, newStartTime);
+            }
+        }
     }
     }
     

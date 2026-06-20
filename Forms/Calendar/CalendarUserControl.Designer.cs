@@ -42,7 +42,9 @@
             buttonPreviousMonth = new Button();
             buttonAddEvent = new Button();
             buttonEditSleep = new Button();
+            panel1 = new Panel();
             tableLayoutPanelDaysOfWeek.SuspendLayout();
+            panel1.SuspendLayout();
             SuspendLayout();
             // 
             // tableLayoutPanelCalendar
@@ -164,7 +166,7 @@
             // dateTimePicker1
             // 
             dateTimePicker1.CustomFormat = "MMMM yyyy";
-            dateTimePicker1.Dock = DockStyle.Top;
+            dateTimePicker1.Dock = DockStyle.Left;
             dateTimePicker1.Format = DateTimePickerFormat.Custom;
             dateTimePicker1.Location = new Point(0, 0);
             dateTimePicker1.MaximumSize = new Size(170, 23);
@@ -175,7 +177,8 @@
             // 
             // buttonNextMonth
             // 
-            buttonNextMonth.Location = new Point(228, 2);
+            buttonNextMonth.Dock = DockStyle.Left;
+            buttonNextMonth.Location = new Point(196, 0);
             buttonNextMonth.Name = "buttonNextMonth";
             buttonNextMonth.Size = new Size(26, 23);
             buttonNextMonth.TabIndex = 3;
@@ -185,7 +188,8 @@
             // 
             // buttonPreviousMonth
             // 
-            buttonPreviousMonth.Location = new Point(196, 2);
+            buttonPreviousMonth.Dock = DockStyle.Left;
+            buttonPreviousMonth.Location = new Point(170, 0);
             buttonPreviousMonth.Name = "buttonPreviousMonth";
             buttonPreviousMonth.Size = new Size(26, 23);
             buttonPreviousMonth.TabIndex = 4;
@@ -195,7 +199,8 @@
             // 
             // buttonAddEvent
             // 
-            buttonAddEvent.Location = new Point(260, 3);
+            buttonAddEvent.Dock = DockStyle.Right;
+            buttonAddEvent.Location = new Point(558, 0);
             buttonAddEvent.Name = "buttonAddEvent";
             buttonAddEvent.Size = new Size(75, 23);
             buttonAddEvent.TabIndex = 5;
@@ -205,7 +210,8 @@
             // 
             // buttonEditSleep
             // 
-            buttonEditSleep.Location = new Point(341, 2);
+            buttonEditSleep.Dock = DockStyle.Right;
+            buttonEditSleep.Location = new Point(483, 0);
             buttonEditSleep.Name = "buttonEditSleep";
             buttonEditSleep.Size = new Size(75, 23);
             buttonEditSleep.TabIndex = 6;
@@ -213,22 +219,34 @@
             buttonEditSleep.UseVisualStyleBackColor = true;
             buttonEditSleep.Click += buttonEditSleep_Click;
             // 
+            // panel1
+            // 
+            panel1.Controls.Add(buttonEditSleep);
+            panel1.Controls.Add(buttonAddEvent);
+            panel1.Controls.Add(buttonNextMonth);
+            panel1.Controls.Add(buttonPreviousMonth);
+            panel1.Controls.Add(dateTimePicker1);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 0);
+            panel1.MaximumSize = new Size(0, 23);
+            panel1.MinimumSize = new Size(0, 23);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(633, 23);
+            panel1.TabIndex = 7;
+            // 
             // CalendarUserControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(buttonEditSleep);
-            Controls.Add(buttonAddEvent);
             Controls.Add(tableLayoutPanelCalendar);
             Controls.Add(tableLayoutPanelDaysOfWeek);
-            Controls.Add(buttonNextMonth);
-            Controls.Add(buttonPreviousMonth);
-            Controls.Add(dateTimePicker1);
+            Controls.Add(panel1);
             Name = "CalendarUserControl";
             Size = new Size(633, 650);
             Load += CalendarUserControl_Load;
             tableLayoutPanelDaysOfWeek.ResumeLayout(false);
             tableLayoutPanelDaysOfWeek.PerformLayout();
+            panel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -248,5 +266,6 @@
         private Button buttonPreviousMonth;
         private Button buttonAddEvent;
         private Button buttonEditSleep;
+        private Panel panel1;
     }
 }
