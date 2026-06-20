@@ -29,6 +29,10 @@ namespace DayTracker.Forms.TaskControl
                 { "IsSport", false }, { "IsWork", false }, { "IsRelax", false }, { "IsEducation", false }, { "IsRepetitive", false } };
             return categories;
         }
+        public string GetToDoDescription(int id)
+        {
+            return LoadedDataService.GetTodoItems().Where((e) => e.Id == id).ToList().FirstOrDefault().Description;
+        }
         public Dictionary<string, bool> SetCategoriesFromEvent(CalendarEvent calendarEvent)
         {           
             Dictionary<string, bool> categories = GetDefaultCategories();

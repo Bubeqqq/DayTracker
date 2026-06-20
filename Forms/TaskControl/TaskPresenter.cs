@@ -80,9 +80,9 @@ namespace DayTracker.Forms.TaskControl
             DateTime endDate = calendarEvent.GetLocalStartTime().Add(duration);
             _view.SetEndDate(endDate.Hour.ToString(), endDate.Minute.ToString(), endDate.Day.ToString(), endDate.Month.ToString(), endDate.Year.ToString());
             SetCategories(calendarEvent);
-            if (calendarEvent.Todo != null)
+            if (calendarEvent.TodoId != null)
             {
-                _view.SetToDoList(calendarEvent.Todo.Description);
+                _view.SetToDoList(_model.GetToDoDescription((int)calendarEvent.TodoId));
             }
         }
         private void SetCategories(CalendarEvent calendarEvent)
