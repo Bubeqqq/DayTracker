@@ -1,64 +1,58 @@
 ﻿using DayTracker.HabitAnalysis;
-using LiveCharts;
-using LiveCharts.WinForms;
-using LiveCharts.Wpf;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView.WinForms;
+using SkiaSharp;
 
 namespace DayTracker.Forms.Habits
 {
     public partial class HabitsGraphs : UserControl, IHabitView
     {
-        private LiveCharts.WinForms.PieChart chartCategories;
-        private LiveCharts.WinForms.CartesianChart chartSleep;
-        private LiveCharts.WinForms.CartesianChart chartTodos;
+        private PieChart chartCategories;
+        private CartesianChart chartSleep;
+        private CartesianChart chartTodos;
 
         public HabitsGraphs()
         {
-            using (var dummyHost = new System.Windows.Forms.Integration.ElementHost())
-            {
-                var dummyChart = new LiveCharts.Wpf.PieChart();
-                dummyHost.Child = dummyChart;
-            }
-
             InitializeComponent();
 
-            chartCategories = new LiveCharts.WinForms.PieChart
+            this.AutoScaleMode = AutoScaleMode.None;
+
+            chartCategories = new PieChart
+            {
+                Dock = DockStyle.Fill,
+                Margin = new Padding(10),
+                LegendPosition = LiveChartsCore.Measure.LegendPosition.Right // Nowy sposób na legendę
+            };
+
+            chartSleep = new CartesianChart
             {
                 Dock = DockStyle.Fill,
                 Margin = new Padding(10)
             };
 
-            chartSleep = new LiveCharts.WinForms.CartesianChart
+            chartTodos = new CartesianChart
             {
                 Dock = DockStyle.Fill,
                 Margin = new Padding(10)
             };
 
-            chartTodos = new LiveCharts.WinForms.CartesianChart
-            {
-                Dock = DockStyle.Fill,
-                Margin = new Padding(10)
-            };
-
-            this.Load += Initialize;
+            this.Load += HabitsGraphs_Load;
         }
 
-        private void Initialize(object? sender, EventArgs e)
+        private void HabitsGraphs_Load(object? sender, EventArgs e)
         {
             mainPanel.SuspendLayout();
-
             mainPanel.Controls.Clear();
+
             mainPanel.Controls.Add(chartCategories, 0, 0);
             mainPanel.Controls.Add(chartSleep, 1, 0);
-
             mainPanel.Controls.Add(chartTodos, 1, 1);
 
             mainPanel.ResumeLayout(true);
@@ -66,85 +60,89 @@ namespace DayTracker.Forms.Habits
 
         public void BuildDashboard(DashboardData data)
         {
-            chartCategories.Series.Clear();
-            var seriesCollectionPie = new SeriesCollection();
+            var pieSeriesList = new List<ISeries>();
+
+            var labelPaint = new SolidColorPaint(SKColors.White) { SKTypeface = SKTypeface.FromFamilyName("Arial", SKFontStyleWeight.Bold, SKFontStyleWidth.Normal, SKFontStyleSlant.Upright) };
 
             foreach (var category in data.TotalTimePerCategory)
             {
                 if (category.Value > 0)
                 {
-                    seriesCollectionPie.Add(new PieSeries
+                    pieSeriesList.Add(new PieSeries<double>
                     {
-                        Title = category.Key,
-                        Values = new ChartValues<double> { category.Value },
-                        DataLabels = true,
-                        LabelPoint = point => $"{point.Y:F1}h ({point.Participation:P0})"
+                        Name = category.Key,
+                        Values = new double[] { category.Value },
+                        DataLabelsPaint = labelPaint,
+                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+                        DataLabelsFormatter = point => $"{point.Model:F1}h"
                     });
                 }
             }
-            chartCategories.Series = seriesCollectionPie;
-            chartCategories.LegendLocation = LegendLocation.Right;
-
-            chartSleep.Series.Clear();
-            chartSleep.AxisX.Clear();
-            chartSleep.AxisY.Clear();
+            chartCategories.Series = pieSeriesList;
 
             var sleepData = data.SleepHoursPerDay.OrderBy(x => x.Key).ToList();
 
-            Console.WriteLine("===============");
-            Console.WriteLine(sleepData.Count);
-            foreach (var s in sleepData)
+            chartSleep.Series = new ISeries[]
             {
-                Console.WriteLine(s.Value);
-            }
-            Console.WriteLine("===============");
+                new LineSeries<double>
+                {
+                    Name = "Sleep",
+                    Values = sleepData.Select(x => x.Value).ToArray(),
+                    GeometrySize = 10,
+                    DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                    DataLabelsFormatter = point => $"{point.Model:F1}h"
+                }
+            };
 
-            chartSleep.Series.Add(new LineSeries
+            chartSleep.XAxes = new Axis[]
             {
-                Title = "Sleep",
-                Values = new ChartValues<double>(sleepData.Select(x => x.Value)),
-                PointGeometrySize = 10,
-                DataLabels = true,
-                LabelPoint = point => $"{point.Y:F1}h"
-            });
+                new Axis
+                {
+                    Name = "Date",
+                    Labels = sleepData.Select(x => x.Key.ToString("dd MMM")).ToList()
+                }
+            };
 
-            chartSleep.AxisX.Add(new Axis
+            chartSleep.YAxes = new Axis[]
             {
-                Title = "Date",
-                Labels = sleepData.Select(x => x.Key.ToString("dd MMM")).ToList()
-            });
+                new Axis
+                {
+                    Name = "Time (Hours)",
+                    MinLimit = 0
+                }
+            };
 
-            chartSleep.AxisY.Add(new Axis
-            {
-                Title = "Time (Hours)",
-                MinValue = 0
-            });
-
-            chartTodos.Series.Clear();
-            chartTodos.AxisX.Clear();
-            chartTodos.AxisY.Clear();
 
             var todoData = data.TodosCompletedPerDay.OrderBy(x => x.Key).ToList();
 
-            chartTodos.Series.Add(new ColumnSeries
+            chartTodos.Series = new ISeries[]
             {
-                Title = "Completed Todos",
-                Values = new ChartValues<int>(todoData.Select(x => x.Value)),
-                DataLabels = true
-            });
+                new ColumnSeries<int>
+                {
+                    Name = "Completed Todos",
+                    Values = todoData.Select(x => x.Value).ToArray(),
+                    DataLabelsPaint = new SolidColorPaint(SKColors.Black)
+                }
+            };
 
-            chartTodos.AxisX.Add(new Axis
+            chartTodos.XAxes = new Axis[]
             {
-                Title = "Date",
-                Labels = todoData.Select(x => x.Key.ToString("dd MMM")).ToList()
-            });
+                new Axis
+                {
+                    Name = "Date",
+                    Labels = todoData.Select(x => x.Key.ToString("dd MMM")).ToList()
+                }
+            };
 
-            chartTodos.AxisY.Add(new Axis
+            chartTodos.YAxes = new Axis[]
             {
-                Title = "Task Count",
-                MinValue = 0,
-                LabelFormatter = value => value.ToString("N0")
-            });
+                new Axis
+                {
+                    Name = "Task Count",
+                    MinLimit = 0,
+                    Labeler = value => value.ToString("N0")
+                }
+            };
         }
     }
 }

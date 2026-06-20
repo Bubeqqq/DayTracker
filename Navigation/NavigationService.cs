@@ -33,14 +33,24 @@ namespace DayTracker.Navigation
 
         void INavigationService.NavigateTo<TPresenter>()
         {
+            if(_history.Count() > 0)
+            {
+                if (_history.ElementAt(_currentIndex).PresenterType == typeof(TPresenter))
+                {
+                    return;
+                }
+            }
+
             var presenter = _serviceProvider.GetRequiredService<TPresenter>();
 
             if (presenter.View is IView view)
             {
                 if (_history.Count - 1 > _currentIndex)
                     _history.RemoveRange(_currentIndex + 1, _history.Count - 1 - _currentIndex);
+
                 _history.Add(new NavigationEntry(presenter.GetType(), null));
                 _currentIndex = _history.Count - 1;
+
                 OnGoForwardButtonEnableChange?.Invoke(false);
                 OnGoBackButtonEnableChange?.Invoke(_currentIndex != 0);
 
@@ -69,14 +79,25 @@ namespace DayTracker.Navigation
 
         void INavigationService.NavigateTo<TPresenter, TArgs>(TArgs args)
         {
+            if (_history.Count() > 0)
+            {
+                if (_history.ElementAt(_currentIndex).PresenterType == typeof(TPresenter))
+                {
+                    return;
+                }
+            }
+
             var presenter = _serviceProvider.GetRequiredService<TPresenter>();
 
             if (presenter.View is IView view)
             {
                 if(_history.Count - 1 > _currentIndex)
                     _history.RemoveRange(_currentIndex + 1, _history.Count - 1 - _currentIndex);
+
+
                 _history.Add(new NavigationEntry(presenter.GetType(), args));
                 _currentIndex = _history.Count - 1;
+
                 OnGoForwardButtonEnableChange?.Invoke(false);
                 OnGoBackButtonEnableChange?.Invoke(_currentIndex != 0);
 
