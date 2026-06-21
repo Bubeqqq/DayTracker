@@ -36,5 +36,11 @@
 
 		<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
     </ItemGroup>
+
+	<ItemGroup>
+		<Compile Remove="DayTracker.Tests\**" />
+		<EmbeddedResource Remove="DayTracker.Tests\**" />
+		<None Remove="DayTracker.Tests\**" />
+	</ItemGroup>
 	
 </Project>

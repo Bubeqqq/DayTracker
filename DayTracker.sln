@@ -5,7 +5,7 @@ VisualStudioVersion = 17.14.37111.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DayTracker", "DayTracker.csproj", "{D57F4F50-3C45-42EB-8EC9-0427CB63AC2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DayTracker.Tests", "..\DayTracker.Tests\DayTracker.Tests.csproj", "{523748AC-3031-4227-9D1C-3907DB38B89A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DayTracker.Tests", "DayTracker.Tests\DayTracker.Tests.csproj", "{63AEAAAD-C2F5-C57F-B893-F97486154AA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{D57F4F50-3C45-42EB-8EC9-0427CB63AC2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D57F4F50-3C45-42EB-8EC9-0427CB63AC2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D57F4F50-3C45-42EB-8EC9-0427CB63AC2A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{523748AC-3031-4227-9D1C-3907DB38B89A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{523748AC-3031-4227-9D1C-3907DB38B89A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{523748AC-3031-4227-9D1C-3907DB38B89A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{523748AC-3031-4227-9D1C-3907DB38B89A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63AEAAAD-C2F5-C57F-B893-F97486154AA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63AEAAAD-C2F5-C57F-B893-F97486154AA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63AEAAAD-C2F5-C57F-B893-F97486154AA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63AEAAAD-C2F5-C57F-B893-F97486154AA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
