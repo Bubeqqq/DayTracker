@@ -31,4 +31,10 @@
     </None>
   </ItemGroup>
 
+    <ItemGroup>
+	    <InternalsVisibleTo Include="DayTracker.Tests" />
+
+		<InternalsVisibleTo Include="DynamicProxyGenAssembly2" />
+    </ItemGroup>
+	
 </Project>
