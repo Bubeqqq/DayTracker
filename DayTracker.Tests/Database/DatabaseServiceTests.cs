@@ -37,7 +37,7 @@ namespace DayTracker.Tests.Database
         [Fact]
         public async Task AddUserAsync_AddsUserCreatesCalendarAndInvitationCode()
         {
-            var user = new User { FirstName = "John", LastName = "Doe" };
+            var user = new User("John", "Doe") ;
 
             await _dbContext.AddUserAsync(user);
 
@@ -49,8 +49,8 @@ namespace DayTracker.Tests.Database
         [Fact]
         public async Task GetUsersAsync_ReturnsFilteredUsers()
         {
-            await _dbContext.AddUserAsync(new User { FirstName = "Alice" });
-            await _dbContext.AddUserAsync(new User { FirstName = "Bob" });
+            await _dbContext.AddUserAsync(new User("Alice") );
+            await _dbContext.AddUserAsync(new User("Bob") );
 
             var result = await _dbContext.GetUsersAsync(u => u.FirstName == "Alice");
 
@@ -96,7 +96,7 @@ namespace DayTracker.Tests.Database
         [Fact]
         public async Task LoadUserPermissions_ReturnsCorrectPermission()
         {
-            var permission = new Permission { UserId = 2, CalendarId = 1, PermissionName = PermissionType.Edit };
+            var permission = new Permission(2,1, PermissionType.Edit);
             await _dbContext.AddAsync(permission);
 
             var result = await _dbContext.LoadUserPermissions(2, 1);

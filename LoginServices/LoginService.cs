@@ -57,7 +57,7 @@ namespace DayTracker.LoginServices
                 return MULTIPLE_USERS;
             }
             
-            User r = new User
+            User r = new User(name, surname, email, BCrypt.Net.BCrypt.HashPassword(password))
             {
                 FirstName = name,
                 LastName = surname,
@@ -65,7 +65,7 @@ namespace DayTracker.LoginServices
                 password = BCrypt.Net.BCrypt.HashPassword(password)
             };
             await _databaseService.AddUserAsync(r);
-            Permission p = new Permission() { UserId = r.Id, PermissionName = PermissionType.Admin, CalendarId = r.CalendarId};
+            Permission p = new Permission(r.Id, r.CalendarId, PermissionType.Admin);
             await _databaseService.AddAsync(p);
 
             return SUCCESS;

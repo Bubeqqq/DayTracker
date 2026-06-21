@@ -111,8 +111,8 @@ namespace DayTracker.Forms.SelectCalendarForm
                 var userPermissions = userPermissionsResult.Data!;
                 if (userPermissions.Any())
                     return OperationResult.Failure($"You permissions for calendar are already set.");
-
-                await _databaseService.AddAsync<Permission>(new Permission { UserId = currentUser.Id, CalendarId = calendarId, PermissionName = _defaultPermissionType });
+                
+                await _databaseService.AddAsync<Permission>(new Permission(currentUser.Id, calendarId, _defaultPermissionType));
                 return OperationResult.Success();
             }
             return OperationResult.Failure("Current user is not set correctly!");

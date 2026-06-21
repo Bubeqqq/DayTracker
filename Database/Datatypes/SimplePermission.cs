@@ -10,5 +10,11 @@ namespace DayTracker.Database.Datatypes
     {
         public string Email { get; set; }
         public string Permission { get; set; }
+        private SimplePermission() { }
+        public SimplePermission(string email, string permission)
+        {
+            Email = email;
+            Permission = permission;
+        }
     }
 }

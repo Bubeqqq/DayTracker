@@ -3,7 +3,6 @@ using DayTracker.Database.Datatypes;
 using DayTracker.Forms.Day;
 using DayTracker.LoadedData;
 using DayTracker.Navigation;
-using DayTracker.UserControls.TestTask_usunac;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -193,7 +192,7 @@ namespace DayTracker.Forms.Calendar
         {
             calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
             calendarEvent.StartTime = newStartTime.ToUniversalTime();
-            //MessageBox.Show("Modyfying Event: " + calendarEvent.Title);
+        
             if (calendarEvent.StartTime.Kind != DateTimeKind.Utc)
             {
                 throw new Exception("StartTime must be in UTC");

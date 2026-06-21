@@ -2,7 +2,7 @@
 using DayTracker.Forms;
 using DayTracker.Forms.Day;
 using DayTracker.Forms.TaskControl;
-using DayTracker.UserControls.TestTask_usunac;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +28,6 @@ namespace DayTracker.Forms.Calendar
             _model = calendarModel;
             _model.NavigationService.ShowBar();
             _events = new List<CalendarEvent>();
-            
 
             _model.LoadedDataService.OnCalendarEventsChanged += () =>
             {

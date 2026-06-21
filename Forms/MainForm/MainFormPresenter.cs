@@ -8,7 +8,6 @@ using DayTracker.Forms.TaskControl;
 using DayTracker.Forms.TestForm;
 using DayTracker.LoadedData;
 using DayTracker.Navigation;
-using DayTracker.UserControls.TestTask_usunac;
 using System;
 using System.Windows.Forms;
 

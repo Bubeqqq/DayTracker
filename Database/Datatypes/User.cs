@@ -25,5 +25,14 @@ namespace DayTracker.Database.Datatypes
         public string password { get; set; } = string.Empty;
 
         public string invitationCode {  get; set; } = string.Empty;
+        private User() { }
+        public User( string firstName = "", string lastName = "", string email= "", string password= "", string invitationCode= "")
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            this.email = email;
+            this.password = password;
+            this.invitationCode = invitationCode;
+        }
     }
 }

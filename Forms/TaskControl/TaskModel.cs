@@ -58,6 +58,7 @@ namespace DayTracker.Forms.TaskControl
         public void SetEventCategories(List<string> checkedCategories, CalendarEvent calendarEvent)
         {
             Dictionary<string, bool> categories = GetDefaultCategories();
+            categories["IsHard"]=false;
             SetAllCategoriesToFalse(calendarEvent);
             foreach (string checkedCategory in checkedCategories)
             {
@@ -154,13 +155,13 @@ namespace DayTracker.Forms.TaskControl
             {
                 throw new Exception("StartTime must be in UTC");
             }
-            //MessageBox.Show("Adding Event: " + calendarEvent.Title);
+            
             await _databaseService.AddAsync(calendarEvent);
         }
         public async Task<TodoItem> AddToDoItem(TodoItem todoItem)
         {
 
-            //MessageBox.Show("Adding ToDoItem: " + todoItem.Description);
+           
             return await _databaseService.AddAsync(todoItem);
 
 
@@ -170,7 +171,7 @@ namespace DayTracker.Forms.TaskControl
         {
             calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
             DateTime comeBackDate = calendarEvent.GetLocalStartTime();
-            //MessageBox.Show("Modyfying Event: " + calendarEvent.Title);
+       
             if(calendarEvent.StartTime.Kind != DateTimeKind.Utc)
             {
                 throw new Exception("StartTime must be in UTC");
@@ -201,7 +202,7 @@ namespace DayTracker.Forms.TaskControl
         }
         public async Task<TodoItem> ModifyToDoItem(TodoItem todoItem)
         {
-            //MessageBox.Show("Modify ToDoItem: " + todoItem.Description);
+            
             return await _databaseService.UpdateByType<TodoItem>(todoItem.Id, (e) =>
             {
                 e.Description = todoItem.Description;
@@ -209,7 +210,7 @@ namespace DayTracker.Forms.TaskControl
         }
         public async Task DeleteToDoItem(int todoItemID)
         {
-            //MessageBox.Show("Deleting ToDoItem: " + todoItem.Description);
+            
             await _databaseService.RemoveByType<TodoItem>(todoItemID);
         }
         public bool GetModifyPermission()
@@ -248,7 +249,7 @@ namespace DayTracker.Forms.TaskControl
                     {
                         TodoItem toDoItem = new TodoItem(toDoDescription, _databaseService.CurrentCalendarID);
                         toDoItem = await AddToDoItem(toDoItem);
-                        //MessageBox.Show("presenter ToDoItem: " + toDoItem.Description);
+                      
                         calendarEvent.TodoId = toDoItem.Id;
 
                     }
@@ -259,17 +260,17 @@ namespace DayTracker.Forms.TaskControl
                     
                     if (calendarEvent.TodoId != null)
                     {
-                        MessageBox.Show("Deleting ToDoItem: ");
+                       
 
                         calendarEvent.CalendarId = _databaseService.CurrentCalendarID;
                        
-                        //MessageBox.Show("Modyfying Event: " + calendarEvent.Title);
+                        
                         if (calendarEvent.StartTime.Kind != DateTimeKind.Utc)
                         {
                             throw new Exception("StartTime must be in UTC");
                         }
                         int toDoId = (int)calendarEvent.TodoId;
-                        MessageBox.Show("Uptading calendar event with id: "+ calendarEvent.Id);
+                       
                         await _databaseService.UpdateByType<CalendarEvent>(calendarEvent.Id, (e) =>
                         {
                             
@@ -296,9 +297,9 @@ namespace DayTracker.Forms.TaskControl
                 if (!string.IsNullOrEmpty(toDoDescription))
                 {
                     TodoItem toDoItem = new TodoItem(toDoDescription, _databaseService.CurrentCalendarID);
-                    //MessageBox.Show("presenter2 ToDoItem: " + toDoItem.Description);
+                  
                     toDoItem = await AddToDoItem(toDoItem);
-                    //MessageBox.Show("presenter2 ToDoItem: " + toDoItem.Description);
+                    
                     calendarEvent.TodoId = toDoItem.Id;
                 }
                 await AddCalendarEvent(calendarEvent);

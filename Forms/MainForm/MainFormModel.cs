@@ -34,28 +34,30 @@ namespace DayTracker.Forms.MainForm
                 return;
             }
 
-            Permission permission = new Permission();
-            permission.UserId = users[0].Id;
-            permission.CalendarId = _databaseService.CurrentCalendarID;
+            PermissionType? permissionType = null; 
             
             switch(role)
             {
                 case "Admin":
-                    permission.PermissionName = PermissionType.Admin;
+                    permissionType = PermissionType.Admin;
                     break;
                 case "Edit":
-                    permission.PermissionName = PermissionType.Edit;
+                    permissionType = PermissionType.Edit;
                     break;
                 case "Read Only":
-                    permission.PermissionName = PermissionType.ReadOnly;
+                    permissionType = PermissionType.ReadOnly;
                     break;
                 case "Blocked":
-                    permission.PermissionName = PermissionType.Blocked;
+                    permissionType = PermissionType.Blocked;
                     break;
                 default:
                     throw new ArgumentException("Invalid role.");
             }
-
+            if (permissionType == null)
+            {
+                throw new ArgumentException("Invalid role.");
+            }
+            Permission permission = new Permission(users[0].Id, _databaseService.CurrentCalendarID,(PermissionType)permissionType);
             await _databaseService.AddAsync(permission);
         }
 
@@ -189,11 +191,7 @@ namespace DayTracker.Forms.MainForm
                         _ => "Blocked"
                     };
 
-                    result.Add(new SimplePermission
-                    {
-                        Email = user.email,
-                        Permission = roleName
-                    });
+                    result.Add(new SimplePermission(user.email, roleName));
                 }
             }
 

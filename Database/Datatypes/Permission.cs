@@ -23,7 +23,15 @@ namespace DayTracker.Database.Datatypes
         public Calendar? Calendar { get; set; }
 
         public PermissionType PermissionName { get; set; }
+        private Permission() { }
+        public Permission(int userId,int calednarId,PermissionType permissionType)
+        {
+           UserId = userId;
+           CalendarId=calednarId;
+           PermissionName = permissionType;
+        }
     }
+    
 
     enum PermissionType
     {

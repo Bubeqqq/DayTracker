@@ -1,7 +1,6 @@
 ﻿using DayTracker.Database.Datatypes;
 using DayTracker.Forms;
 using DayTracker.Forms.Day;
-using DayTracker.UserControls.TestTask_usunac;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +45,7 @@ namespace DayTracker.Forms.TaskControl
             else if (_task != null)
             {
                 _editMode = true;
-                //MessageBox.Show($"{_task.StartTime.Kind.ToString()}");
+        
                 SetTaskFields(_task);
             }
 
@@ -326,7 +325,7 @@ namespace DayTracker.Forms.TaskControl
 
                 List<string> checkedCategories = _view.GetCheckedItems();
                 _model.SetEventCategories(checkedCategories, calendarEvent);
-                //MessageBox.Show("Deleting ToDoItem: " + calendarEvent.Todo.Description);
+         
                 await _model.ProcessSavedChanges(calendarEvent, _editMode, toDoDescription, _task);
 
             }
@@ -343,7 +342,7 @@ namespace DayTracker.Forms.TaskControl
             List<string> checkedCategories = _view.GetCheckedItems();            
             string changedItemName = "";
             bool isChecked = e.NewValue == CheckState.Checked;
-            //MessageBox.Show($"e.index= {e.Index} + value: {e.NewValue == CheckState.Checked}");
+         
             foreach (string checkedCategory in checkedCategories)
             {
 
