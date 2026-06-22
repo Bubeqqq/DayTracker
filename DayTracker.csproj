@@ -42,9 +42,5 @@
 		<EmbeddedResource Remove="DayTracker.Tests\**" />
 		<None Remove="DayTracker.Tests\**" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Include="Resources\usersettings.txt" />
-	</ItemGroup>
 	
 </Project>

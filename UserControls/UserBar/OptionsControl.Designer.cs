@@ -78,6 +78,7 @@
             // navBarVisibleCheckbox
             // 
             navBarVisibleCheckbox.AutoSize = true;
+            navBarVisibleCheckbox.Enabled = false;
             navBarVisibleCheckbox.Location = new Point(22, 211);
             navBarVisibleCheckbox.Margin = new Padding(4, 5, 4, 5);
             navBarVisibleCheckbox.Name = "navBarVisibleCheckbox";
@@ -85,6 +86,7 @@
             navBarVisibleCheckbox.TabIndex = 6;
             navBarVisibleCheckbox.Text = "Fluid";
             navBarVisibleCheckbox.UseVisualStyleBackColor = true;
+            navBarVisibleCheckbox.Visible = false;
             navBarVisibleCheckbox.CheckedChanged += navBarVisibleCheckbox_CheckedChanged;
             // 
             // btnAppControl
@@ -102,16 +104,19 @@
             // lblNavBar
             // 
             lblNavBar.AutoSize = true;
+            lblNavBar.Enabled = false;
             lblNavBar.Location = new Point(17, 182);
             lblNavBar.Margin = new Padding(4, 0, 4, 0);
             lblNavBar.Name = "lblNavBar";
             lblNavBar.Size = new Size(121, 20);
             lblNavBar.TabIndex = 2;
             lblNavBar.Text = "Navigation bar:";
+            lblNavBar.Visible = false;
             // 
             // clearCalendarButton
             // 
             clearCalendarButton.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            clearCalendarButton.Enabled = false;
             clearCalendarButton.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             clearCalendarButton.Location = new Point(17, 112);
             clearCalendarButton.Margin = new Padding(4, 5, 4, 5);
@@ -120,6 +125,7 @@
             clearCalendarButton.TabIndex = 1;
             clearCalendarButton.Text = "📅 Clear Calendar";
             clearCalendarButton.UseVisualStyleBackColor = true;
+            clearCalendarButton.Visible = false;
             clearCalendarButton.Click += clearCalendarButton_Click;
             // 
             // clearPeopleListButton
