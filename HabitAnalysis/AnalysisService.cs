@@ -78,12 +78,19 @@ namespace DayTracker.HabitAnalysis
                 if (ev.IsRelax) dashboard.TotalTimePerCategory["Relaks"] += duration;
                 if (ev.IsOutdoor) dashboard.TotalTimePerCategory["Na zewnątrz"] += duration;
 
+                
+
                 if (ev.TodoId.HasValue)
                 {
-                    if (!dashboard.TodosCompletedPerDay.ContainsKey(eventDate))
-                        dashboard.TodosCompletedPerDay[eventDate] = 0;
+                    foreach(var todo in _loadedDataService.GetTodoItems().Where(e => e.Id == ev.TodoId))
+                    {
+                        if (!dashboard.TodosCompletedPerDay.ContainsKey(eventDate)) dashboard.TodosCompletedPerDay[eventDate] = 0;
 
-                    dashboard.TodosCompletedPerDay[eventDate]++;
+                        dashboard.TodosCompletedPerDay[eventDate] += todo.Description.Split(new string[] { "[x]" }, StringSplitOptions.None).Length - 1;
+                    }
+
+
+                    //dashboard.TodosCompletedPerDay[eventDate]++;
                 }
             }
 
