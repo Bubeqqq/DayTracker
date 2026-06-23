@@ -60,7 +60,6 @@ namespace DayTracker.Forms.SelectCalendarForm
             {
                 errors[nameof(_view.InviteCode)] = "Invite code cannot be empty.";
             }   
-            // dodatkowe walidacje inviteCode, np. format, długość itp. można dodać tutaj
 
             if (errors.Count > 0)
             {
@@ -68,7 +67,6 @@ namespace DayTracker.Forms.SelectCalendarForm
                 return;
             }
 
-            // model wykonuje zapytanie do bazy danych, aby znaleźć kalendarz odpowiadający inviteCode i ustawia go jako aktualny
             var calendarIdResult = await _model.GetCalendarIdByInvitationCode(inviteCode);
             if (calendarIdResult.IsSuccess)
             {

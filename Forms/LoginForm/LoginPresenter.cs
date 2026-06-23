@@ -39,8 +39,6 @@ namespace DayTracker.Forms.LoginForm
             _view.ClearAllValidationErrors();
             var errors = new Dictionary<string, string>();
 
-            // TODO: Dodaj bardziej zaawansowaną walidację (np. regex dla emaila, sprawdzanie siły hasła itp.)
-
             if (string.IsNullOrEmpty(email))
             {
                 errors[nameof(_view.Email)] = "Email is required.";

@@ -57,12 +57,11 @@ namespace DayTracker.Forms.RegisterForm
             {
                 errors[nameof(_view.Email)] = "Email is required.";
             }
-            /* -------------------------// to się potem odkomentuje
             else if (!Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
             {
                 errors[nameof(_view.Email)] = "Invalid email format.";
             }
-            */
+
 
             if (string.IsNullOrEmpty(password))
             {
@@ -70,7 +69,6 @@ namespace DayTracker.Forms.RegisterForm
             }
             else
             {
-                /* -------------------------// to się potem odkomentuje
                 if (password.Length < 8)
                 {
                     passwordErrors.Add("Password must be at least 8 characters long.");
@@ -87,8 +85,8 @@ namespace DayTracker.Forms.RegisterForm
                 {
                     passwordErrors.Add("Password must contain at least one special character.");
                 }
-                */
-            if (string.IsNullOrEmpty(confirmPassword))
+
+                if (string.IsNullOrEmpty(confirmPassword))
                 {
                     errors[nameof(_view.ConfirmPassword)] = "Please confirm your password.";
                 }
