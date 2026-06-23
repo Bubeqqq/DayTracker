@@ -196,7 +196,7 @@ namespace DayTracker.Forms.Habits
             {
                 new LineSeries<double>
                 {
-                    Name = "Czas Snu",
+                    Name = "Sleep Time",
                     Values = sleepValues.ToArray(),
                     GeometrySize = 10,
                     Stroke = new SolidColorPaint(SKColors.DarkBlue) { StrokeThickness = 3 },
@@ -205,7 +205,7 @@ namespace DayTracker.Forms.Habits
                 },
                 new LineSeries<double>
                 {
-                    Name = "Sport i Outdoor",
+                    Name = "Sport and Outdoor",
                     Values = activeValues.ToArray(),
                     GeometrySize = 10,
                     Stroke = new SolidColorPaint(SKColors.MediumSeaGreen) { StrokeThickness = 3 },
@@ -218,7 +218,7 @@ namespace DayTracker.Forms.Habits
             {
                 new Axis
                 {
-                    Name = "Data",
+                    Name = "Date",
                     Labels = allDates.Select(x => x.ToString("dd MMM")).ToList()
                 }
                         };
@@ -227,7 +227,7 @@ namespace DayTracker.Forms.Habits
                         {
                 new Axis
                 {
-                    Name = "Czas (Godziny)",
+                    Name = "Time (hours)",
                     MinLimit = 0
                 }
             };

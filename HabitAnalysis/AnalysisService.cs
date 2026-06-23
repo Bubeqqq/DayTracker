@@ -43,11 +43,11 @@ namespace DayTracker.HabitAnalysis
                 dashboard.SleepHoursPerDay[date] += hours;
             }
 
-            dashboard.TotalTimePerCategory.Add("Praca", 0);
-            dashboard.TotalTimePerCategory.Add("Edukacja", 0);
+            dashboard.TotalTimePerCategory.Add("Work", 0);
+            dashboard.TotalTimePerCategory.Add("Education", 0);
             dashboard.TotalTimePerCategory.Add("Sport", 0);
-            dashboard.TotalTimePerCategory.Add("Relaks", 0);
-            dashboard.TotalTimePerCategory.Add("Na zewnątrz", 0);
+            dashboard.TotalTimePerCategory.Add("Relax", 0);
+            dashboard.TotalTimePerCategory.Add("Outdoor", 0);
 
             var dailyActivityTime = new Dictionary<DateTime, double>();
 
@@ -72,18 +72,25 @@ namespace DayTracker.HabitAnalysis
                 if (!dailyActivityTime.ContainsKey(eventDate)) dailyActivityTime[eventDate] = 0;
                 dailyActivityTime[eventDate] += duration;
 
-                if (ev.IsWork) dashboard.TotalTimePerCategory["Praca"] += duration;
-                if (ev.IsEducation) dashboard.TotalTimePerCategory["Edukacja"] += duration;
+                if (ev.IsWork) dashboard.TotalTimePerCategory["Work"] += duration;
+                if (ev.IsEducation) dashboard.TotalTimePerCategory["Education"] += duration;
                 if (ev.IsSport) dashboard.TotalTimePerCategory["Sport"] += duration;
-                if (ev.IsRelax) dashboard.TotalTimePerCategory["Relaks"] += duration;
-                if (ev.IsOutdoor) dashboard.TotalTimePerCategory["Na zewnątrz"] += duration;
+                if (ev.IsRelax) dashboard.TotalTimePerCategory["Relax"] += duration;
+                if (ev.IsOutdoor) dashboard.TotalTimePerCategory["Outdoor"] += duration;
+
+                
 
                 if (ev.TodoId.HasValue)
                 {
-                    if (!dashboard.TodosCompletedPerDay.ContainsKey(eventDate))
-                        dashboard.TodosCompletedPerDay[eventDate] = 0;
+                    foreach(var todo in _loadedDataService.GetTodoItems().Where(e => e.Id == ev.TodoId))
+                    {
+                        if (!dashboard.TodosCompletedPerDay.ContainsKey(eventDate)) dashboard.TodosCompletedPerDay[eventDate] = 0;
 
-                    dashboard.TodosCompletedPerDay[eventDate]++;
+                        dashboard.TodosCompletedPerDay[eventDate] += todo.Description.Split(new string[] { "[x]" }, StringSplitOptions.None).Length - 1;
+                    }
+
+
+                    //dashboard.TodosCompletedPerDay[eventDate]++;
                 }
             }
 

@@ -4,9 +4,11 @@ using DayTracker.Forms.Calendar;
 using DayTracker.Forms.Day;
 using DayTracker.Forms.Habits;
 using DayTracker.Forms.LoginForm;
+using DayTracker.Forms.SelectCalendarForm;
 using DayTracker.Forms.TaskControl;
 using DayTracker.Forms.TestForm;
 using DayTracker.LoadedData;
+using DayTracker.LoginServices;
 using DayTracker.Navigation;
 using System;
 using System.Windows.Forms;
@@ -20,7 +22,7 @@ namespace DayTracker.Forms.MainForm
         private readonly INavigationService _navigationService;
         private readonly ILoadedDataService _loadedDataService;
 
-        public MainFormPresenter(IMainFormView view, IMainFormModel model, INavigationService navigationService, ILoadedDataService loadedDataService)
+        public MainFormPresenter(IMainFormView view, IMainFormModel model, INavigationService navigationService, ILoadedDataService loadedDataService, ILoginService loginService)
         {
             _view = view ?? throw new ArgumentNullException(nameof(view));
             _model = model ?? throw new ArgumentNullException(nameof(model));
@@ -73,6 +75,15 @@ namespace DayTracker.Forms.MainForm
                 string code = _model.GetInvitationCode();
                 bool isAdmin = _model.IsCurrentUserAdmin();
                 _view.LoadPermissions(permissions, code, isAdmin);
+            };
+
+            _loadedDataService.OnPermissionsChanged += () =>
+            {
+                if(loginService.GetUser() != null)
+                {
+                    if (_loadedDataService.GetCurrentPermisions() == Database.Datatypes.PermissionType.Blocked)
+                        _navigationService.NavigateTo<SelectCalendarPresenter>();
+                }
             };
         }
 
