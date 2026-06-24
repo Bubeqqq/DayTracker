@@ -1,5 +1,4 @@
-﻿
-using DayTracker.Database.Datatypes;
+﻿using DayTracker.Database.Datatypes;
 using DayTracker.LoadedData;
 using System;
 using System.Collections.Generic;
