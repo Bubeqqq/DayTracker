@@ -42,5 +42,9 @@
 		<EmbeddedResource Remove="DayTracker.Tests\**" />
 		<None Remove="DayTracker.Tests\**" />
 	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Images\" />
+	</ItemGroup>
 	
 </Project>
