@@ -1,6 +1,4 @@
-﻿:::: titlepage
-::: center
-![image](logo-name.jpg){width="75%"}
+﻿![image](logo-name.jpg)
 
 **WYDZIAŁ MATEMATYKI STOSOWANEJ**
 
